@@ -5,6 +5,7 @@ import { auth } from '../../firebase/firebase.utils';
 
 const Register = () => {
   const [email, setEmail] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const config = {

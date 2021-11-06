@@ -7,11 +7,16 @@ import { BrowserRouter } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 
+import { Provider } from 'react-redux';
+import store from './redux/store';
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

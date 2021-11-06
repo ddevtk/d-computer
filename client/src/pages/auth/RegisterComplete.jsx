@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import { notification } from 'antd';
 import { auth } from '../../firebase/firebase.utils';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterComplete = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!password || !email) {
@@ -33,6 +36,11 @@ const RegisterComplete = () => {
         await user.updatePassword(password);
         const idTokenResult = await user.getIdTokenResult();
         console.log(user, idTokenResult);
+        notification.success({
+          message: 'Register successfully',
+          duration: 2,
+        });
+        navigate('/', { replace: true });
       }
     } catch (error) {
       notification.error({
