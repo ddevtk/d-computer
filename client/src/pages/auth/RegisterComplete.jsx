@@ -47,7 +47,6 @@ const RegisterComplete = () => {
         message: error.message,
         duration: 3,
       });
-      console.log(error);
     }
   };
 
@@ -62,7 +61,7 @@ const RegisterComplete = () => {
           <h4>Continue Register</h4>
           <form onSubmit={handleSubmit}>
             <MDBCol md='12' size='12' className='mt-4'>
-              <MDBInput type='email' value={email} disabled className='mb-4' />
+              <MDBInput type='email' value={email} disabled className='mb-2' />
               <MDBInput
                 type='password'
                 value={password}
