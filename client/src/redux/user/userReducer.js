@@ -1,11 +1,42 @@
 import { userActionType } from './userType';
 
-export const userReducer = (state = null, action) => {
+const defaultState = {
+  user: null,
+  isSigningIn: null,
+  error: null,
+};
+
+export const userReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case userActionType.LOGGED_IN_USER:
-      return action.payload;
+    case userActionType.AUTH_SUCCESS:
+      return {
+        ...defaultState,
+        user: action.payload,
+      };
+    case userActionType.LOGGED_IN_INIT:
+      return {
+        ...defaultState,
+        isSigningIn: true,
+      };
+    case userActionType.LOGGED_IN_SUCCESS:
+      return {
+        ...defaultState,
+        user: action.payload,
+        isSigningIn: false,
+      };
+    case userActionType.LOGGED_IN_ERROR:
+      return {
+        ...defaultState,
+        error: action.payload,
+      };
+    case userActionType.CLEAN_STATE:
+      return {
+        ...state,
+        isSigningIn: null,
+        error: null,
+      };
     case userActionType.LOGOUT:
-      return action.payload;
+      return defaultState;
     default:
       return state;
   }

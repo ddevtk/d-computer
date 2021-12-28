@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import { notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailLink } from 'firebase/auth';
+import { getAuth, signInWithEmailLink, updatePassword } from 'firebase/auth';
 
 const RegisterComplete = () => {
   const [email, setEmail] = useState('');
@@ -35,12 +35,16 @@ const RegisterComplete = () => {
       if (result.user.emailVerified) {
         window.localStorage.removeItem('emailForRegistration');
         const user = auth.currentUser;
+        await updatePassword(user, password);
+
         const idTokenResult = await user.getIdTokenResult();
         notification.success({
           message: 'Register successfully',
           duration: 2,
         });
-        navigate('/', { replace: true });
+        setTimeout(() => {
+          navigate('/', { replace: true });
+        }, 2000);
       }
     } catch (error) {
       notification.error({
