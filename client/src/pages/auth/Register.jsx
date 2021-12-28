@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import { notification } from 'antd';
-import { auth } from '../../firebase/firebase.utils';
+import { getAuth, sendSignInLinkToEmail } from 'firebase/auth';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -12,8 +12,8 @@ const Register = () => {
       url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
       handleCodeInApp: true,
     };
-
-    await auth.sendSignInLinkToEmail(email, config);
+    const auth = getAuth();
+    await sendSignInLinkToEmail(auth, email, config);
     notification.success({
       message: `Email is sent to ${email}. Click the link to complete your registration. `,
       duration: 3,

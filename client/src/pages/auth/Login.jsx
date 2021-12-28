@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { MDBCol, MDBInput } from 'mdb-react-ui-kit';
 import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { auth } from '../../firebase/firebase.utils';
 
 const Login = () => {
   const [email, setEmail] = useState('');

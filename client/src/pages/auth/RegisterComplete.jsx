@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import { notification } from 'antd';
-import { auth } from '../../firebase/firebase.utils';
 import { useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailLink } from 'firebase/auth';
 
 const RegisterComplete = () => {
   const [email, setEmail] = useState('');
@@ -26,16 +26,16 @@ const RegisterComplete = () => {
       return;
     }
     try {
-      const result = await auth.signInWithEmailLink(
+      const auth = getAuth();
+      const result = await signInWithEmailLink(
+        auth,
         email,
         window.location.href
       );
       if (result.user.emailVerified) {
         window.localStorage.removeItem('emailForRegistration');
         const user = auth.currentUser;
-        await user.updatePassword(password);
         const idTokenResult = await user.getIdTokenResult();
-        console.log(user, idTokenResult);
         notification.success({
           message: 'Register successfully',
           duration: 2,

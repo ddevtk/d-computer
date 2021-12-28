@@ -1,8 +1,8 @@
-import { auth } from '../../firebase/firebase.utils';
 import { getAuth, signOut } from 'firebase/auth';
 import { userActionType } from './userType';
 
 export const unsubscribe = () => (dispatch) => {
+  const auth = getAuth();
   auth.onAuthStateChanged(async (user) => {
     if (user) {
       const idTokenResult = await user.getIdTokenResult();
@@ -18,14 +18,11 @@ export const unsubscribe = () => (dispatch) => {
 };
 export const logout = () => async (dispatch) => {
   const auth = getAuth();
-  signOut(auth)
-    .then(() => {
-      dispatch({
-        type: userActionType.LOGOUT,
-        payload: null,
-      });
-    })
-    .catch((error) => {
-      console.error(error.message);
+  try {
+    await signOut(auth);
+    dispatch({
+      type: userActionType.LOGOUT,
+      payload: null,
     });
+  } catch (error) {}
 };
