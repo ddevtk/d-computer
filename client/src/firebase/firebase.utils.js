@@ -1,5 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth'; //v9
+import { FacebookAuthProvider, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDu6RbqsczRfp4ZP9PdhtgyDQ_pgHLZGOE',
@@ -15,4 +16,5 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // Export
-export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+export const googleAuthProvider = new GoogleAuthProvider();
+export const facebookAuthProvider = new FacebookAuthProvider();

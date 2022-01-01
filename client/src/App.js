@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
+import AuthRoute from './pages/auth/AuthRoute';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
@@ -20,9 +21,15 @@ const App = () => {
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/register/complete' element={<RegisterComplete />} />
+        <Route path='/login' element={<AuthRoute />}>
+          <Route path='/login' element={<Login />} />
+        </Route>
+        <Route path='/register' element={<AuthRoute />}>
+          <Route path='/register' element={<Register />} />
+        </Route>
+        <Route path='/register/complete' element={<AuthRoute />}>
+          <Route path='/register/complete' element={<RegisterComplete />} />
+        </Route>
       </Routes>
     </>
   );

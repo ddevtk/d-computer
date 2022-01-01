@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import { notification } from 'antd';
 import { getAuth, sendSignInLinkToEmail } from 'firebase/auth';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -30,6 +32,7 @@ const Register = () => {
           <form onSubmit={handleSubmit}>
             <MDBCol md='12' size='12' className='mb-4 mt-4 mb-md-0'>
               <MDBInput
+                autoFocus
                 type='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

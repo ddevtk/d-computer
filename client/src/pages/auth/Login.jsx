@@ -1,10 +1,13 @@
-import { Alert, message, notification } from 'antd';
-import { MDBInput, MDBSpinner } from 'mdb-react-ui-kit';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import { Alert, message } from 'antd';
+import { MDBInput } from 'mdb-react-ui-kit';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginWithEmailAndPassword } from '../../redux/user/userAction';
+import {
+  loginWithEmailAndPassword,
+  loginWithFacebook,
+  loginWithGoogle,
+} from '../../redux/user/userAction';
 import { userActionType } from '../../redux/user/userType';
 
 const Login = () => {
@@ -13,9 +16,13 @@ const Login = () => {
   const [isError, setIsError] = useState(false);
   const key = 'updatable';
 
-  const { isSigningIn, error } = useSelector((state) => state.user);
+  const { isSigningIn, error, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // if (user) {
+  //   navigate('/');
+  // }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,6 +49,13 @@ const Login = () => {
     }, 2000);
   }
 
+  const signInWithGoogleHandler = () => {
+    dispatch(loginWithGoogle());
+  };
+  // const signInWithFacebookHandler = () => {
+  //   dispatch(loginWithFacebook());
+  // };
+
   useEffect(() => {
     return () => {
       dispatch({ type: userActionType.CLEAN_STATE });
@@ -56,6 +70,7 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
             <div className='form-outline mb-4'>
               <MDBInput
+                autoFocus
                 label='Email address'
                 type='email'
                 className='form-control'
@@ -95,27 +110,28 @@ const Login = () => {
             </div>
 
             <button type='submit' className='btn btn-primary btn-block mb-4'>
-              {/* {isSigningIn ? (
-                <div className='d-flex align-items-center justify-content-center'>
-                  <MDBSpinner size='sm' color='light' />
-                  <span style={{ marginLeft: '5px' }}> Loading...</span>
-                </div>
-              ) : (
-                'Sign in'
-              )} */}
               Sign in
             </button>
 
-            <div className='text-center d-flex align-items-center justify-content-center'>
-              or sign up with:{' '}
-              <button
-                type='button'
-                className='btn btn-primary btn-floating mx-1'
-              >
-                <i className='fab fa-google'></i>
-              </button>
+            <div className='divider d-flex align-items-center my-4'>
+              <p className='text-center fw-bold mx-3 mb-0 text-muted'>OR</p>
             </div>
+            <></>
           </form>
+          <button
+            className='btn btn-primary btn-lg btn-block'
+            style={{ backgroundColor: '#1266f1' }}
+            onClick={signInWithGoogleHandler}
+          >
+            <i className='fab fa-google me-2'></i>Continue with Google
+          </button>
+          {/* <button
+            className='btn btn-primary btn-lg btn-block'
+            style={{ backgroundColor: '#3b5998' }}
+            onClick={signInWithFacebookHandler}
+          >
+            <i className='fab fa-facebook-f me-2'></i>Continue with Facebook
+          </button> */}
         </div>
       </div>
     </div>
