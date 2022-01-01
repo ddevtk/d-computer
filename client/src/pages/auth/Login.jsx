@@ -105,7 +105,7 @@ const Login = () => {
                 <p>
                   Not a member? <Link to='/register'>Register</Link>
                 </p>
-                <a href='#!'>Forgot password?</a>
+                <Link to='/forgot-password'>Forgot password?</Link>
               </div>
             </div>
 

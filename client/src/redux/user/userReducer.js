@@ -13,11 +13,7 @@ export const userReducer = (state = defaultState, action) => {
         ...defaultState,
         user: action.payload,
       };
-    case userActionType.REGISTER_SUCCESS:
-      return {
-        ...defaultState,
-        user: action.payload,
-      };
+
     case userActionType.LOGGED_IN_INIT:
       return {
         ...defaultState,

@@ -3,7 +3,7 @@ import { MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import { notification } from 'antd';
 import { getAuth, sendSignInLinkToEmail } from 'firebase/auth';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -39,7 +39,14 @@ const Register = () => {
                 label='Email address'
               />
             </MDBCol>
-            <MDBCol size='auto' className='mt-3 mb-md-0'>
+            <div className='row mt-2'>
+              <div className='col d-flex justify-content-start'>
+                <p>
+                  Have an account? <Link to='/login'>Login</Link>
+                </p>
+              </div>
+            </div>
+            <MDBCol size='auto' className='mb-md-0'>
               <MDBBtn type='submit'>Register</MDBBtn>
             </MDBCol>
           </form>

@@ -40,8 +40,6 @@ const RegisterComplete = () => {
         const user = auth.currentUser;
         await updatePassword(user, password);
 
-        dispatch(register(user));
-
         const idTokenResult = await user.getIdTokenResult();
         notification.success({
           message: 'Register successfully',
