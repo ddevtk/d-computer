@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
+import axios from 'axios';
 import {
   facebookAuthProvider,
   googleAuthProvider,
@@ -42,12 +43,28 @@ export const register = (user) => (dispatch) => {
   dispatch({ type: userActionType.REGISTER_SUCCESS, payload: user });
 };
 
+const createOrUpdateUser = async (authtoken) => {
+  await axios.post(
+    `${process.env.REACT_APP_API}/create-or-update-user`,
+    {},
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
+
 export const loginWithEmailAndPassword =
   (email, password) => async (dispatch) => {
     dispatch({ type: userActionType.LOGGED_IN_INIT });
     const auth = getAuth();
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
+      const idToken = await user.getIdToken();
+
+      await createOrUpdateUser(idToken);
+
       dispatch({ type: userActionType.LOGGED_IN_SUCCESS, payload: user });
     } catch (error) {
       dispatch({
