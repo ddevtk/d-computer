@@ -1,8 +1,8 @@
-import { Alert, message } from 'antd';
+import { Alert } from 'antd';
 import { MDBInput } from 'mdb-react-ui-kit';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   loginWithEmailAndPassword,
   loginWithFacebook,
@@ -14,15 +14,9 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
-  const key = 'updatable';
 
-  const { isSigningIn, error, user } = useSelector((state) => state.user);
+  const { isSigningIn, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  // if (user) {
-  //   navigate('/');
-  // }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,19 +29,6 @@ const Login = () => {
     }
     dispatch(loginWithEmailAndPassword(email, password));
   };
-  if (isSigningIn === true) {
-    message.loading({ content: 'Loading...', key });
-  }
-  if (isSigningIn === false) {
-    message.success({
-      content: 'Sign in successfully',
-      key,
-      duration: 2,
-    });
-    setTimeout(() => {
-      navigate('/');
-    }, 2000);
-  }
 
   const signInWithGoogleHandler = () => {
     dispatch(loginWithGoogle());
@@ -110,7 +91,7 @@ const Login = () => {
             </div>
 
             <button type='submit' className='btn btn-primary btn-block mb-4'>
-              Sign in
+              {isSigningIn ? 'Loading...' : 'sign in'}
             </button>
 
             <div className='divider d-flex align-items-center my-4'>

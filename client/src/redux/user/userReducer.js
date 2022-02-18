@@ -8,12 +8,6 @@ const defaultState = {
 
 export const userReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case userActionType.AUTH_SUCCESS:
-      return {
-        ...defaultState,
-        user: action.payload,
-      };
-
     case userActionType.LOGGED_IN_INIT:
       return {
         ...defaultState,

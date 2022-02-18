@@ -1,3 +1,4 @@
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
@@ -8,14 +9,28 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import Home from './pages/Home';
-import { unsubscribe } from './redux/user/userAction';
+import { userActionType } from './redux/user/userType';
+// import { unsubscribe } from './redux/user/userAction';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(unsubscribe());
-  }, []);
+    // dispatch(unsubscribe());
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('User is signed in');
+        dispatch({
+          type: userActionType.LOGGED_IN_SUCCESS,
+          payload: user,
+        });
+      } else {
+        console.log('user not signed in');
+      }
+    });
+    return () => unsubscribe();
+  }, [dispatch]);
 
   return (
     <>
