@@ -10,26 +10,14 @@ import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import Home from './pages/Home';
 import { userActionType } from './redux/user/userType';
-// import { unsubscribe } from './redux/user/userAction';
+import { unsubscribe } from './redux/user/userAction';
+import Admin from './pages/Admin';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(unsubscribe());
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log('User is signed in');
-        dispatch({
-          type: userActionType.LOGGED_IN_SUCCESS,
-          payload: user,
-        });
-      } else {
-        console.log('user not signed in');
-      }
-    });
-    return () => unsubscribe();
+    dispatch(unsubscribe());
   }, [dispatch]);
 
   return (
@@ -49,6 +37,7 @@ const App = () => {
         <Route path='/forgot-password' element={<AuthRoute />}>
           <Route path='/forgot-password' element={<ForgotPassword />} />
         </Route>
+        <Route path='/admin/dashboard' element={<Admin />} />
       </Routes>
     </>
   );

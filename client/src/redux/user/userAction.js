@@ -1,5 +1,4 @@
 import {
-  FacebookAuthProvider,
   getAuth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -7,27 +6,34 @@ import {
   signOut,
 } from 'firebase/auth';
 import axios from 'axios';
-import {
-  facebookAuthProvider,
-  googleAuthProvider,
-} from '../../firebase/firebase.utils';
+import { googleAuthProvider } from '../../firebase/firebase.utils';
 
 import { userActionType } from './userType';
 
 export const unsubscribe = () => (dispatch) => {
+  console.log('hello');
   const auth = getAuth();
   auth.onAuthStateChanged(async (user) => {
     if (user) {
-      console.log('User is signed in');
-      dispatch({
-        type: userActionType.AUTH_SUCCESS,
-        payload: user,
-      });
+      try {
+        const idToken = await user.getIdToken();
+        const { data } = await currentUser(idToken);
+
+        const { name, email, _id, role } = data;
+
+        dispatch({
+          type: userActionType.LOGGED_IN_SUCCESS,
+          payload: { _id, name, email, token: idToken, role },
+        });
+      } catch (error) {
+        console.error(error.response.data.message);
+      }
     } else {
       console.log('User is not signed in');
     }
   });
 };
+
 export const logout = () => async (dispatch) => {
   const auth = getAuth();
   try {
@@ -43,29 +49,47 @@ export const register = (user) => (dispatch) => {
   dispatch({ type: userActionType.REGISTER_SUCCESS, payload: user });
 };
 
-const createOrUpdateUser = async (authtoken) => {
+export const createOrUpdateUser = async (authToken) =>
   await axios.post(
     `${process.env.REACT_APP_API}/create-or-update-user`,
     {},
     {
       headers: {
-        authtoken,
+        Authorization: `Bearer ${authToken}`,
       },
     }
   );
-};
+
+export const currentUser = async (authToken) =>
+  await axios.post(
+    `${process.env.REACT_APP_API}/current-user`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
 
 export const loginWithEmailAndPassword =
-  (email, password) => async (dispatch) => {
+  (emailIp, passwordIp) => async (dispatch) => {
     dispatch({ type: userActionType.LOGGED_IN_INIT });
     const auth = getAuth();
     try {
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      const { user } = await signInWithEmailAndPassword(
+        auth,
+        emailIp,
+        passwordIp
+      );
       const idToken = await user.getIdToken();
 
-      await createOrUpdateUser(idToken);
+      const { data } = await createOrUpdateUser(idToken);
+      const { name, email, _id, role } = data;
 
-      dispatch({ type: userActionType.LOGGED_IN_SUCCESS, payload: user });
+      dispatch({
+        type: userActionType.LOGGED_IN_SUCCESS,
+        payload: { _id, name, email, token: idToken, role },
+      });
     } catch (error) {
       dispatch({
         type: userActionType.LOGGED_IN_ERROR,
@@ -82,11 +106,15 @@ export const loginWithGoogle = () => async (dispatch) => {
   const auth = getAuth();
   try {
     const result = await signInWithPopup(auth, googleAuthProvider);
-    console.log(result);
-    console.log(await result.user.getIdToken());
+    const token = await result.user.getIdToken();
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    console.log(credential);
-    dispatch({ type: userActionType.LOGGED_IN_SUCCESS, payload: result.user });
+    const {
+      data: { _id, name, email, role },
+    } = await createOrUpdateUser(token);
+    dispatch({
+      type: userActionType.LOGGED_IN_SUCCESS,
+      payload: { _id, name, email, role, token },
+    });
   } catch (error) {
     const credential = GoogleAuthProvider.credentialFromError(error);
     console.log(credential);

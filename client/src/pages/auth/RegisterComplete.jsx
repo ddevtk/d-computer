@@ -4,7 +4,8 @@ import { notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailLink, updatePassword } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { register } from '../../redux/user/userAction';
+import { createOrUpdateUser, register } from '../../redux/user/userAction';
+import { userActionType } from '../../redux/user/userType';
 
 const RegisterComplete = () => {
   const [email, setEmail] = useState('');
@@ -40,7 +41,21 @@ const RegisterComplete = () => {
         const user = auth.currentUser;
         await updatePassword(user, password);
 
-        const idTokenResult = await user.getIdTokenResult();
+        const idToken = await user.getIdToken();
+
+        const { data } = await createOrUpdateUser(idToken);
+
+        dispatch({
+          type: userActionType.LOGGED_IN_SUCCESS,
+          payload: {
+            _id: data._id,
+            name: data.name,
+            email: data.email,
+            token: idToken,
+            role: data.role,
+          },
+        });
+
         notification.success({
           message: 'Register successfully',
           duration: 2,

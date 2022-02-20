@@ -5,7 +5,13 @@ import { Navigate, Outlet } from 'react-router-dom';
 const AuthRoute = () => {
   const { user } = useSelector((state) => state.user);
 
-  return !user ? <Outlet /> : <Navigate to='/' />;
+  return !user ? (
+    <Outlet />
+  ) : user.role === 'admin' ? (
+    <Navigate to='/admin/dashboard' />
+  ) : (
+    <Navigate to='/' />
+  );
 };
 
 export default AuthRoute;

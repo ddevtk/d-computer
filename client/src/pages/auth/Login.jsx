@@ -2,7 +2,7 @@ import { Alert } from 'antd';
 import { MDBInput } from 'mdb-react-ui-kit';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import {
   loginWithEmailAndPassword,
   loginWithFacebook,
@@ -15,7 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
 
-  const { isSigningIn, error } = useSelector((state) => state.user);
+  const { isSigningIn, error, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -42,6 +42,10 @@ const Login = () => {
       dispatch({ type: userActionType.CLEAN_STATE });
     };
   }, [dispatch]);
+
+  if (user?.role === 'admin') {
+    return <Navigate to='/admin/dashboard' />;
+  }
 
   return (
     <div className='container p-5'>

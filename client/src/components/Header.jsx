@@ -19,14 +19,13 @@ const Header = () => {
 
   const { user } = useSelector((state) => state.user);
 
-  console.log(user);
-
   const handleClick = (e) => {
     setCurrent(e.key);
   };
   const logoutHandler = () => {
-    dispatch(logout());
-    navigate('/login');
+    dispatch(logout()).then(() => {
+      navigate('/login');
+    });
   };
   return (
     <Menu onClick={handleClick} selectedKeys={[current]} mode='horizontal'>
@@ -37,10 +36,6 @@ const Header = () => {
       >
         <Link to='/'>Home</Link>
       </Item>
-      <SubMenu key='username' icon={<SettingOutlined />} title='Username'>
-        <Item key='setting:1'>Option1</Item>
-        <Item key='setting:2'>Option2</Item>
-      </SubMenu>
 
       {!user && (
         <Item
@@ -52,14 +47,28 @@ const Header = () => {
         </Item>
       )}
       {user && (
-        <Item
-          key='logout'
-          icon={<UserDeleteOutlined />}
-          style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}
-          onClick={logoutHandler}
+        <SubMenu
+          key='username'
+          title={user.name}
+          icon={<UserOutlined />}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginLeft: 'auto',
+          }}
         >
-          Logout
-        </Item>
+          <Item
+            key='logout'
+            icon={<UserDeleteOutlined />}
+            onClick={logoutHandler}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            Logout
+          </Item>
+        </SubMenu>
       )}
     </Menu>
   );
