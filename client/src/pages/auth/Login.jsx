@@ -13,20 +13,13 @@ import { userActionType } from '../../redux/user/userType';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isError, setIsError] = useState(false);
 
   const { isSigningIn, error, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password.length < 6) {
-      setIsError(true);
-      setTimeout(() => {
-        setIsError(false);
-      }, 2000);
-      return;
-    }
+
     dispatch(loginWithEmailAndPassword(email, password));
   };
 
@@ -72,14 +65,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {isError && (
-                <Alert
-                  showIcon
-                  className='mt-2'
-                  message={'Mật khẩu phải có ít nhất 6 ký tự'}
-                  type='error'
-                />
-              )}
+
               {error && (
                 <Alert showIcon className='mt-2' message={error} type='error' />
               )}

@@ -11,8 +11,10 @@ import RegisterComplete from './pages/auth/RegisterComplete';
 import HomePage from './pages/HomePage';
 import { unsubscribe } from './redux/user/userAction';
 import AdminPage from './pages/AdminPage';
-import UserPage from './pages/UserPage';
 import UserRoute from './pages/auth/UserRoute';
+import UserHistory from './pages/UserHistory';
+import ChangePassword from './pages/ChangePassword';
+import Wishlist from './pages/Wishlist';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,7 +43,13 @@ const App = () => {
         </Route>
         <Route path='/admin/dashboard' element={<AdminPage />} />
         <Route path='/user/history' element={<UserRoute />}>
-          <Route path='/user/history' element={<UserPage />} />
+          <Route path='/user/history' element={<UserHistory />} />
+        </Route>
+        <Route path='/user/change-password' element={<UserRoute />}>
+          <Route path='/user/change-password' element={<ChangePassword />} />
+        </Route>
+        <Route path='/user/wishlist' element={<UserRoute />}>
+          <Route path='/user/wishlist' element={<Wishlist />} />
         </Route>
       </Routes>
     </>
