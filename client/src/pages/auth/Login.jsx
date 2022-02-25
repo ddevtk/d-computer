@@ -51,12 +51,12 @@ const Login = () => {
     <div className='container p-5'>
       <div className='row'>
         <div className='col-md-6 offset-md-3'>
-          <h3 className='mb-4'>Login</h3>
+          <h3 className='mb-4'>Đăng nhập</h3>
           <form onSubmit={handleSubmit}>
             <div className='form-outline mb-4'>
               <MDBInput
                 autoFocus
-                label='Email address'
+                label='Email'
                 type='email'
                 className='form-control'
                 value={email}
@@ -66,7 +66,7 @@ const Login = () => {
 
             <div className='form-outline mb-4'>
               <MDBInput
-                label='Password'
+                label='Mật khẩu'
                 type='password'
                 className='form-control'
                 value={password}
@@ -76,7 +76,7 @@ const Login = () => {
                 <Alert
                   showIcon
                   className='mt-2'
-                  message={'Password must be at least 6 characters'}
+                  message={'Mật khẩu phải có ít nhất 6 ký tự'}
                   type='error'
                 />
               )}
@@ -88,18 +88,18 @@ const Login = () => {
             <div className='row mb-4'>
               <div className='col d-flex justify-content-between'>
                 <p>
-                  Not a member? <Link to='/register'>Register</Link>
+                  Không phải thành viên? <Link to='/register'>Đăng ký</Link>
                 </p>
-                <Link to='/forgot-password'>Forgot password?</Link>
+                <Link to='/forgot-password'>Quên mật khẩu?</Link>
               </div>
             </div>
 
             <button type='submit' className='btn btn-primary btn-block mb-4'>
-              {isSigningIn ? 'Loading...' : 'sign in'}
+              {isSigningIn ? 'Loading...' : 'Đăng nhập'}
             </button>
 
             <div className='divider d-flex align-items-center my-4'>
-              <p className='text-center fw-bold mx-3 mb-0 text-muted'>OR</p>
+              <p className='text-center fw-bold mx-3 mb-0 text-muted'>Hoặc</p>
             </div>
             <></>
           </form>
@@ -108,7 +108,7 @@ const Login = () => {
             style={{ backgroundColor: '#1266f1' }}
             onClick={signInWithGoogleHandler}
           >
-            <i className='fab fa-google me-2'></i>Continue with Google
+            <i className='fab fa-google me-2'></i>Đăng nhập với Google
           </button>
           {/* <button
             className='btn btn-primary btn-lg btn-block'

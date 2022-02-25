@@ -10,7 +10,7 @@ const AuthRoute = () => {
   ) : user.role === 'admin' ? (
     <Navigate to='/admin/dashboard' />
   ) : (
-    <Navigate to='/' />
+    <Navigate to='/user/history' />
   );
 };
 

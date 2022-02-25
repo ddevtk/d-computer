@@ -34,7 +34,7 @@ const Header = () => {
         icon={<HomeOutlined />}
         style={{ display: 'flex', alignItems: 'center' }}
       >
-        <Link to='/'>Home</Link>
+        <Link to='/'>Trang chủ</Link>
       </Item>
 
       {!user && (
@@ -43,7 +43,7 @@ const Header = () => {
           icon={<UserOutlined />}
           style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}
         >
-          <Link to='/login'>Login</Link>
+          <Link to='/login'>Đăng nhập</Link>
         </Item>
       )}
       {user && (
@@ -66,7 +66,7 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
-            Logout
+            Đăng xuất
           </Item>
         </SubMenu>
       )}

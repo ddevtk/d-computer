@@ -8,23 +8,25 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
-import Home from './pages/Home';
-import { userActionType } from './redux/user/userType';
+import HomePage from './pages/HomePage';
 import { unsubscribe } from './redux/user/userAction';
-import Admin from './pages/Admin';
+import AdminPage from './pages/AdminPage';
+import UserPage from './pages/UserPage';
+import UserRoute from './pages/auth/UserRoute';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(unsubscribe());
+    return () => unsubscribe();
   }, [dispatch]);
 
   return (
     <>
       <Header />
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<AuthRoute />}>
           <Route path='/login' element={<Login />} />
         </Route>
@@ -37,7 +39,10 @@ const App = () => {
         <Route path='/forgot-password' element={<AuthRoute />}>
           <Route path='/forgot-password' element={<ForgotPassword />} />
         </Route>
-        <Route path='/admin/dashboard' element={<Admin />} />
+        <Route path='/admin/dashboard' element={<AdminPage />} />
+        <Route path='/user/history' element={<UserRoute />}>
+          <Route path='/user/history' element={<UserPage />} />
+        </Route>
       </Routes>
     </>
   );
