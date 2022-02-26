@@ -11,22 +11,22 @@ const Page403 = () => {
     const interval = setInterval(() => {
       setCount(count - 1);
     }, 1000);
-    count === 0 && navigate('/login');
+    count === 0 && navigate('/');
     return () => clearInterval(interval);
   }, [count, navigate]);
 
   return (
     <div className='container p-5 text-center'>
       <Typography.Title level={5}>
-        Chuyển hướng đến trang đăng nhập trong {count} giây
+        Chuyển hướng đến trang chủ trong {count} giây
       </Typography.Title>
       <Result
         status='403'
         title='403'
-        subTitle='Xin lỗi, bạn không có quyền truy cập trang này! Vui lòng tạo tài khoản'
+        subTitle='Xin lỗi, bạn không có quyền truy cập trang này!'
         extra={
-          <Link to='/login'>
-            <Button type='primary'>Đăng nhập</Button>
+          <Link to='/'>
+            <Button type='primary'>Quay lại</Button>
           </Link>
         }
       />

@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import React from 'react';
-import UserNav from '../components/UserNav';
+import UserNav from '../../components/UserNav';
 
 const Wishlist = () => {
   return (

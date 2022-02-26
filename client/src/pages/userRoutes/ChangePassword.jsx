@@ -4,7 +4,7 @@ import { MDBInput } from 'mdb-react-ui-kit';
 import { Content } from 'antd/lib/layout/layout';
 import React, { useState } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
-import UserNav from '../components/UserNav';
+import UserNav from '../../components/UserNav';
 import { getAuth, updatePassword } from 'firebase/auth';
 
 const ChangePassword = () => {

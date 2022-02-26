@@ -1,3 +1,4 @@
+import * as api from '../../api/authApi';
 import {
   getAuth,
   GoogleAuthProvider,
@@ -5,7 +6,6 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-import axios from 'axios';
 import { googleAuthProvider } from '../../firebase/firebase.utils';
 
 import { userActionType } from './userType';
@@ -17,7 +17,7 @@ export const unsubscribe = () => (dispatch) => {
     if (user) {
       try {
         const idToken = await user.getIdToken();
-        const { data } = await currentUser(idToken);
+        const { data } = await api.currentUser(idToken);
 
         const { name, email, _id, role } = data;
 
@@ -49,28 +49,6 @@ export const register = (user) => (dispatch) => {
   dispatch({ type: userActionType.REGISTER_SUCCESS, payload: user });
 };
 
-export const createOrUpdateUser = async (authToken) =>
-  await axios.post(
-    `${process.env.REACT_APP_API}/create-or-update-user`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
-
-export const currentUser = async (authToken) =>
-  await axios.post(
-    `${process.env.REACT_APP_API}/current-user`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    }
-  );
-
 export const loginWithEmailAndPassword =
   (emailIp, passwordIp) => async (dispatch) => {
     dispatch({ type: userActionType.LOGGED_IN_INIT });
@@ -83,7 +61,7 @@ export const loginWithEmailAndPassword =
       );
       const idToken = await user.getIdToken();
 
-      const { data } = await createOrUpdateUser(idToken);
+      const { data } = await api.createOrUpdateUser(idToken);
       const { name, email, _id, role } = data;
 
       dispatch({
@@ -110,7 +88,7 @@ export const loginWithGoogle = () => async (dispatch) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const {
       data: { _id, name, email, role },
-    } = await createOrUpdateUser(token);
+    } = await api.createOrUpdateUser(token);
     dispatch({
       type: userActionType.LOGGED_IN_SUCCESS,
       payload: { _id, name, email, role, token },

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import { notification } from 'antd';
 import { getAuth, sendSignInLinkToEmail } from 'firebase/auth';
-import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   const [email, setEmail] = useState('');

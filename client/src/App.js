@@ -1,4 +1,3 @@
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
@@ -10,11 +9,12 @@ import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import HomePage from './pages/HomePage';
 import { unsubscribe } from './redux/user/userAction';
-import AdminPage from './pages/AdminPage';
-import UserRoute from './pages/auth/UserRoute';
-import UserHistory from './pages/UserHistory';
-import ChangePassword from './pages/ChangePassword';
-import Wishlist from './pages/Wishlist';
+import AdminPage from './pages/adminRoutes/AdminPage';
+import UserRoute from './pages/userRoutes/UserRoute';
+import AdminRoute from './pages/adminRoutes/AdminRoute';
+import Wishlist from './pages/userRoutes/Wishlist';
+import ChangePassword from './pages/userRoutes/ChangePassword';
+import UserHistory from './pages/userRoutes/UserHistory';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,7 +41,6 @@ const App = () => {
         <Route path='/forgot-password' element={<AuthRoute />}>
           <Route path='/forgot-password' element={<ForgotPassword />} />
         </Route>
-        <Route path='/admin/dashboard' element={<AdminPage />} />
         <Route path='/user/history' element={<UserRoute />}>
           <Route path='/user/history' element={<UserHistory />} />
         </Route>
@@ -50,6 +49,9 @@ const App = () => {
         </Route>
         <Route path='/user/wishlist' element={<UserRoute />}>
           <Route path='/user/wishlist' element={<Wishlist />} />
+        </Route>
+        <Route path='/admin/dashboard' element={<AdminRoute />}>
+          <Route path='/admin/dashboard' element={<AdminPage />} />
         </Route>
       </Routes>
     </>

@@ -25,3 +25,16 @@ exports.currentUser = async (req, res) => {
     });
   }
 };
+
+exports.adminCheck = async (req, res, next) => {
+  const { email } = req.user;
+  const user = await User.findOne({ email });
+
+  if (user.role !== 'admin') {
+    res.status(403).json({
+      message: 'Admin resource. Access denied',
+    });
+  } else {
+    next();
+  }
+};
