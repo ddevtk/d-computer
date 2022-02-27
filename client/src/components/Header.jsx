@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import {
   HomeOutlined,
   UserOutlined,
-  UserAddOutlined,
-  SettingOutlined,
   UserDeleteOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';

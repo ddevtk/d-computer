@@ -1,11 +1,11 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const fs = require('fs-extra');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const authRoute = require('./routes/authRoute');
+const categoryRoute = require('./routes/categoryRoute');
 
 dotenv.config();
 
@@ -25,9 +25,8 @@ app.use(bodyParser.json({ limit: '2mb' }));
 app.use(cors());
 
 // Routes
-fs.readdirSync('./routes').map((r) =>
-  app.use('/api', require('./routes/' + r))
-);
+app.use('/api/auth', authRoute);
+app.use('/api/categories', categoryRoute);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`App is listening on port ${port}!`));

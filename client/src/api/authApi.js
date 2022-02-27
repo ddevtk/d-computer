@@ -13,7 +13,7 @@ export const createOrUpdateUser = async (authToken) =>
 
 export const currentUser = async (authToken) =>
   await axios.post(
-    `${process.env.REACT_APP_API}/current-user`,
+    `${process.env.REACT_APP_API}/auth/current-user`,
     {},
     {
       headers: {
@@ -24,7 +24,7 @@ export const currentUser = async (authToken) =>
 
 export const currentAdmin = async (authToken) =>
   await axios.post(
-    `${process.env.REACT_APP_API}/current-admin`,
+    `${process.env.REACT_APP_API}/auth/current-admin`,
     {},
     {
       headers: {
