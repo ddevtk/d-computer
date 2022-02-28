@@ -14,10 +14,10 @@ const UserNav = ({ selectedKey }) => {
         <Link to='/user/history'>History</Link>
       </Menu.Item>
       <Menu.Item key='change-password'>
-        <Link to='/user/change-password'>Change password</Link>
+        <Link to='/user/change-password'>Đổi mật khẩu</Link>
       </Menu.Item>
       <Menu.Item key='wishlist'>
-        <Link to='/user/wishlist'>Wishlist</Link>
+        <Link to='/user/wishlist'>Yêu thích</Link>
       </Menu.Item>
     </Menu>
   );

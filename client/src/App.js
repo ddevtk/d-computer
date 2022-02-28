@@ -9,12 +9,16 @@ import Register from './pages/auth/Register';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import HomePage from './pages/HomePage';
 import { unsubscribe } from './redux/user/userAction';
-import AdminPage from './pages/adminRoutes/AdminPage';
 import UserRoute from './pages/userRoutes/UserRoute';
 import AdminRoute from './pages/adminRoutes/AdminRoute';
 import Wishlist from './pages/userRoutes/Wishlist';
 import ChangePassword from './pages/userRoutes/ChangePassword';
 import UserHistory from './pages/userRoutes/UserHistory';
+import AdminDashboard from './pages/adminRoutes/AdminDashboard';
+import CategoryCreate from './pages/adminRoutes/CategoryCreate';
+import SubCategory from './pages/adminRoutes/SubCategory';
+import Product from './pages/adminRoutes/Product';
+import Coupon from './pages/adminRoutes/Coupon';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -51,7 +55,19 @@ const App = () => {
           <Route path='/user/wishlist' element={<Wishlist />} />
         </Route>
         <Route path='/admin/dashboard' element={<AdminRoute />}>
-          <Route path='/admin/dashboard' element={<AdminPage />} />
+          <Route path='/admin/dashboard' element={<AdminDashboard />} />
+        </Route>
+        <Route path='/admin/categories' element={<AdminRoute />}>
+          <Route path='/admin/categories' element={<CategoryCreate />} />
+        </Route>
+        <Route path='/admin/sub' element={<AdminRoute />}>
+          <Route path='/admin/sub' element={<SubCategory />} />
+        </Route>
+        <Route path='/admin/products' element={<AdminRoute />}>
+          <Route path='/admin/products' element={<Product />} />
+        </Route>
+        <Route path='/admin/coupon' element={<AdminRoute />}>
+          <Route path='/admin/coupon' element={<Coupon />} />
         </Route>
       </Routes>
     </>

@@ -3,6 +3,7 @@ import {
   HomeOutlined,
   UserOutlined,
   UserDeleteOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
@@ -55,6 +56,30 @@ const Header = () => {
             marginLeft: 'auto',
           }}
         >
+          {user && user.role === 'subscriber' && (
+            <Item
+              icon={<AppstoreOutlined />}
+              key='history'
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Link to='/user/history'>History</Link>
+            </Item>
+          )}
+          {user && user.role === 'admin' && (
+            <Item
+              icon={<AppstoreOutlined />}
+              key='admin'
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Link to='/admin/dashboard'>Dashboard</Link>
+            </Item>
+          )}
           <Item
             key='logout'
             icon={<UserDeleteOutlined />}

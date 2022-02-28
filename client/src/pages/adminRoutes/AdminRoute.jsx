@@ -23,7 +23,7 @@ const AdminRoute = () => {
     }
   }, [user]);
 
-  return ok ? <Outlet /> : <Page403 />;
+  return ok || user?.role === 'admin' ? <Outlet /> : <Page403 />;
 };
 
 export default AdminRoute;
