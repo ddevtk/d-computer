@@ -6,7 +6,7 @@ const router = express.Router();
 const {
   create,
   list,
-  read,
+  getOne,
   update,
   remove,
 } = require('../controllers/categoryController');
@@ -14,7 +14,7 @@ const { authCheck } = require('../middlewares/auth');
 
 router.post('/', authCheck, adminCheck, create);
 router.get('/', list);
-router.get('/:slug', authCheck, adminCheck, read);
+router.get('/:slug', getOne);
 router.put('/:slug', authCheck, adminCheck, update);
 router.delete('/:slug', authCheck, adminCheck, remove);
 

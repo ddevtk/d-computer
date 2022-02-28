@@ -12,7 +12,39 @@ exports.create = async (req, res) => {
     });
   }
 };
-exports.list = (req, res) => {};
-exports.read = (req, res) => {};
-exports.update = (req, res) => {};
-exports.remove = (req, res) => {};
+exports.list = async (req, res) => {
+  const categories = await Category.find({}).sort({ createdAt: -1 });
+
+  res.json(categories);
+};
+exports.getOne = async (req, res) => {
+  const category = await Category.findOne({ slug: req.params.slug });
+  console.log(category);
+  if (!category) {
+    res.status(403).json({
+      message: 'No category found',
+    });
+  } else {
+    res.json(category);
+  }
+};
+exports.update = async (req, res) => {
+  const category = await Category.findOneAndUpdate(
+    { slug: req.params.slug },
+    { name: req.body.name, slug: slugify(req.body.name) },
+    { new: true }
+  );
+  if (category) {
+    res.json(category);
+  } else {
+    res.status(404).json({ message: 'No category found' });
+  }
+};
+exports.remove = async (req, res) => {
+  const category = await Category.findOneAndDelete({ slug: req.params.slug });
+  if (category) {
+    res.json({ message: 'Category removed' });
+  } else {
+    res.status(404).json({ message: 'Category not found' });
+  }
+};

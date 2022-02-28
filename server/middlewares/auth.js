@@ -2,11 +2,12 @@ const { json } = require('body-parser');
 const admin = require('../firebase/index');
 
 const authCheck = async (req, res, next) => {
+  let token;
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
-    const token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization.split(' ')[1];
     try {
       const firebaseUser = await admin.auth().verifyIdToken(token);
       req.user = firebaseUser;
@@ -16,6 +17,8 @@ const authCheck = async (req, res, next) => {
         err: 'Invalid or expired token',
       });
     }
+  } else {
+    res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
 

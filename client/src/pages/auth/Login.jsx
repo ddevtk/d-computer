@@ -19,7 +19,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     dispatch(loginWithEmailAndPassword(email, password));
   };
 
@@ -36,7 +35,7 @@ const Login = () => {
     };
   }, [dispatch]);
 
-  if (user?.role === 'admin') {
+  if (user && user.role === 'admin') {
     return <Navigate to='/admin/dashboard' />;
   }
 

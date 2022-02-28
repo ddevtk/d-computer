@@ -22,6 +22,7 @@ const AdminRoute = () => {
         });
     }
   }, [user]);
+
   return ok ? <Outlet /> : <Page403 />;
 };
 
