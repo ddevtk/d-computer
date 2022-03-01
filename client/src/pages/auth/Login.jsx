@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import {
   loginWithEmailAndPassword,
-  loginWithFacebook,
+  // loginWithFacebook,
   loginWithGoogle,
 } from '../../redux/user/userAction';
 import { userActionType } from '../../redux/user/userType';

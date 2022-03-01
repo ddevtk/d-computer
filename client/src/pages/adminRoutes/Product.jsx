@@ -8,7 +8,7 @@ const Product = () => {
     <Layout
       style={{ padding: '24px 0', background: '#fff', flexDirection: 'row' }}
     >
-      <AdminNav selectedKey='dashboard' />
+      <AdminNav selectedKey='products' />
       <Content style={{ padding: '0 24px', minHeight: 280 }}>Sản phẩm</Content>
     </Layout>
   );

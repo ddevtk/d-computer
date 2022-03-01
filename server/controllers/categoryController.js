@@ -7,6 +7,7 @@ exports.create = async (req, res) => {
     const category = await Category.create({ name, slug: slugify(name) });
     res.json(category);
   } catch (error) {
+    console.log(error.message);
     res.status(400).json({
       message: 'Create category failed',
     });
@@ -41,6 +42,7 @@ exports.update = async (req, res) => {
   }
 };
 exports.remove = async (req, res) => {
+  console.log(req.params.slug);
   const category = await Category.findOneAndDelete({ slug: req.params.slug });
   if (category) {
     res.json({ message: 'Category removed' });

@@ -85,7 +85,7 @@ export const loginWithGoogle = () => async (dispatch) => {
   try {
     const result = await signInWithPopup(auth, googleAuthProvider);
     const token = await result.user.getIdToken();
-    const credential = GoogleAuthProvider.credentialFromResult(result);
+    // const credential = GoogleAuthProvider.credentialFromResult(result);
     const {
       data: { _id, name, email, role },
     } = await api.createOrUpdateUser(token);
