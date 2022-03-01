@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Layout, notification } from 'antd';
+import { Alert, Input, Layout, Modal, notification } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Content } from 'antd/lib/layout/layout';
 import AdminNav from '../../components/AdminNav';
@@ -8,13 +8,19 @@ import { useSelector } from 'react-redux';
 import { MDBInput } from 'mdb-react-ui-kit';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const CategoryCreate = () => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [updateError, setUpdateError] = useState('');
   const [categories, setCategories] = useState([]);
+  const [deleteVisible, setDeleteVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
+  const [updateName, setUpdateName] = useState('');
+  const [updateSlug, setUpdateSlug] = useState('');
 
   useEffect(() => {
     api.getAllCategories().then((res) => setCategories(res.data));
@@ -30,7 +36,7 @@ const CategoryCreate = () => {
         setLoading(false);
         notification.success({
           message: `${name} được tạo thành công`,
-          duration: 3,
+          duration: 2,
         });
         setName('');
       })
@@ -39,22 +45,76 @@ const CategoryCreate = () => {
         setError(err.response.data.message);
         setTimeout(() => {
           setError('');
-        }, 3000);
+        }, 2000);
       });
+  };
+  const showDeleteModal = (name, slug) => {
+    Modal.confirm({
+      title: 'Bạn có muốn xóa danh mục này?',
+      icon: <ExclamationCircleOutlined />,
+      okText: 'Xóa',
+      cancelText: 'Không',
+      onOk: () => {
+        deleteHandler(name, slug);
+      },
+      visible: deleteVisible,
+      onCancel: () => {
+        setDeleteVisible(false);
+      },
+    });
+  };
+  const updateHandler = () => {
+    const categoryLength = updateName.trimEnd().trimStart().length;
+    if (categoryLength < 3 || categoryLength > 32) {
+      setUpdateError('Tên danh mục phải nhỏ hơn 34 và lớn hơn 2 ký tự');
+      setTimeout(() => {
+        setUpdateError('');
+      }, 2000);
+    } else {
+      api.updateCategory(updateSlug, updateName, user.token).then(() => {
+        api
+          .getAllCategories()
+          .then((res) => {
+            setCategories(res.data);
+            notification.success({
+              message: 'Cập nhật danh mục thành công',
+              duration: 2,
+            });
+            setUpdateVisible(false);
+            setUpdateName('');
+            setUpdateError();
+          })
+          .catch((err) => {
+            console.error(err.response.data.message);
+            setUpdateVisible(false);
+            setUpdateName('');
+            setUpdateError();
+          });
+      });
+    }
+  };
+
+  const handleUpdateSubmit = (e) => {
+    e.preventDefault();
+    updateHandler();
   };
 
   const deleteHandler = (name, slug) => {
     api
       .deleteCategory(slug, user.token)
       .then(() => {
-        notification.success({
-          message: `${name} đã xóa thành công`,
-          duration: 3,
+        api.getAllCategories().then((res) => {
+          setCategories(res.data);
+          notification.success({
+            message: `${name} đã xóa thành công`,
+            duration: 2,
+          });
+          setDeleteVisible(false);
         });
-        api.getAllCategories().then((res) => setCategories(res.data));
       })
       .catch((err) => {
         console.error(err.response.data.message);
+        setDeleteVisible(false);
       });
   };
 
@@ -101,11 +161,19 @@ const CategoryCreate = () => {
                     type='info'
                     action={
                       <>
-                        <EditOutlined className='mx-2' />{' '}
+                        <EditOutlined
+                          className='mx-2'
+                          onClick={() => {
+                            setUpdateName(category.name);
+                            setUpdateSlug(category.slug);
+                            setUpdateVisible(true);
+                          }}
+                        />{' '}
                         <DeleteOutlined
-                          onClick={() =>
-                            deleteHandler(category.name, category.slug)
-                          }
+                          onClick={() => {
+                            setDeleteVisible(true);
+                            showDeleteModal(category.name, category.slug);
+                          }}
                         />
                       </>
                     }
@@ -116,6 +184,38 @@ const CategoryCreate = () => {
           </div>
         </div>
       </Content>
+      <Modal
+        visible={updateVisible}
+        okText='Cập nhật'
+        cancelText='Không'
+        title='Cập nhật danh mục'
+        onCancel={() => {
+          setUpdateName('');
+          setUpdateVisible(false);
+        }}
+        onOk={() => {
+          updateHandler();
+        }}
+      >
+        <form onSubmit={handleUpdateSubmit}>
+          <MDBInput
+            autoFocus
+            label='Danh mục'
+            type='text'
+            className='mt-2'
+            value={updateName}
+            onChange={(e) => setUpdateName(e.target.value)}
+          />
+          {updateError && (
+            <Alert
+              showIcon
+              className='mt-2'
+              message={updateError}
+              type='error'
+            />
+          )}
+        </form>
+      </Modal>
     </Layout>
   );
 };

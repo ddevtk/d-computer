@@ -28,11 +28,9 @@ export const updateCategory = async (slug, name, token) =>
     }
   );
 
-export const deleteCategory = async (slug, token) => {
-  console.log(slug, token);
-  return await axios.delete(`${process.env.REACT_APP_API}/categories/${slug}`, {
+export const deleteCategory = async (slug, token) =>
+  await axios.delete(`${process.env.REACT_APP_API}/categories/${slug}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-};
