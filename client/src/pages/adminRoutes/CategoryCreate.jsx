@@ -1,6 +1,10 @@
 import React from 'react';
 import { Alert, Input, Layout, Modal, notification } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
 import { Content } from 'antd/lib/layout/layout';
 import AdminNav from '../../components/AdminNav';
 import * as api from '../../api/categoryApi';
@@ -21,6 +25,7 @@ const CategoryCreate = () => {
   const [updateVisible, setUpdateVisible] = useState(false);
   const [updateName, setUpdateName] = useState('');
   const [updateSlug, setUpdateSlug] = useState('');
+  const [keyword, setKeyword] = useState('');
 
   useEffect(() => {
     api.getAllCategories().then((res) => setCategories(res.data));
@@ -29,6 +34,7 @@ const CategoryCreate = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+    setKeyword('');
     api
       .createCategory(name, user.token)
       .then((res) => {
@@ -96,6 +102,7 @@ const CategoryCreate = () => {
 
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
+    setKeyword('');
     updateHandler();
   };
 
@@ -118,6 +125,10 @@ const CategoryCreate = () => {
       });
   };
 
+  const changeHandler = (e) => {
+    setKeyword(e.target.value.toLowerCase().trimEnd().trimStart());
+  };
+
   return (
     <Layout
       style={{ padding: '24px 0', background: '#fff', flexDirection: 'row' }}
@@ -125,8 +136,8 @@ const CategoryCreate = () => {
       <AdminNav selectedKey='categories' />
       <Content style={{ padding: '0 24px', minHeight: 280 }}>
         <div className='container'>
-          <div className='row'>
-            <div className='col-md-6'>
+          <div className='row' style={{ justifyContent: 'center' }}>
+            <div className='col-lg-8 col-md-10 col-sm-12'>
               <form onSubmit={handleSubmit}>
                 <div className='form-outline mb-4'>
                   <MDBInput
@@ -151,35 +162,50 @@ const CategoryCreate = () => {
                   {loading ? 'Chờ chút...' : 'Tạo'}
                 </button>
               </form>
-              <hr />
-              {categories.map((category) => {
-                return (
-                  <Alert
-                    className='mb-2'
-                    message={category.name}
-                    key={category._id}
-                    type='info'
-                    action={
-                      <>
-                        <EditOutlined
-                          className='mx-2'
-                          onClick={() => {
-                            setUpdateName(category.name);
-                            setUpdateSlug(category.slug);
-                            setUpdateVisible(true);
-                          }}
-                        />{' '}
-                        <DeleteOutlined
-                          onClick={() => {
-                            setDeleteVisible(true);
-                            showDeleteModal(category.name, category.slug);
-                          }}
-                        />
-                      </>
-                    }
+              <div
+                className='row'
+                style={{ flexDirection: 'row-reverse', marginTop: '-3.5rem' }}
+              >
+                <div className='col-md-4 col-sm-6'>
+                  <Input
+                    placeholder='danh mục...'
+                    style={{}}
+                    suffix={<SearchOutlined />}
+                    onChange={changeHandler}
                   />
-                );
-              })}
+                </div>
+              </div>
+              <hr />
+              {categories
+                .filter((c) => c.name.toLowerCase().includes(keyword))
+                .map((category) => {
+                  return (
+                    <Alert
+                      className='mb-2'
+                      message={category.name}
+                      key={category._id}
+                      type='info'
+                      action={
+                        <>
+                          <EditOutlined
+                            className='mx-2'
+                            onClick={() => {
+                              setUpdateName(category.name);
+                              setUpdateSlug(category.slug);
+                              setUpdateVisible(true);
+                            }}
+                          />{' '}
+                          <DeleteOutlined
+                            onClick={() => {
+                              setDeleteVisible(true);
+                              showDeleteModal(category.name, category.slug);
+                            }}
+                          />
+                        </>
+                      }
+                    />
+                  );
+                })}
             </div>
           </div>
         </div>
