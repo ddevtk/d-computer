@@ -223,7 +223,9 @@ const SubCategory = () => {
                   return (
                     <Alert
                       className='mb-2'
-                      message={s.name}
+                      message={`${s.name} ( ${
+                        categories.find((c) => c._id === s.parent)?.name
+                      } )`}
                       key={s._id}
                       type='info'
                       action={

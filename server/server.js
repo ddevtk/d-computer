@@ -8,7 +8,7 @@ const authRoute = require('./routes/authRoute');
 const categoryRoute = require('./routes/categoryRoute');
 const subCategoryRoute = require('./routes/subCategoryRoute');
 
-dotenv.config();
+dotenv.config({ path: __dirname + '../../server/.env' });
 
 // App
 const app = express();
