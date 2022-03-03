@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const authRoute = require('./routes/authRoute');
 const categoryRoute = require('./routes/categoryRoute');
+const subCategoryRoute = require('./routes/subCategoryRoute');
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(cors());
 // Routes
 app.use('/api/auth', authRoute);
 app.use('/api/categories', categoryRoute);
+app.use('/api/subCategory', subCategoryRoute);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`App is listening on port ${port}!`));

@@ -216,7 +216,6 @@ const CategoryCreate = () => {
         cancelText='Không'
         title='Cập nhật danh mục'
         onCancel={() => {
-          setUpdateName('');
           setUpdateVisible(false);
         }}
         onOk={() => {
