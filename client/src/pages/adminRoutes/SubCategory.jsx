@@ -48,6 +48,7 @@ const SubCategory = () => {
   };
 
   const onFinish = (values) => {
+    console.log(values);
     setLoading(true);
     subCategoryApi
       .createSubCategory(
@@ -101,7 +102,6 @@ const SubCategory = () => {
       });
   };
   const onFinishUpdate = (values) => {
-    console.log(values);
     if (values.sub.trim().length < 3 || values.sub.trim().length > 32) {
       setUpdateError('Tên danh mục trong khoảng 3-32 ký tự');
     } else if (values.sub.trim().length === 0) {

@@ -4,7 +4,6 @@ import {
   UserOutlined,
   UserDeleteOutlined,
   AppstoreOutlined,
-  TableOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
@@ -71,7 +70,7 @@ const Header = () => {
           )}
           {user && user.role === 'admin' && (
             <Item
-              icon={<TableOutlined />}
+              icon={<AppstoreOutlined />}
               key='admin'
               style={{
                 display: 'flex',

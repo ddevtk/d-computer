@@ -38,15 +38,16 @@ const AdminNav = ({ selectedKey }) => {
         inlineCollapsed={collapsed}
         defaultSelectedKeys={selectedKey}
         mode='inline'
+        theme='light'
         style={{ maxWidth: '12rem' }}
       >
-        <Menu.Item key='dashboard' icon={<TableOutlined />}>
+        <Menu.Item key='dashboard' icon={<AppstoreOutlined />}>
           <Link to='/admin/dashboard'>Dashboard</Link>
         </Menu.Item>
         <Menu.Item key='products' icon={<LaptopOutlined />}>
           <Link to='/admin/products'>Sản phẩm</Link>
         </Menu.Item>
-        <Menu.Item key='categories' icon={<AppstoreOutlined />}>
+        <Menu.Item key='categories' icon={<TableOutlined />}>
           <Link to='/admin/categories'>Danh mục</Link>
         </Menu.Item>
         <Menu.Item key='sub' icon={<DatabaseOutlined />}>

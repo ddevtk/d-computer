@@ -18,7 +18,6 @@ export const createSubCategory = async (name, parent, token) =>
   );
 
 export const updateSubCategory = async (slug, name, parent, token) => {
-  console.log(slug, name, parent, token);
   return await axios.put(
     `${process.env.REACT_APP_API}/subCategory/${slug}`,
     { name, parent },
