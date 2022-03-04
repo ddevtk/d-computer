@@ -22,7 +22,7 @@ exports.getOne = async (req, res) => {
   const category = await Category.findOne({ slug: req.params.slug });
   console.log(category);
   if (!category) {
-    res.status(403).json({
+    res.status(404).json({
       message: 'No category found',
     });
   } else {
