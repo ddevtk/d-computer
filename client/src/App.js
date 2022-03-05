@@ -15,7 +15,7 @@ import Wishlist from './pages/userRoutes/Wishlist';
 import ChangePassword from './pages/userRoutes/ChangePassword';
 import UserHistory from './pages/userRoutes/UserHistory';
 import AdminDashboard from './pages/adminRoutes/AdminDashboard';
-import CategoryCreate from './pages/adminRoutes/CategoryCreate';
+import Category from './pages/adminRoutes/Category';
 import SubCategory from './pages/adminRoutes/SubCategory';
 import Product from './pages/adminRoutes/Product';
 import Coupon from './pages/adminRoutes/Coupon';
@@ -58,7 +58,7 @@ const App = () => {
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
         </Route>
         <Route path='/admin/categories' element={<AdminRoute />}>
-          <Route path='/admin/categories' element={<CategoryCreate />} />
+          <Route path='/admin/categories' element={<Category />} />
         </Route>
         <Route path='/admin/sub' element={<AdminRoute />}>
           <Route path='/admin/sub' element={<SubCategory />} />

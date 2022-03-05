@@ -13,7 +13,6 @@ const AdminRoute = () => {
       api
         .currentAdmin(user.token)
         .then((res) => {
-          console.log(res);
           setOk(true);
         })
         .catch((error) => {

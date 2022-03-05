@@ -1,7 +1,9 @@
-import { Button, Form, Input, Layout, Select } from 'antd';
+import { Button, Form, Input, Layout, notification, Select } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import React, { useState } from 'react';
 import AdminNav from '../../components/AdminNav';
+import * as productApi from '../../api/productApi';
+import { useSelector } from 'react-redux';
 
 const initialState = {
   title: '',
@@ -20,12 +22,23 @@ const initialState = {
 };
 
 const Product = () => {
-  const [values, setValues] = useState(initialState);
+  const { user } = useSelector((state) => state.user);
+  const [product, setProduct] = useState(initialState);
   const validateMessages = {
+    // eslint-disable-next-line no-template-curly-in-string
     required: 'Vui lòng nhập ${label}',
   };
   const onFinish = (values) => {
-    console.log(values);
+    // setProduct({ ...product, ...values });
+    productApi
+      .createProduct(values, user.token)
+      .then((res) => console.log(res))
+      .catch((err) => {
+        notification.error({
+          message: err.response.data.message,
+          duration: 2,
+        });
+      });
   };
   return (
     <Layout

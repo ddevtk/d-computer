@@ -30,7 +30,7 @@ app.use(cors());
 app.use('/api/auth', authRoute);
 app.use('/api/categories', categoryRoute);
 app.use('/api/subCategory', subCategoryRoute);
-// app.use('/api/product', productRoute);
+app.use('/api/product', productRoute);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`App is listening on port ${port}!`));

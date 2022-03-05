@@ -28,12 +28,10 @@ const SubCategory = () => {
   const [sub, setSub] = useState([]);
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [updateVisible, setUpdateVisible] = useState(false);
-  const [updateError, setUpdateError] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSub, setSelectedSub] = useState('');
   const [selectedSlug, setSelectedSlug] = useState('');
@@ -66,10 +64,10 @@ const SubCategory = () => {
       })
       .catch((err) => {
         setLoading(false);
-        setError(err.response.data.message);
-        setTimeout(() => {
-          setError('');
-        }, 2000);
+        notification.error({
+          message: err.response.data.message,
+          duration: 3,
+        });
       });
   };
 
@@ -98,42 +96,32 @@ const SubCategory = () => {
         });
       })
       .catch((err) => {
-        console.error(err.response.data.message);
+        notification.error({
+          message: err.response.data.message,
+          duration: 3,
+        });
       });
   };
   const onFinishUpdate = (values) => {
-    if (values.sub.trim().length < 3 || values.sub.trim().length > 32) {
-      setUpdateError('Tên danh mục trong khoảng 3-32 ký tự');
-    } else if (values.sub.trim().length === 0) {
-      setUpdateError('Vui lòng nhập tên danh mục con');
-    } else if (values.category.trim().length === 0) {
-      setUpdateError('Vui lòng chọn tên danh mục');
-    } else {
-      setUpdateLoading(true);
-      subCategoryApi
-        .updateSubCategory(
-          selectedSlug,
-          values.sub,
-          values.category,
-          user.token
-        )
-        .then((res) => {
-          notification.success({
-            message: 'Cập nhật thành công',
-            duration: 3,
-          });
-          setUpdateLoading(false);
-          setUpdateVisible(false);
-          subCategoryApi.getAllSubCategories().then((res) => setSub(res.data));
-        })
-        .catch((err) => {
-          setUpdateError(err.response.data.message);
-          setUpdateLoading(false);
+    setUpdateLoading(true);
+    subCategoryApi
+      .updateSubCategory(selectedSlug, values.sub, values.category, user.token)
+      .then((_res) => {
+        notification.success({
+          message: 'Cập nhật thành công',
+          duration: 3,
         });
-    }
-    setTimeout(() => {
-      setUpdateError('');
-    }, 3000);
+        setUpdateLoading(false);
+        setUpdateVisible(false);
+        subCategoryApi.getAllSubCategories().then((res) => setSub(res.data));
+      })
+      .catch((err) => {
+        setUpdateLoading(false);
+        notification.error({
+          message: err.response.data.message,
+          duration: 3,
+        });
+      });
   };
 
   return (
@@ -157,7 +145,7 @@ const SubCategory = () => {
                       { required: true, message: 'Vui lòng chọn danh mục' },
                     ]}
                   >
-                    <Select allowClear placeholder='Chọn danh mục' size='large'>
+                    <Select allowClear placeholder='Chọn danh mục'>
                       {categories.map((c, id) => {
                         return (
                           <Select.Option key={id} value={c._id}>
@@ -179,7 +167,6 @@ const SubCategory = () => {
                     ]}
                   >
                     <Input
-                      size='large'
                       placeholder='Danh mục con'
                       type='text'
                       value={name}
@@ -187,22 +174,11 @@ const SubCategory = () => {
                     />
                   </Form.Item>
                 </Row>
-                {error && (
-                  <Alert
-                    showIcon
-                    className='mb-2'
-                    message={error}
-                    type='error'
-                  />
-                )}
-
-                <button
-                  type='submit'
-                  className='btn btn-primary mb-4'
-                  style={{ display: 'inline-block' }}
-                >
-                  {loading ? 'Chờ chút...' : 'Tạo'}
-                </button>
+                <Form.Item>
+                  <Button type='primary' htmlType='submit'>
+                    {loading ? 'Chờ chút...' : 'Tạo'}
+                  </Button>
+                </Form.Item>
               </Form>
               <div
                 className='row'
@@ -279,17 +255,19 @@ const SubCategory = () => {
               })}
             </Select>
           </Form.Item>
-          <Form.Item name='sub'>
+          <Form.Item
+            name='sub'
+            rules={[
+              { required: true, message: 'Vui lòng nhập tên danh mục con' },
+              {
+                min: 3,
+                max: 32,
+                message: 'Danh mục con phải có từ 3 đến 32 ký tự',
+              },
+            ]}
+          >
             <Input placeholder='Danh mục con' type='text' />
           </Form.Item>
-          {updateError && (
-            <Alert
-              showIcon
-              className='mt-2'
-              message={updateError}
-              type='error'
-            />
-          )}
           <Row style={{ justifyContent: 'center', margin: '40px 0px 0px 0px' }}>
             <Space size='small'>
               <Button onClick={() => setUpdateVisible(false)}>Không</Button>
