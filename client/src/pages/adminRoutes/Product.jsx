@@ -1,8 +1,10 @@
 import { Button, Form, Input, Layout, notification, Select } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminNav from '../../components/AdminNav';
 import * as productApi from '../../api/productApi';
+import * as categoryApi from '../../api/categoryApi';
+import * as subCategoryApi from '../../api/subCategoryApi';
 import { useSelector } from 'react-redux';
 
 const initialState = {
@@ -24,6 +26,10 @@ const initialState = {
 const Product = () => {
   const { user } = useSelector((state) => state.user);
   const [product, setProduct] = useState(initialState);
+  const [categories, setCategories] = useState([]);
+  const [fields, setFields] = useState([{ name: 'sub', value: [] }]);
+  const [sub, setSub] = useState([]);
+
   const validateMessages = {
     // eslint-disable-next-line no-template-curly-in-string
     required: 'Vui lòng nhập ${label}',
@@ -32,14 +38,25 @@ const Product = () => {
     // setProduct({ ...product, ...values });
     productApi
       .createProduct(values, user.token)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        notification.success({
+          message: 'Tạo sản phẩm thành công',
+          duration: 3,
+        });
+      })
       .catch((err) => {
         notification.error({
           message: err.response.data.message,
-          duration: 2,
+          duration: 3,
         });
       });
   };
+
+  useEffect(() => {
+    categoryApi.getAllCategories().then((res) => setCategories(res.data));
+  }, []);
+
   return (
     <Layout
       style={{ padding: '24px 0', background: '#fff', flexDirection: 'row' }}
@@ -51,6 +68,7 @@ const Product = () => {
           wrapperCol={{ span: 16 }}
           validateMessages={validateMessages}
           onFinish={onFinish}
+          fields={fields}
         >
           <Form.Item
             name='title'
@@ -150,6 +168,55 @@ const Product = () => {
                   {b}
                 </Select.Option>
               ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label='Danh mục'
+            name='category'
+            rules={[{ required: true }]}
+          >
+            <Select
+              style={{ width: '10rem' }}
+              placeholder='Chọn danh mục'
+              allowClear
+              onChange={(value) => {
+                if (value) {
+                  setFields([{ name: 'sub', value: [] }]);
+                  subCategoryApi
+                    .getSubsByCategoryId(value)
+                    .then((res) => setSub(res.data));
+                } else {
+                  setSub([]);
+                  setFields([{ name: 'sub', value: [] }]);
+                }
+              }}
+            >
+              {categories?.map((c, id) => (
+                <Select.Option value={c._id} key={id}>
+                  {c.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label='Danh mục con'
+            name='sub'
+            rules={[{ required: true }]}
+          >
+            <Select
+              maxTagCount='responsive'
+              mode='multiple'
+              style={{ width: '25rem' }}
+              placeholder='Chọn danh mục con'
+              allowClear
+              disabled={sub.length === 0}
+            >
+              {sub.length !== 0 &&
+                sub?.map((s, id) => (
+                  <Select.Option value={s._id} key={id}>
+                    {s.name}
+                  </Select.Option>
+                ))}
             </Select>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 4, span: 4 }}>

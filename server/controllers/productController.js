@@ -15,3 +15,9 @@ exports.create = async (req, res) => {
     res.status(400).json({ message: 'Create product failed' });
   }
 };
+
+exports.list = async (req, res) => {
+  const products = await Product.find({}).sort({ createdAt: -1 });
+
+  res.json(products);
+};

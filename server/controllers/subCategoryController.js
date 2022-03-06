@@ -72,3 +72,12 @@ exports.remove = async (req, res) => {
     res.status(404).json({ message: 'Sub category not found' });
   }
 };
+
+exports.getSubsByCategoryId = async (req, res) => {
+  try {
+    const subs = await SubCategory.find({ parent: req.params.parentId });
+    res.json(subs);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

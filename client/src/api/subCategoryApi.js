@@ -35,3 +35,8 @@ export const deleteSubCategory = async (slug, token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+export const getSubsByCategoryId = async (parentId) =>
+  await axios.get(
+    `${process.env.REACT_APP_API}/subCategory/category/${parentId}`
+  );

@@ -9,6 +9,7 @@ const {
   getOne,
   update,
   remove,
+  getSubsByCategoryId,
 } = require('../controllers/subCategoryController');
 const { authCheck } = require('../middlewares/auth');
 
@@ -17,5 +18,6 @@ router.get('/', list);
 router.get('/:slug', getOne);
 router.put('/:slug', authCheck, adminCheck, update);
 router.delete('/:slug', authCheck, adminCheck, remove);
+router.get('/category/:parentId', getSubsByCategoryId);
 
 module.exports = router;
