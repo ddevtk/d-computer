@@ -80,7 +80,7 @@ const Login = () => {
             </div>
 
             <button type='submit' className='btn btn-primary btn-block mb-4'>
-              {isSigningIn ? 'Loading...' : 'Đăng nhập'}
+              {isSigningIn ? 'Chờ chút...' : 'Đăng nhập'}
             </button>
 
             <div className='divider d-flex align-items-center my-4'>

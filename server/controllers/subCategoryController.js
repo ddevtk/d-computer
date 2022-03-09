@@ -43,23 +43,28 @@ exports.getOne = async (req, res) => {
   }
 };
 exports.update = async (req, res) => {
-  const sub = await SubCategory.find({ name: req.body.name });
-  if (sub.length !== 0) {
-    return res.status(400).json({ message: 'Tên danh mục con đã tồn tại' });
-  }
-  const updateSub = await SubCategory.findOneAndUpdate(
-    { slug: req.params.slug },
-    {
-      name: req.body.name,
-      slug: slugify(req.body.name),
-      parent: req.body.parent,
-    },
-    { new: true }
-  );
-  if (updateSub) {
+  // const sub = await SubCategory.find({
+  //   name: req.body.name,
+  //   parent: req.body.parent,
+  // });
+  // console.log(sub);
+  // if (sub.length !== 0) {
+  //   return res.status(400).json({ message: 'Tên danh mục con đã tồn tại' });
+  // }
+  try {
+    const updateSub = await SubCategory.findOneAndUpdate(
+      { slug: req.params.slug },
+      {
+        name: req.body.name,
+        slug: slugify(req.body.name),
+        parent: req.body.parent,
+      },
+      { new: true }
+    );
+
     res.json(updateSub);
-  } else {
-    res.status(404).json({ message: 'No sub category found' });
+  } catch (error) {
+    res.status(400).json({ message: 'Trùng tên danh mục con' });
   }
 };
 exports.remove = async (req, res) => {
