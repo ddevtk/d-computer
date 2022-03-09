@@ -8,6 +8,7 @@ const authRoute = require('./routes/authRoute');
 const categoryRoute = require('./routes/categoryRoute');
 const subCategoryRoute = require('./routes/subCategoryRoute');
 const productRoute = require('./routes/productRoute');
+const cloudinaryRoute = require('./routes/cloudinaryRoute');
 
 dotenv.config({ path: __dirname + '../../server/.env' });
 
@@ -31,6 +32,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/categories', categoryRoute);
 app.use('/api/subCategory', subCategoryRoute);
 app.use('/api/product', productRoute);
+app.use('/api/cloudinary', cloudinaryRoute);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`App is listening on port ${port}!`));
