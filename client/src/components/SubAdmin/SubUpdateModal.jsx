@@ -26,7 +26,13 @@ const SubUpdateModal = ({
   const onFinishUpdate = (values) => {
     setUpdateLoading(true);
     subCategoryApi
-      .updateSubCategory(selectedSlug, values.sub, values.category, userToken)
+      .updateSubCategory(
+        selectedSlug,
+        values.sub,
+        values.category,
+        selectedCategory,
+        userToken
+      )
       .then((_res) => {
         notification.success({
           message: 'Cập nhật thành công',
@@ -43,6 +49,7 @@ const SubUpdateModal = ({
           duration: 3,
         });
       });
+    console.log(values);
   };
   return (
     <Modal

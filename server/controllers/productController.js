@@ -16,8 +16,16 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.list = async (req, res) => {
-  const products = await Product.find({}).sort({ createdAt: -1 });
+exports.getProductPerPage = async (req, res) => {
+  const limit = +req.query.limit || 4;
+  const current = +req.query.page || 1;
+  const skip = (current - 1) * limit;
+  const products = await Product.find({})
+    .skip(skip)
+    .limit(limit)
+    .populate('category')
+    .populate('sub')
+    .sort([['createdAt', 'desc']]);
 
-  res.json(products);
+  res.json({ length: products.length, products });
 };

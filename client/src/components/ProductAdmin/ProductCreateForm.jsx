@@ -146,7 +146,7 @@ const ProductCreateForm = () => {
       fields={fields}
     >
       <Form.Item name='title' label='Tên sản phẩm' rules={[{ required: true }]}>
-        <Input allowClear placeholder='Nhập danh mục' />
+        <Input allowClear placeholder='Nhập tên sản phẩm' />
       </Form.Item>
       <Form.Item name='description' label='Mô tả' rules={[{ required: true }]}>
         <Input allowClear placeholder='Nhập mô tả' />

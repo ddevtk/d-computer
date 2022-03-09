@@ -10,6 +10,7 @@
     "antd": "^4.16.13",
     "axios": "^0.24.0",
     "dotenv": "^10.0.0",
+    "ecommerce": "file:..",
     "firebase": "^9.1.1",
     "mdb-react-ui-kit": "^1.4.0",
     "react": "^17.0.2",

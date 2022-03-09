@@ -17,10 +17,16 @@ export const createSubCategory = async (name, parent, token) =>
     }
   );
 
-export const updateSubCategory = async (slug, name, parent, token) => {
+export const updateSubCategory = async (
+  slug,
+  name,
+  parent,
+  oldParent,
+  token
+) => {
   return await axios.put(
     `${process.env.REACT_APP_API}/subCategory/${slug}`,
-    { name, parent },
+    { name, parent, oldParent },
     {
       headers: {
         Authorization: `Bearer ${token}`,

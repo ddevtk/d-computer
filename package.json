@@ -8,6 +8,7 @@
     "server:install": "npm install --prefix server",
     "client": "npm start --prefix client",
     "server": "nodemon server.js --prefix server",
+    "project:install": "concurrently \"npm run client:install\" \"npm run server:install\"",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {

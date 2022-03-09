@@ -1,26 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import * as categoryApi from '../../api/categoryApi';
 import * as subCategoryApi from '../../api/subCategoryApi';
-import {
-  Alert,
-  Button,
-  Form,
-  Input,
-  Layout,
-  Modal,
-  notification,
-  Row,
-  Select,
-  Space,
-} from 'antd';
+import { Layout } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import AdminNav from '../../components/AdminNav';
-import {
-  SearchOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons';
+
 import { useSelector } from 'react-redux';
 import SubCreateForm from '../../components/SubAdmin/SubCreateForm';
 import SubSearch from '../../components/SubAdmin/SubSearch';

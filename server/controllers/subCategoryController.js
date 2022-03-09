@@ -1,5 +1,6 @@
 const slugify = require('slugify');
 const { SubCategory } = require('../model/subCategoryModel');
+const { Product } = require('../model/productModel');
 
 const checkDuplicateError = (data, res) => {
   if (data.length !== 0) {
@@ -43,14 +44,7 @@ exports.getOne = async (req, res) => {
   }
 };
 exports.update = async (req, res) => {
-  // const sub = await SubCategory.find({
-  //   name: req.body.name,
-  //   parent: req.body.parent,
-  // });
-  // console.log(sub);
-  // if (sub.length !== 0) {
-  //   return res.status(400).json({ message: 'Tên danh mục con đã tồn tại' });
-  // }
+  console.log(req.body);
   try {
     const updateSub = await SubCategory.findOneAndUpdate(
       { slug: req.params.slug },
@@ -60,6 +54,10 @@ exports.update = async (req, res) => {
         parent: req.body.parent,
       },
       { new: true }
+    );
+    await Product.updateMany(
+      { category: req.body.oldParent },
+      { category: req.body.parent }
     );
 
     res.json(updateSub);
