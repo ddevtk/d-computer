@@ -44,15 +44,27 @@ const resizeImage = (file, allUriString, setUriString) => {
   );
 };
 
-const ProductCreateForm = () => {
+const ProductUpdateForm = ({ product, slug }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { user } = useSelector((state) => state.user);
   const [categories, setCategories] = useState([]);
-  const [createLoading, setCreateLoading] = useState(false);
-  const [fields, setFields] = useState([{ name: 'sub', value: [] }]);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [fields, setFields] = useState([
+    { name: 'title', value: product && product.title },
+    { name: 'description', value: product && product.description },
+    { name: 'price', value: product && product.price },
+    { name: 'shipping', value: product && product.shipping },
+    { name: 'quantity', value: product && product.quantity },
+    { name: 'color', value: product && product.color },
+    { name: 'brand', value: product && product.brand },
+    { name: 'category', value: product && product.category._id },
+    { name: 'sub', value: product && product.sub.map((p) => p._id) },
+    { name: 'images', value: [] },
+  ]);
   const [sub, setSub] = useState([]);
   const [uriString, setUriString] = useState([]);
+  console.log(uriString);
 
   let allUriString = [];
 
@@ -88,9 +100,13 @@ const ProductCreateForm = () => {
         break;
       case 'removed':
         allUriString = [];
-        info.fileList.forEach((file) => {
-          resizeImage(file.originFileObj, allUriString, setUriString);
-        });
+        if (info.fileList.length === 0) {
+          setUriString([]);
+        } else {
+          info.fileList.forEach((file) => {
+            resizeImage(file.originFileObj, allUriString, setUriString);
+          });
+        }
         break;
       default:
         break;
@@ -99,7 +115,7 @@ const ProductCreateForm = () => {
 
   const onFinish = async (values) => {
     try {
-      setCreateLoading(true);
+      setUpdateLoading(true);
       const imageArr =
         uriString.length === 0
           ? []
@@ -113,25 +129,27 @@ const ProductCreateForm = () => {
                 }
               })
             );
+
+      values.images = imageArr;
+      if (imageArr.length === 0) {
+        delete values.images;
+      }
+
       try {
-        await productApi.createProduct(
-          { ...values, images: imageArr },
-          user.token
-        );
-        notification.success({
-          message: 'Tạo sản phẩm thành công',
-          duration: 3,
-        });
+        const res = await productApi.updateProduct(slug, values, user.token);
+        console.log(res);
+        notification.success({ message: 'Cập nhật thành công', duration: 2 });
         setTimeout(() => {
           navigate('/admin/product');
         }, 2000);
       } catch (error) {
         throw new Error(error.response.data.message);
       }
-      setCreateLoading(false);
-      form.resetFields();
+
+      setUpdateLoading(false);
+      //   form.resetFields();
     } catch (error) {
-      setCreateLoading(false);
+      setUpdateLoading(false);
       notification.error({
         message: error.message,
         duration: 3,
@@ -141,6 +159,9 @@ const ProductCreateForm = () => {
 
   useEffect(() => {
     categoryApi.getAllCategories().then((res) => setCategories(res.data));
+    subCategoryApi
+      .getSubsByCategoryId(product.category._id)
+      .then((res) => setSub(res.data));
   }, []);
 
   return (
@@ -234,6 +255,7 @@ const ProductCreateForm = () => {
           placeholder='Chọn danh mục'
           allowClear
           onChange={(value) => {
+            console.log(value);
             if (value) {
               setFields([{ name: 'sub', value: [] }]);
               subCategoryApi
@@ -292,10 +314,10 @@ const ProductCreateForm = () => {
         </Upload>
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 4, span: 4 }}>
-        <LoadingButton loading={createLoading} type='create' />
+        <LoadingButton loading={updateLoading} type='update' />
       </Form.Item>
     </Form>
   );
 };
 
-export default ProductCreateForm;
+export default ProductUpdateForm;

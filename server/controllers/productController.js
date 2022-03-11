@@ -39,3 +39,29 @@ exports.remove = async (req, res) => {
     res.status(404).json({ message: 'Product not found' });
   }
 };
+
+exports.getOne = async (req, res) => {
+  const product = await Product.findOne({ slug: req.params.slug })
+    .populate('category')
+    .populate('sub')
+    .exec();
+  if (!product) {
+    return res.status(404).json({ message: 'No product found' });
+  }
+  res.json(product);
+};
+exports.update = async (req, res) => {
+  try {
+    if (req.body.title) {
+      req.body.slug = slugify(req.body.title);
+    }
+    const updated = await Product.findOneAndUpdate(
+      { slug: req.params.slug },
+      req.body,
+      { new: true }
+    );
+    res.json(updated);
+  } catch (error) {
+    res.status(400).json({ message: 'Updated product failed' });
+  }
+};

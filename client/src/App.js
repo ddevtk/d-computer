@@ -18,6 +18,7 @@ import Category from './pages/adminRoutes/Category';
 import SubCategory from './pages/adminRoutes/SubCategory';
 import Coupon from './pages/adminRoutes/Coupon';
 import ProductCreate from './pages/adminRoutes/ProductCreate';
+import ProductUpdate from './pages/adminRoutes/ProductUpdate';
 const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
 const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
 const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
@@ -70,6 +71,9 @@ const App = () => {
         </Route>
         <Route path='/admin/product' element={<AdminRoute />}>
           <Route path='/admin/product' element={<ProductList />} />
+        </Route>
+        <Route path='/admin/product/:slug' element={<AdminRoute />}>
+          <Route path='/admin/product/:slug' element={<ProductUpdate />} />
         </Route>
         <Route path='/admin/coupon' element={<AdminRoute />}>
           <Route path='/admin/coupon' element={<Coupon />} />

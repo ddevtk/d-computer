@@ -19,3 +19,15 @@ export const deleteProduct = async (slug, token) => {
     },
   });
 };
+
+export const getOne = async (slug) => {
+  return axios.get(`${process.env.REACT_APP_API}/product/${slug}`);
+};
+
+export const updateProduct = async (slug, product, token) => {
+  return axios.put(`${process.env.REACT_APP_API}/product/${slug}`, product, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

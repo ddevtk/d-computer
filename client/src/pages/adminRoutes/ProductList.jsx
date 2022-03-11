@@ -114,18 +114,26 @@ const ProductList = () => {
                   <Card
                     className='bg-image hover-zoom'
                     cover={
-                      <img
-                        alt='example'
-                        src={
-                          product.images.length !== 0
-                            ? product.images[0].url
-                            : image
-                        }
-                        style={{ objectFit: 'contain', height: '15rem' }}
-                      />
+                      <Link to={`/admin/product/${product.slug}`}>
+                        <img
+                          alt='example'
+                          src={
+                            product.images.length !== 0
+                              ? product.images[0].url
+                              : image
+                          }
+                          style={{
+                            objectFit: 'contain',
+                            height: '15rem',
+                            // width: '100%',
+                          }}
+                        />
+                      </Link>
                     }
                     actions={[
-                      <EditOutlined />,
+                      <Link to={`/admin/product/${product.slug}`}>
+                        <EditOutlined />
+                      </Link>,
                       <DeleteOutlined
                         onClick={() => {
                           setDeleteVisible(true);
