@@ -20,6 +20,7 @@ exports.getProductPerPage = async (req, res) => {
   const limit = +req.query.limit || 4;
   const current = +req.query.page || 1;
   const skip = (current - 1) * limit;
+  const allProducts = await Product.find({});
   const products = await Product.find({})
     .skip(skip)
     .limit(limit)
@@ -27,5 +28,14 @@ exports.getProductPerPage = async (req, res) => {
     .populate('sub')
     .sort([['createdAt', 'desc']]);
 
-  res.json({ length: products.length, products });
+  res.json({ total: allProducts.length, products });
+};
+
+exports.remove = async (req, res) => {
+  const deleted = await Product.findOneAndDelete({ slug: req.params.slug });
+  if (deleted) {
+    res.json({ message: 'Product removed' });
+  } else {
+    res.status(404).json({ message: 'Product not found' });
+  }
 };

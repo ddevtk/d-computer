@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
+import Loader from './components/Loader';
 import Header from './components/Header';
-import AuthRoute from './pages/auth/AuthRoute';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -10,15 +10,17 @@ import RegisterComplete from './pages/auth/RegisterComplete';
 import HomePage from './pages/HomePage';
 import { unsubscribe } from './redux/user/userAction';
 import UserRoute from './pages/userRoutes/UserRoute';
-import AdminRoute from './pages/adminRoutes/AdminRoute';
 import Wishlist from './pages/userRoutes/Wishlist';
 import ChangePassword from './pages/userRoutes/ChangePassword';
 import UserHistory from './pages/userRoutes/UserHistory';
 import AdminDashboard from './pages/adminRoutes/AdminDashboard';
 import Category from './pages/adminRoutes/Category';
 import SubCategory from './pages/adminRoutes/SubCategory';
-import Product from './pages/adminRoutes/Product';
 import Coupon from './pages/adminRoutes/Coupon';
+import ProductCreate from './pages/adminRoutes/ProductCreate';
+const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
+const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
+const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <Suspense fallback={<Loader />}>
       <Header />
       <Routes>
         <Route path='/' element={<HomePage />} />
@@ -63,14 +65,17 @@ const App = () => {
         <Route path='/admin/sub' element={<AdminRoute />}>
           <Route path='/admin/sub' element={<SubCategory />} />
         </Route>
-        <Route path='/admin/products' element={<AdminRoute />}>
-          <Route path='/admin/products' element={<Product />} />
+        <Route path='/admin/product/create' element={<AdminRoute />}>
+          <Route path='/admin/product/create' element={<ProductCreate />} />
+        </Route>
+        <Route path='/admin/product' element={<AdminRoute />}>
+          <Route path='/admin/product' element={<ProductList />} />
         </Route>
         <Route path='/admin/coupon' element={<AdminRoute />}>
           <Route path='/admin/coupon' element={<Coupon />} />
         </Route>
       </Routes>
-    </>
+    </Suspense>
   );
 };
 

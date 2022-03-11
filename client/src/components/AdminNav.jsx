@@ -45,7 +45,7 @@ const AdminNav = ({ selectedKey }) => {
           <Link to='/admin/dashboard'>Dashboard</Link>
         </Menu.Item>
         <Menu.Item key='products' icon={<LaptopOutlined />}>
-          <Link to='/admin/products'>Sản phẩm</Link>
+          <Link to='/admin/product'>Sản phẩm</Link>
         </Menu.Item>
         <Menu.Item key='categories' icon={<TableOutlined />}>
           <Link to='/admin/categories'>Danh mục</Link>

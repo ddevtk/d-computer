@@ -19,11 +19,28 @@ const SubCategory = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSub, setSelectedSub] = useState('');
   const [selectedSlug, setSelectedSlug] = useState('');
+  const [loadingSub, setLoadingSub] = useState(null);
 
   useEffect(() => {
-    categoryApi.getAllCategories().then((res) => setCategories(res.data));
-    subCategoryApi.getAllSubCategories().then((res) => setSub(res.data));
+    if (loadingSub !== null && loading === false)
+      categoryApi.getAllCategories().then((res) => {
+        setCategories(res.data);
+        subCategoryApi.getAllSubCategories().then((res) => {
+          setSub(res.data);
+        });
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
+  useEffect(() => {
+    setLoadingSub(true);
+    categoryApi.getAllCategories().then((res) => {
+      setCategories(res.data);
+      subCategoryApi.getAllSubCategories().then((res) => {
+        setLoadingSub(false);
+        setSub(res.data);
+      });
+    });
+  }, []);
 
   return (
     <Layout
@@ -44,6 +61,7 @@ const SubCategory = () => {
               <SubSearch setKeyword={setKeyword} />
               <hr />
               <SubList
+                loadingSub={loadingSub}
                 categories={categories}
                 keyword={keyword}
                 selectedCategory={selectedCategory}

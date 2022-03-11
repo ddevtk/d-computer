@@ -13,6 +13,7 @@ import CategoryList from '../../components/CategoryAdmin/CategoryList';
 const Category = () => {
   const { user } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
+  const [loadingCat, setLoadingCat] = useState(null);
 
   const [categories, setCategories] = useState([]);
   const [updateName, setUpdateName] = useState('');
@@ -20,8 +21,20 @@ const Category = () => {
   const [keyword, setKeyword] = useState('');
 
   useEffect(() => {
-    api.getAllCategories().then((res) => setCategories(res.data));
+    if (loading === false && loadingCat !== null) {
+      api.getAllCategories().then((res) => {
+        setCategories(res.data);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
+  useEffect(() => {
+    setLoadingCat(true);
+    api.getAllCategories().then((res) => {
+      setLoadingCat(false);
+      setCategories(res.data);
+    });
+  }, []);
 
   return (
     <Layout
@@ -41,6 +54,7 @@ const Category = () => {
               <CategorySearch setKeyword={setKeyword} />
               <hr />
               <CategoryList
+                loadingCat={loadingCat}
                 categories={categories}
                 keyword={keyword}
                 setUpdateName={setUpdateName}

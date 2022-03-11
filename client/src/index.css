@@ -16,3 +16,50 @@ body {
   height: 1px;
   background: #eee;
 }
+
+.wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.loader {
+  position: relative;
+  font-size: 48px;
+  letter-spacing: 6px;
+}
+.loader:before {
+  content: 'Loading';
+  color: #188fff97;
+}
+.loader:after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-color: #1890ff;
+  background-image: radial-gradient(circle 2px, #fff4 100%, transparent 0),
+    radial-gradient(circle 1px, #fff3 100%, transparent 0);
+  background-position: 14px -4px, 12px -1px;
+  border-radius: 50%;
+  position: absolute;
+  margin: auto;
+  top: -5px;
+  right: 66px;
+  transform-origin: center bottom;
+  animation: fillBaloon 1s ease-in-out infinite alternate;
+}
+
+@keyframes fillBaloon {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(3);
+  }
+}
+.custom-hover {
+  color: black;
+}
+.custom-hover:hover {
+  color: #1890ff;
+}

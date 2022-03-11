@@ -1,4 +1,4 @@
-import { Alert, Modal, notification } from 'antd';
+import { Alert, Modal, notification, Skeleton } from 'antd';
 import React, { useState } from 'react';
 import {
   EditOutlined,
@@ -9,6 +9,7 @@ import * as api from '../../api/categoryApi';
 import CategoryUpdateModal from './CategoryUpdateModal';
 
 const CategoryList = ({
+  loadingCat,
   categories,
   setCategories,
   keyword,
@@ -61,36 +62,38 @@ const CategoryList = ({
 
   return (
     <>
-      {categories
-        .filter((c) => c.name.toLowerCase().includes(keyword))
-        .map((category) => {
-          return (
-            <Alert
-              className='mb-2'
-              message={category.name}
-              key={category._id}
-              type='info'
-              action={
-                <>
-                  <EditOutlined
-                    className='mx-2'
-                    onClick={() => {
-                      setUpdateName(category.name);
-                      setUpdateSlug(category.slug);
-                      setUpdateVisible(true);
-                    }}
-                  />{' '}
-                  <DeleteOutlined
-                    onClick={() => {
-                      setDeleteVisible(true);
-                      showDeleteModal(category.name, category.slug);
-                    }}
-                  />
-                </>
-              }
-            />
-          );
-        })}
+      {loadingCat && <Skeleton active>{/* <Alert></Alert> */}</Skeleton>}
+      {!loadingCat &&
+        categories
+          .filter((c) => c.name.toLowerCase().includes(keyword))
+          .map((category) => {
+            return (
+              <Alert
+                className='mb-2'
+                message={category.name}
+                key={category._id}
+                type='info'
+                action={
+                  <>
+                    <EditOutlined
+                      className='mx-2'
+                      onClick={() => {
+                        setUpdateName(category.name);
+                        setUpdateSlug(category.slug);
+                        setUpdateVisible(true);
+                      }}
+                    />{' '}
+                    <DeleteOutlined
+                      onClick={() => {
+                        setDeleteVisible(true);
+                        showDeleteModal(category.name, category.slug);
+                      }}
+                    />
+                  </>
+                }
+              />
+            );
+          })}
       <CategoryUpdateModal
         updateVisible={updateVisible}
         setUpdateVisible={setUpdateVisible}

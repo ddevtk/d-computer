@@ -1,4 +1,4 @@
-import { Alert, Modal, notification } from 'antd';
+import { Alert, Modal, notification, Skeleton } from 'antd';
 import React, { useState } from 'react';
 import {
   EditOutlined,
@@ -8,6 +8,7 @@ import {
 import SubUpdateModal from './SubUpdateModal';
 
 const SubList = ({
+  loadingSub,
   sub,
   keyword,
   categories,
@@ -55,38 +56,44 @@ const SubList = ({
   };
   return (
     <div>
-      {sub
-        .filter((sub) => sub.name.toLowerCase().includes(keyword))
-        .map((s) => {
-          return (
-            <Alert
-              className='mb-2'
-              message={`${s.name} ( ${
-                categories.find((c) => c._id === s.parent)?.name
-              } )`}
-              key={s._id}
-              type='info'
-              action={
-                <>
-                  <EditOutlined
-                    className='mx-2'
-                    onClick={() => {
-                      setSelectedCategory(s.parent);
-                      setSelectedSub(s.name);
-                      setSelectedSlug(s.slug);
-                      setUpdateVisible(true);
-                    }}
-                  />{' '}
-                  <DeleteOutlined
-                    onClick={() => {
-                      showDeleteModal(s.name, s.slug);
-                    }}
-                  />
-                </>
-              }
-            />
-          );
-        })}
+      {loadingSub && (
+        <Skeleton active>
+          <Alert className='mb-2'></Alert>
+        </Skeleton>
+      )}
+      {!loadingSub &&
+        sub
+          .filter((sub) => sub.name.toLowerCase().includes(keyword))
+          .map((s) => {
+            return (
+              <Alert
+                className='mb-2'
+                message={`${s.name} ( ${
+                  categories.find((c) => c._id === s.parent)?.name
+                } )`}
+                key={s._id}
+                type='info'
+                action={
+                  <>
+                    <EditOutlined
+                      className='mx-2'
+                      onClick={() => {
+                        setSelectedCategory(s.parent);
+                        setSelectedSub(s.name);
+                        setSelectedSlug(s.slug);
+                        setUpdateVisible(true);
+                      }}
+                    />{' '}
+                    <DeleteOutlined
+                      onClick={() => {
+                        showDeleteModal(s.name, s.slug);
+                      }}
+                    />
+                  </>
+                }
+              />
+            );
+          })}
       <SubUpdateModal
         categories={categories}
         selectedCategory={selectedCategory}

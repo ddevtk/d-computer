@@ -5,7 +5,7 @@ import React from 'react';
 import AdminNav from '../../components/AdminNav';
 import ProductCreateForm from '../../components/ProductAdmin/ProductCreateForm';
 
-const Product = () => {
+const ProductCreate = () => {
   return (
     <Layout
       style={{ padding: '24px 0', background: '#fff', flexDirection: 'row' }}
@@ -18,4 +18,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductCreate;

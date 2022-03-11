@@ -8,6 +8,7 @@ import * as productApi from '../../api/productApi';
 import * as cloudinaryApi from '../../api/cloudinaryApi';
 import * as subCategoryApi from '../../api/subCategoryApi';
 import LoadingButton from '../LoadingButton';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   title: '',
@@ -44,6 +45,7 @@ const resizeImage = (file, allUriString, setUriString) => {
 };
 
 const ProductCreateForm = () => {
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const { user } = useSelector((state) => state.user);
   const [categories, setCategories] = useState([]);
@@ -98,16 +100,19 @@ const ProductCreateForm = () => {
   const onFinish = async (values) => {
     try {
       setCreateLoading(true);
-      const imageArr = await Promise.all(
-        uriString.map(async (uri) => {
-          try {
-            const res = await cloudinaryApi.uploadImages(uri, user.token);
-            return res.data;
-          } catch (error) {
-            throw new Error(error.response.data.message);
-          }
-        })
-      );
+      const imageArr =
+        uriString.length === 0
+          ? []
+          : await Promise.all(
+              uriString.map(async (uri) => {
+                try {
+                  const res = await cloudinaryApi.uploadImages(uri, user.token);
+                  return res.data;
+                } catch (error) {
+                  throw new Error(error.response.data.message);
+                }
+              })
+            );
       try {
         await productApi.createProduct(
           { ...values, images: imageArr },
@@ -117,6 +122,9 @@ const ProductCreateForm = () => {
           message: 'Tạo sản phẩm thành công',
           duration: 3,
         });
+        setTimeout(() => {
+          navigate('/admin/product');
+        }, 2000);
       } catch (error) {
         throw new Error(error.response.data.message);
       }
@@ -267,7 +275,7 @@ const ProductCreateForm = () => {
         label='Ảnh sản phẩm'
         valuePropName='fileList'
         getValueFromEvent={normFile}
-        rules={[{ required: true }]}
+        // rules={[{ required: true }]}
       >
         <Upload
           multiple
