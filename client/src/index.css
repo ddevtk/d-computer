@@ -63,3 +63,15 @@ body {
 .custom-hover:hover {
   color: #1890ff;
 }
+.dropdown-toggle::after {
+  display: none !important;
+}
+.ant-menu-horizontal {
+  border-bottom: none !important;
+}
+.ant-menu {
+  background: none !important;
+}
+.ant-menu-sub {
+  background: #fff !important;
+}

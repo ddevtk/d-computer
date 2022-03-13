@@ -20,7 +20,6 @@ const ProductUpdate = () => {
         setTimeout(() => {
           setLoading(false);
         }, 100);
-        console.log(res);
       })
       .catch((err) => {
         setLoading(false);

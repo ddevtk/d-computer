@@ -36,12 +36,13 @@ const ProductList = () => {
   useEffect(() => {
     loadProduct();
   }, []);
+
   const loadProduct = (current = 1, pageSize = 4) => {
     setLoading(true);
     api
       .getProductPerPage(current, pageSize)
       .then((res) => {
-        setProducts({ total: res.data.total, items: res.data.products });
+        setProducts({ total: res.data.total.length, items: res.data.products });
         setLoading(false);
       })
       .catch((err) => setLoading(false));

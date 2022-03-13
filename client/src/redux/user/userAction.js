@@ -15,15 +15,16 @@ export const unsubscribe = () => (dispatch) => {
   const auth = getAuth();
   auth.onAuthStateChanged(async (user) => {
     if (user) {
+      console.log(user);
       try {
         const idToken = await user.getIdToken();
         const { data } = await api.currentUser(idToken);
 
-        const { name, email, _id, role } = data;
+        const { name, email, _id, role, avatar } = data;
 
         dispatch({
           type: userActionType.LOGGED_IN_SUCCESS,
-          payload: { _id, name, email, token: idToken, role },
+          payload: { _id, name, email, token: idToken, role, avatar },
         });
       } catch (error) {
         console.error(error.response.data.message);
@@ -62,11 +63,11 @@ export const loginWithEmailAndPassword =
       const idToken = await user.getIdToken();
 
       const { data } = await api.createOrUpdateUser(idToken);
-      const { name, email, _id, role } = data;
+      const { name, email, _id, role, avatar } = data;
 
       dispatch({
         type: userActionType.LOGGED_IN_SUCCESS,
-        payload: { _id, name, email, token: idToken, role },
+        payload: { _id, name, email, token: idToken, role, avatar },
       });
     } catch (error) {
       dispatch({
@@ -87,11 +88,11 @@ export const loginWithGoogle = () => async (dispatch) => {
     const token = await result.user.getIdToken();
     // const credential = GoogleAuthProvider.credentialFromResult(result);
     const {
-      data: { _id, name, email, role },
+      data: { _id, name, email, role, avatar },
     } = await api.createOrUpdateUser(token);
     dispatch({
       type: userActionType.LOGGED_IN_SUCCESS,
-      payload: { _id, name, email, role, token },
+      payload: { _id, name, email, role, token, avatar },
     });
   } catch (error) {
     const credential = GoogleAuthProvider.credentialFromError(error);

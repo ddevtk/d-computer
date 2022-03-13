@@ -28,7 +28,9 @@ exports.create = async (req, res) => {
   }
 };
 exports.list = async (req, res) => {
-  const subCategories = await SubCategory.find({}).sort({ createdAt: -1 });
+  const subCategories = await SubCategory.find({})
+    .populate('parent')
+    .sort({ createdAt: -1 });
 
   res.json(subCategories);
 };

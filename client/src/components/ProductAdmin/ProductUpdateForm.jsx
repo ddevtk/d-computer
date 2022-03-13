@@ -64,7 +64,6 @@ const ProductUpdateForm = ({ product, slug }) => {
   ]);
   const [sub, setSub] = useState([]);
   const [uriString, setUriString] = useState([]);
-  console.log(uriString);
 
   let allUriString = [];
 
