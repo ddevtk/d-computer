@@ -62,7 +62,11 @@ const CategoryList = ({
 
   return (
     <>
-      {loadingCat && <Skeleton active>{/* <Alert></Alert> */}</Skeleton>}
+      {loadingCat && (
+        <Alert>
+          <Skeleton active></Skeleton>
+        </Alert>
+      )}
       {!loadingCat &&
         categories
           .filter((c) => c.name.toLowerCase().includes(keyword))

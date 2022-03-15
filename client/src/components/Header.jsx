@@ -3,6 +3,7 @@ import {
   UserOutlined,
   UserDeleteOutlined,
   AppstoreOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../redux/user/userAction';
@@ -10,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as categoryApi from '../api/categoryApi';
 import * as subApi from '../api/subCategoryApi';
 import {
-  MDBBtn,
   MDBCollapse,
   MDBContainer,
   MDBDropdown,
@@ -24,15 +24,16 @@ import {
   MDBNavbarToggler,
 } from 'mdb-react-ui-kit';
 import logo from '../images/logo.png';
-import { Affix, Menu } from 'antd';
+import { Affix, Form, Input, Menu } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showNavNoTogglerThird, setShowNavNoTogglerThird] = useState(false);
-  const [category, setCategory] = useState([]);
+  const [menuItem, setMenuItem] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState(false);
 
   const { user } = useSelector((state) => state.user);
 
@@ -41,6 +42,8 @@ const Header = () => {
       navigate('/login');
     });
   };
+
+  console.log(search);
 
   const loadCategory = async () => {
     setLoading(true);
@@ -62,14 +65,15 @@ const Header = () => {
           subObj[category.slug] = [];
         }
       });
-      setCategory(Object.entries(subObj));
-      setLoading(false);
+
+      setMenuItem(Object.entries(subObj));
+      setTimeout(() => {
+        setLoading(false);
+      }, 100);
     } catch (error) {
       setLoading(false);
     }
   };
-
-  console.log(category);
 
   useEffect(() => {
     loadCategory();
@@ -78,7 +82,7 @@ const Header = () => {
   return (
     <Affix>
       <header>
-        <MDBNavbar expand='lg' light bgColor='light'>
+        <MDBNavbar expand='lg' style={{ backgroundColor: '#f8f8f8' }}>
           <MDBContainer fluid>
             <MDBNavbarToggler
               type='button'
@@ -100,19 +104,55 @@ const Header = () => {
               show={showNavNoTogglerThird}
               style={{ justifyContent: 'space-between' }}
             >
-              <Menu mode='horizontal'>
+              <Menu mode='horizontal' multiple>
+                {!loading && (
+                  <Menu.Item style={{ padding: '0 1rem 0 0' }}>
+                    <Link className='hover-link' to='/product'>
+                      SẢN PHẨM
+                    </Link>
+                  </Menu.Item>
+                )}
                 {!loading &&
-                  category.map((c, id) => {
+                  menuItem.map((c, id) => {
+                    if (c[1].length === 0) {
+                      return (
+                        <SubMenu
+                          key={id}
+                          style={{ padding: '0 1rem 0 0' }}
+                          title={
+                            <Link
+                              to={`/category/${c[0]}`}
+                              className='hover-link'
+                            >
+                              {c[0].toUpperCase()}
+                            </Link>
+                          }
+                        ></SubMenu>
+                      );
+                    }
+
                     return (
-                      <SubMenu key={id} title={c[0].toUpperCase()}>
+                      <SubMenu
+                        key={id}
+                        title={
+                          <Link className='hover-link' to={`/category/${c[0]}`}>
+                            {c[0].toUpperCase()}
+                          </Link>
+                        }
+                        style={{ padding: '0 1rem 0 0' }}
+                      >
                         {c[1].map((sub) => {
                           return (
                             <Menu.Item key={sub._id}>
-                              {sub.name.toUpperCase()}
+                              <Link
+                                to={`/sub/${sub.slug}`}
+                                className='hover-link'
+                              >
+                                {sub.name.toUpperCase()}
+                              </Link>
                             </Menu.Item>
                           );
                         })}
-                        <Menu.Item key='all'>Xem tất cả</Menu.Item>
                       </SubMenu>
                     );
                   })}
@@ -121,17 +161,23 @@ const Header = () => {
                 className='d-flex align-items-center justify-content-between'
                 style={{ flexWrap: 'wrap' }}
               >
-                <form className='d-flex input-group' style={{ width: '60%' }}>
-                  <input
-                    type='search'
-                    className='form-control'
-                    placeholder='Type query'
-                    aria-label='Search'
+                <Form
+                  className='d-flex justify-content-end'
+                  onClick={() => setSearch(!search)}
+                  // onMouseLeave={() => setSearch(false)}
+                >
+                  <Input
+                    className={`d-flex ${search ? 'search-normal' : ''}`}
+                    style={{
+                      width: '20%',
+                      marginRight: '0.5rem',
+                      borderRadius: '1rem',
+                    }}
+                    size='middle'
+                    placeholder='Nhập nội dung tìm kiếm...'
+                    suffix={<SearchOutlined />}
                   />
-                  <MDBBtn color='primary'>
-                    <MDBIcon fas icon='search' />
-                  </MDBBtn>
-                </form>
+                </Form>
                 <div className='d-flex'>
                   <Link className='text-reset me-2' to=''>
                     <i className='fas fa-shopping-cart'></i>

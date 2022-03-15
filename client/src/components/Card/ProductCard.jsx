@@ -10,7 +10,7 @@ const ProductCard = ({ product }) => {
       <Card
         className='bg-image hover-zoom'
         cover={
-          <Link to={`/admin/product/${product.slug}`}>
+          <Link to={`/${product.slug}`}>
             <img
               alt='example'
               src={product.images.length !== 0 ? product.images[0].url : image}
@@ -26,10 +26,7 @@ const ProductCard = ({ product }) => {
         <Meta
           title={
             <Tooltip title={product.title}>
-              <Link
-                className='custom-hover'
-                to={`/admin/product/${product.slug}`}
-              >
+              <Link className='custom-hover' to={`/${product.slug}`}>
                 {product.title}
               </Link>
             </Tooltip>

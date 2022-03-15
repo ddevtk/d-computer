@@ -37,7 +37,7 @@ const ProductList = () => {
     loadProduct();
   }, []);
 
-  const loadProduct = (current = 1, pageSize = 4) => {
+  const loadProduct = (current = 1, pageSize = 6) => {
     setLoading(true);
     api
       .getProductPerPage(current, pageSize)
@@ -100,7 +100,7 @@ const ProductList = () => {
           </Link>
         </Row>
         <Row justify='start' gutter={[16, 16]}>
-          {loading && <LoadingCard count={4} />}
+          {loading && <LoadingCard count={6} />}
           {!loading &&
             products.items.map((product) => {
               return (
@@ -108,7 +108,7 @@ const ProductList = () => {
                   xs={24}
                   sm={12}
                   md={8}
-                  lg={6}
+                  lg={8}
                   className='gutter-row'
                   key={product._id}
                 >
@@ -126,7 +126,7 @@ const ProductList = () => {
                           style={{
                             objectFit: 'contain',
                             height: '15rem',
-                            // width: '100%',
+                            width: '100%',
                           }}
                         />
                       </Link>
@@ -167,7 +167,7 @@ const ProductList = () => {
         <Pagination
           total={products.total}
           current={current}
-          pageSize={4}
+          pageSize={6}
           responsive
           style={{
             display: 'flex',

@@ -7,6 +7,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { TransactionOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import LoadingCard from '../components/Card/LoadingCard.jsx';
 
 const HomePage = () => {
   const [products, setProducts] = useState({ total: '', items: [] });
@@ -14,7 +15,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
 
   const loadAllProducts = async () => {
-    setLoading(TransactionOutlined);
+    setLoading(true);
     try {
       const productRes = await productApi.getProductPerPage();
       const subRes = await subApi.getAllSubCategories();
@@ -51,7 +52,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div style={{ backgroundColor: '#f5f8fd' }}>
+    <div className='py-2'>
       {/* <div>
         <Carousel
           autoPlay={true}
@@ -72,10 +73,19 @@ const HomePage = () => {
           })}
         </Carousel>
       </div> */}
+      {loading && (
+        <div
+          className='container'
+          style={{ backgroundColor: '#f8f8f8', marginBottom: '2rem' }}
+        >
+          <Row justify='start' gutter={[16, 16]}>
+            <LoadingCard count={6} />
+          </Row>
+        </div>
+      )}
 
       {!loading &&
         products.map((product) => {
-          console.log(subCategory[product[0]]);
           return (
             <div
               className='container'
@@ -93,10 +103,9 @@ const HomePage = () => {
                 <div>
                   {subCategory[product[0]].slice(0, 6).map((sub, id) => {
                     return (
-                      <Link to=''>
+                      <Link to='' key={id}>
                         <Tag
                           color='default'
-                          key={id}
                           style={{
                             color: '#1890ff',
                             borderRadius: '1rem',
@@ -108,7 +117,7 @@ const HomePage = () => {
                       </Link>
                     );
                   })}
-                  <Link to=''>
+                  <Link to='' key={Date.now()}>
                     <Tag
                       style={{
                         borderRadius: '1rem',
@@ -123,8 +132,8 @@ const HomePage = () => {
                 </div>
               </div>
               <Row justify='start' gutter={[16, 16]}>
-                {product[1].slice(0, 6).map((item, id) => (
-                  <ProductCard product={item} key={id} />
+                {product[1].slice(0, 6).map((item) => (
+                  <ProductCard product={item} key={item._id} />
                 ))}
               </Row>
             </div>

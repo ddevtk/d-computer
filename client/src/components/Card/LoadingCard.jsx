@@ -6,7 +6,7 @@ const LoadingCard = ({ count }) => {
     let totalCards = [];
     for (let i = 0; i < count; i++) {
       totalCards.push(
-        <Col xs={24} sm={12} md={8} lg={6} className='gutter-row' key={i}>
+        <Col xs={24} sm={12} md={8} lg={8} className='gutter-row' key={i}>
           <Card hoverable style={{ height: 400 }}>
             <Skeleton active></Skeleton>
           </Card>
