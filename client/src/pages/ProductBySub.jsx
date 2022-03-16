@@ -70,7 +70,7 @@ const ProductBySub = () => {
   }, [params, selectedByPrice]);
 
   return (
-    <div className='container py-2' style={{ backgroundColor: '#f8f8f8' }}>
+    <div className='container py-2'>
       <Row>
         <Breadcrumb style={{ padding: '16px 0' }}>
           <Link to='/'>
@@ -89,10 +89,7 @@ const ProductBySub = () => {
         <SelectByPrice setSelectedByPrice={setSelectedByPrice} />
       </Row>
       {loading && (
-        <div
-          className='container'
-          style={{ backgroundColor: '#f8f8f8', marginBottom: '2rem' }}
-        >
+        <div className='container' style={{ marginBottom: '2rem' }}>
           <Row justify='start' gutter={[16, 16]}>
             <LoadingCard count={6} />
           </Row>

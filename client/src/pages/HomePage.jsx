@@ -77,10 +77,7 @@ const HomePage = () => {
         </Carousel>
       </div> */}
       {loading && (
-        <div
-          className='container'
-          style={{ backgroundColor: '#f8f8f8', marginBottom: '2rem' }}
-        >
+        <div className='container' style={{ marginBottom: '2rem' }}>
           <Row justify='start' gutter={[16, 16]}>
             <LoadingCard count={6} />
           </Row>
@@ -90,10 +87,7 @@ const HomePage = () => {
       {!loading &&
         products.map((product) => {
           return (
-            <div
-              className='container'
-              style={{ backgroundColor: '#f8f8f8', marginBottom: '2rem' }}
-            >
+            <div className='container' style={{ marginBottom: '2rem' }}>
               <div
                 className='d-flex justify-content-between align-items-center'
                 style={{ flexWrap: 'wrap' }}
@@ -106,7 +100,7 @@ const HomePage = () => {
                 <div>
                   {subCategory[product[0]].slice(0, 6).map((sub, id) => {
                     return (
-                      <Link to='' key={id}>
+                      <Link to={`/sub/${sub.slug}`} key={id}>
                         <Tag
                           color='default'
                           style={{
@@ -120,7 +114,7 @@ const HomePage = () => {
                       </Link>
                     );
                   })}
-                  <Link to='' key={Date.now()}>
+                  <Link to={`/category/${product[0]}`} key={Date.now()}>
                     <Tag
                       style={{
                         borderRadius: '1rem',

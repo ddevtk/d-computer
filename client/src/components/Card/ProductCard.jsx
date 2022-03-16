@@ -8,6 +8,8 @@ const ProductCard = ({ product }) => {
   return (
     <Col xs={24} sm={12} md={8} lg={8} className='gutter-row' key={product._id}>
       <Card
+        style={{ cursor: 'default' }}
+        hoverable
         className='bg-image hover-zoom'
         cover={
           <Link to={`/${product.slug}`}>
