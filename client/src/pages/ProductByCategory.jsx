@@ -14,6 +14,8 @@ import * as subApi from '../api/subCategoryApi';
 import * as productApi from '../api/productApi';
 import ProductCard from '../components/Card/ProductCard';
 import LoadingCard from '../components/Card/LoadingCard';
+import SelectByPrice from '../components/SelectByPrice';
+import CategoryOrSubButtonGroup from '../components/CategoryOrSubButtonGroup';
 
 const ProductByCategory = () => {
   const { Item } = Breadcrumb;
@@ -34,7 +36,12 @@ const ProductByCategory = () => {
     setLoading(true);
     try {
       const { data } = await productApi.getProductPerPage(current, pageSize);
-      setProducts({ total: data.total.length, items: data.products });
+      const total = data.total.filter((p) => p.category.slug === params.slug);
+      const items = data.products.filter(
+        (p) => p.category.slug === params.slug
+      );
+
+      setProducts({ total: total.length, items });
       setTimeout(() => {
         setLoading(false);
       }, 100);
@@ -70,32 +77,11 @@ const ProductByCategory = () => {
         <Row>
           {sub.length !== 0 &&
             sub.map((s) => {
-              return (
-                <Col
-                  lg={{ span: 4 }}
-                  md={{ span: 6 }}
-                  sm={{ span: 12 }}
-                  key={s._id}
-                >
-                  <Button className='hover-fill' style={{ width: '100%' }}>
-                    <Link to={`/sub/${s.slug}`}>{s.name.toUpperCase()}</Link>
-                  </Button>
-                </Col>
-              );
+              return <CategoryOrSubButtonGroup item={s} type='sub' />;
             })}
         </Row>
         <Row className='mt-3 align-items-center justify-content-end'>
-          <Typography.Text className='mx-2' style={{ color: '#1890ff' }}>
-            Xếp theo giá:
-          </Typography.Text>
-          <Select placeholder='Vui lòng lựa chọn'>
-            <Select.Option value='htl' key='htl'>
-              Giá từ cao đến thấp
-            </Select.Option>
-            <Select.Option value='lth' key='lth'>
-              Giá từ thấp đến cao
-            </Select.Option>
-          </Select>
+          <SelectByPrice />
         </Row>
 
         {loading && (

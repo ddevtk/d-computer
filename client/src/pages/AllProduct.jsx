@@ -1,22 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Breadcrumb, Button, Col } from 'antd';
+import { Row, Breadcrumb, Button, Col, Pagination } from 'antd';
 import { Link } from 'react-router-dom';
 import * as categoryApi from '../api/categoryApi';
+import * as productApi from '../api/productApi';
+import CategoryOrSubButtonGroup from '../components/CategoryOrSubButtonGroup';
+import SelectByPrice from '../components/SelectByPrice';
+import LoadingCard from '../components/Card/LoadingCard';
+import ProductCard from '../components/Card/ProductCard';
 
 const AllProduct = () => {
   const { Item } = Breadcrumb;
   const [category, setCategory] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [current, setCurrent] = useState(1);
 
-  useEffect(() => {
-    loadCategory();
-  }, []);
+  const [products, setProducts] = useState({ total: '', items: [] });
 
   const loadCategory = () => {
     categoryApi.getAllCategories().then((res) => {
       setCategory(res.data);
     });
   };
-  console.log(category);
+
+  const loadProduct = async (current = 1, pageSize = 9) => {
+    setLoading(true);
+    try {
+      const { data } = await productApi.getProductPerPage(current, pageSize);
+
+      setProducts({ total: data.total.length, items: data.products });
+      setTimeout(() => {
+        setLoading(false);
+      }, 100);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const changePagination = (current, pageSize) => {
+    setCurrent(current);
+    loadProduct(current, pageSize);
+  };
+
+  useEffect(() => {
+    loadCategory();
+    loadProduct();
+  }, []);
 
   return (
     <div className='container py-2' style={{ backgroundColor: '#f8f8f8' }}>
@@ -31,15 +59,42 @@ const AllProduct = () => {
       <Row>
         {category.length !== 0 &&
           category.map((c) => {
-            return (
-              <Col span={4} key={c._id}>
-                <Button className='hover-fill' style={{ width: '100%' }}>
-                  {c.name.toUpperCase()}
-                </Button>
-              </Col>
-            );
+            return <CategoryOrSubButtonGroup item={c} type='category' />;
           })}
       </Row>
+      <Row className='mt-3 align-items-center justify-content-end'>
+        <SelectByPrice />
+      </Row>
+
+      {loading && (
+        <div
+          className='container'
+          style={{ backgroundColor: '#f8f8f8', marginBottom: '2rem' }}
+        >
+          <Row justify='start' gutter={[16, 16]}>
+            <LoadingCard count={6} />
+          </Row>
+        </div>
+      )}
+      {!loading && (
+        <Row justify='start' gutter={[16, 16]} className='mt-2'>
+          {products.items.map((item) => (
+            <ProductCard product={item} key={item._id} />
+          ))}
+        </Row>
+      )}
+      <Pagination
+        total={products.total}
+        current={current}
+        pageSize={9}
+        responsive
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: '2rem',
+        }}
+        onChange={changePagination}
+      />
     </div>
   );
 };

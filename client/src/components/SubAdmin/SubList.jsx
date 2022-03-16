@@ -69,7 +69,7 @@ const SubList = ({
               <Alert
                 className='mb-2'
                 message={`${s.name} ( ${
-                  categories.find((c) => c._id === s.parent)?.name
+                  categories.find((c) => c._id === s.parent._id)?.name
                 } )`}
                 key={s._id}
                 type='info'

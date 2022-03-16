@@ -106,11 +106,15 @@ const Header = () => {
             >
               <Menu mode='horizontal' multiple>
                 {!loading && (
-                  <Menu.Item style={{ padding: '0 1rem 0 0' }}>
-                    <Link className='hover-link' to='/product'>
-                      SẢN PHẨM
-                    </Link>
-                  </Menu.Item>
+                  <SubMenu
+                    key='sanpham'
+                    style={{ padding: '0 1rem 0 0' }}
+                    title={
+                      <Link className='hover-link' to='/product'>
+                        SẢN PHẨM
+                      </Link>
+                    }
+                  ></SubMenu>
                 )}
                 {!loading &&
                   menuItem.map((c, id) => {
