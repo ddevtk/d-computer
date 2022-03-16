@@ -35,8 +35,9 @@ exports.list = async (req, res) => {
   res.json(subCategories);
 };
 exports.getOne = async (req, res) => {
-  const sub = await SubCategory.findOne({ slug: req.params.slug });
-  console.log(sub);
+  const sub = await SubCategory.findOne({ slug: req.params.slug }).populate(
+    'parent'
+  );
   if (!sub) {
     res.status(403).json({
       message: 'No sub category found',

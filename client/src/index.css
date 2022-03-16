@@ -1,5 +1,6 @@
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
+  background-color: rgb(245, 248, 253) !important;
 }
 .ant-menu-submenu-title {
   display: flex !important;

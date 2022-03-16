@@ -1,12 +1,4 @@
-import {
-  Breadcrumb,
-  Button,
-  Col,
-  Pagination,
-  Row,
-  Select,
-  Typography,
-} from 'antd';
+import { Breadcrumb, Pagination, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import * as categoryApi from '../api/categoryApi';

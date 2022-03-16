@@ -27,6 +27,7 @@ const HomePage = () => {
         acc[key].push(obj);
         return acc;
       }, {});
+      console.log(productObj);
       // {'ipad': [], 'iphone': []}
       const subObj = subRes.data.reduce((acc, obj) => {
         let key = obj['parent']['slug'];
@@ -46,6 +47,8 @@ const HomePage = () => {
       setLoading(false);
     }
   };
+
+  console.log(products);
 
   useEffect(() => {
     loadAllProducts();
@@ -95,7 +98,7 @@ const HomePage = () => {
                 className='d-flex justify-content-between align-items-center'
                 style={{ flexWrap: 'wrap' }}
               >
-                <Link to=''>
+                <Link to={`/category/${product[0]}`}>
                   <h3 style={{ padding: '1rem 0.5rem' }}>
                     {product[0].toUpperCase()}
                   </h3>

@@ -22,27 +22,24 @@ const SingleProduct = () => {
   return (
     <div className='container py-2'>
       <Row>
-        <Breadcrumb style={{ padding: '16px 0' }}>
-          <Link to='/'>
-            <Item>TRANG CHỦ</Item>
-          </Link>
-          <Link to='/product'>
-            <Item>SẢN PHẨM</Item>
-          </Link>
-          {!loading && (
+        {!loading && (
+          <Breadcrumb style={{ padding: '16px 0' }}>
+            <Link to='/'>
+              <Item>TRANG CHỦ</Item>
+            </Link>
+            <Link to='/product'>
+              <Item>SẢN PHẨM</Item>
+            </Link>
+
             <Link to={`/category/${product.category.slug}`}>
               <Item>{product.category.name.toUpperCase()}</Item>
             </Link>
-          )}
-          {!loading && (
-            <Link to={`/${product.sub[0].slug}`}>
+            <Link to={`/sub/${product.sub[0].slug}`}>
               <Item>{product.sub[0].name.toUpperCase()}</Item>
             </Link>
-          )}
-          {!loading && (
             <Item>{`${product.title.toUpperCase().substring(0, 40)}...`}</Item>
-          )}
-        </Breadcrumb>
+          </Breadcrumb>
+        )}
       </Row>
       <Title level={4}> {product.title}</Title>
       <Row gutter={16}>

@@ -23,6 +23,7 @@ import SingleProduct from './pages/SingleProduct';
 import AllProduct from './pages/AllProduct';
 import ProductByCategory from './pages/ProductByCategory';
 import { BackTop } from 'antd';
+import ProductBySub from './pages/ProductBySub';
 const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
 const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
 const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
@@ -44,7 +45,7 @@ const App = () => {
             <Route path='/' element={<HomePage />} />
             <Route path='/:slug' element={<SingleProduct />} />
             <Route path='/category/:slug' element={<ProductByCategory />} />
-            <Route path='/sub/:slug' element={<SingleProduct />} />
+            <Route path='/sub/:slug' element={<ProductBySub />} />
             <Route path='/product' element={<AllProduct />} />
             <Route path='/login' element={<AuthRoute />}>
               <Route path='/login' element={<Login />} />

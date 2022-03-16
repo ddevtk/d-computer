@@ -34,6 +34,7 @@ const Header = () => {
   const [menuItem, setMenuItem] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(false);
+  const [title, setTitle] = useState('');
 
   const { user } = useSelector((state) => state.user);
 
@@ -43,10 +44,7 @@ const Header = () => {
     });
   };
 
-  console.log(search);
-
   const loadCategory = async () => {
-    setLoading(true);
     try {
       const subRes = await subApi.getAllSubCategories();
       const categoryRes = await categoryApi.getAllCategories();
@@ -73,6 +71,12 @@ const Header = () => {
     } catch (error) {
       setLoading(false);
     }
+  };
+
+  const onFinish = (e) => {
+    e.preventDefault();
+    title && navigate(`/product/?title=${title.trimEnd().trimStart()}`);
+    setTitle('');
   };
 
   useEffect(() => {
@@ -162,13 +166,13 @@ const Header = () => {
                   })}
               </Menu>
               <div
-                className='d-flex align-items-center justify-content-between'
+                className='d-flex align-items-center justify-content-end'
                 style={{ flexWrap: 'wrap' }}
               >
-                <Form
+                <form
                   className='d-flex justify-content-end'
-                  onClick={() => setSearch(!search)}
-                  // onMouseLeave={() => setSearch(false)}
+                  onClick={() => setSearch(true)}
+                  onSubmit={onFinish}
                 >
                   <Input
                     className={`d-flex ${search ? 'search-normal' : ''}`}
@@ -177,11 +181,13 @@ const Header = () => {
                       marginRight: '0.5rem',
                       borderRadius: '1rem',
                     }}
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                     size='middle'
                     placeholder='Nhập nội dung tìm kiếm...'
                     suffix={<SearchOutlined />}
                   />
-                </Form>
+                </form>
                 <div className='d-flex'>
                   <Link className='text-reset me-2' to=''>
                     <i className='fas fa-shopping-cart'></i>

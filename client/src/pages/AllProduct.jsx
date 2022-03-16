@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Breadcrumb, Button, Col, Pagination } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import * as categoryApi from '../api/categoryApi';
 import * as productApi from '../api/productApi';
 import CategoryOrSubButtonGroup from '../components/CategoryOrSubButtonGroup';
@@ -8,13 +8,28 @@ import SelectByPrice from '../components/SelectByPrice';
 import LoadingCard from '../components/Card/LoadingCard';
 import ProductCard from '../components/Card/ProductCard';
 
-const AllProduct = () => {
+const formatStringForSearchHandler = (str) => {
+  return str.replaceAll(' ', '').toLowerCase();
+};
+
+const filterByTitleHandler = (productArr, title) => {
+  console.log(title);
+  return title
+    ? productArr.filter((p) => {
+        return formatStringForSearchHandler(p.title).includes(
+          formatStringForSearchHandler(title)
+        );
+      })
+    : productArr;
+};
+
+const AllProduct = ({ match }) => {
   const { Item } = Breadcrumb;
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(1);
-
   const [products, setProducts] = useState({ total: '', items: [] });
+  const [searchParams] = useSearchParams();
 
   const loadCategory = () => {
     categoryApi.getAllCategories().then((res) => {
@@ -27,7 +42,11 @@ const AllProduct = () => {
     try {
       const { data } = await productApi.getProductPerPage(current, pageSize);
 
-      setProducts({ total: data.total.length, items: data.products });
+      setProducts({
+        total: filterByTitleHandler(data.total, searchParams.get('title'))
+          .length,
+        items: filterByTitleHandler(data.products, searchParams.get('title')),
+      });
       setTimeout(() => {
         setLoading(false);
       }, 100);
@@ -44,7 +63,10 @@ const AllProduct = () => {
   useEffect(() => {
     loadCategory();
     loadProduct();
-  }, []);
+  }, [searchParams]);
+  // useEffect(() => {
+  //   loadProduct();
+  // }, [searchParams]);
 
   return (
     <div className='container py-2' style={{ backgroundColor: '#f8f8f8' }}>
