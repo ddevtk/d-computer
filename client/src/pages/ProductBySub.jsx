@@ -6,6 +6,20 @@ import * as subApi from '../api/subCategoryApi';
 import * as productApi from '../api/productApi';
 import LoadingCard from '../components/Card/LoadingCard';
 import ProductCard from '../components/Card/ProductCard';
+import PaginationOfProductPage from '../components/PaginationOfProductPage';
+
+const locTheoGia = (productArr, byPrice) => {
+  let newProduct = productArr;
+
+  if (byPrice === 'lth') {
+    newProduct = newProduct.sort((a, b) => a.price - b.price);
+  }
+  if (byPrice === 'htl') {
+    newProduct = newProduct.sort((a, b) => b.price - a.price);
+  }
+  console.log(newProduct);
+  return newProduct;
+};
 
 const ProductBySub = () => {
   const params = useParams();
@@ -15,6 +29,7 @@ const ProductBySub = () => {
   const [category, setCategory] = useState({ name: '', slug: '' });
   const [current, setCurrent] = useState(1);
   const [products, setProducts] = useState({ total: '', items: [] });
+  const [selectedByPrice, setSelectedByPrice] = useState('');
 
   const loadSub = async () => {
     try {
@@ -28,10 +43,10 @@ const ProductBySub = () => {
     try {
       const { data } = await productApi.getProductPerPage(current, pageSize);
       console.log(data);
-      const total = data.total.filter((p) => {
+      const total = locTheoGia(data.total, selectedByPrice).filter((p) => {
         return p.sub.some((subVal) => subVal.slug === params.slug);
       });
-      const items = data.products.filter((p) => {
+      const items = locTheoGia(data.products, selectedByPrice).filter((p) => {
         return p.sub.some((subVal) => subVal.slug === params.slug);
       });
 
@@ -52,7 +67,7 @@ const ProductBySub = () => {
   useEffect(() => {
     loadSub();
     loadProduct();
-  }, [params]);
+  }, [params, selectedByPrice]);
 
   return (
     <div className='container py-2' style={{ backgroundColor: '#f8f8f8' }}>
@@ -71,7 +86,7 @@ const ProductBySub = () => {
         </Breadcrumb>
       </Row>
       <Row className='mt-3 align-items-center justify-content-end'>
-        <SelectByPrice />
+        <SelectByPrice setSelectedByPrice={setSelectedByPrice} />
       </Row>
       {loading && (
         <div
@@ -90,17 +105,10 @@ const ProductBySub = () => {
           ))}
         </Row>
       )}
-      <Pagination
-        total={products.total}
+      <PaginationOfProductPage
+        changePagination={changePagination}
         current={current}
-        pageSize={9}
-        responsive
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '2rem',
-        }}
-        onChange={changePagination}
+        total={products.total}
       />
     </div>
   );

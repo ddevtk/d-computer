@@ -7,28 +7,37 @@ import CategoryOrSubButtonGroup from '../components/CategoryOrSubButtonGroup';
 import SelectByPrice from '../components/SelectByPrice';
 import LoadingCard from '../components/Card/LoadingCard';
 import ProductCard from '../components/Card/ProductCard';
+import PaginationOfProductPage from '../components/PaginationOfProductPage';
 
 const formatStringForSearchHandler = (str) => {
   return str.replaceAll(' ', '').toLowerCase();
 };
 
-const filterByTitleHandler = (productArr, title) => {
-  console.log(title);
-  return title
-    ? productArr.filter((p) => {
-        return formatStringForSearchHandler(p.title).includes(
-          formatStringForSearchHandler(title)
-        );
-      })
-    : productArr;
+const locTheoGiaVaTitle = (productArr, title, byPrice) => {
+  let newProduct = productArr;
+  if (title) {
+    newProduct = productArr.filter((p) => {
+      return formatStringForSearchHandler(p.title).includes(
+        formatStringForSearchHandler(title)
+      );
+    });
+  }
+  if (byPrice === 'lth') {
+    newProduct = newProduct.sort((a, b) => a.price - b.price);
+  }
+  if (byPrice === 'htl') {
+    newProduct = newProduct.sort((a, b) => b.price - a.price);
+  }
+  return newProduct;
 };
 
-const AllProduct = ({ match }) => {
+const AllProduct = () => {
   const { Item } = Breadcrumb;
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(1);
   const [products, setProducts] = useState({ total: '', items: [] });
+  const [selectedByPrice, setSelectedByPrice] = useState('');
   const [searchParams] = useSearchParams();
 
   const loadCategory = () => {
@@ -43,9 +52,16 @@ const AllProduct = ({ match }) => {
       const { data } = await productApi.getProductPerPage(current, pageSize);
 
       setProducts({
-        total: filterByTitleHandler(data.total, searchParams.get('title'))
-          .length,
-        items: filterByTitleHandler(data.products, searchParams.get('title')),
+        total: locTheoGiaVaTitle(
+          data.total,
+          searchParams.get('title'),
+          selectedByPrice
+        ).length,
+        items: locTheoGiaVaTitle(
+          data.products,
+          searchParams.get('title'),
+          selectedByPrice
+        ),
       });
       setTimeout(() => {
         setLoading(false);
@@ -63,10 +79,7 @@ const AllProduct = ({ match }) => {
   useEffect(() => {
     loadCategory();
     loadProduct();
-  }, [searchParams]);
-  // useEffect(() => {
-  //   loadProduct();
-  // }, [searchParams]);
+  }, [searchParams, selectedByPrice]);
 
   return (
     <div className='container py-2' style={{ backgroundColor: '#f8f8f8' }}>
@@ -85,7 +98,7 @@ const AllProduct = ({ match }) => {
           })}
       </Row>
       <Row className='mt-3 align-items-center justify-content-end'>
-        <SelectByPrice />
+        <SelectByPrice setSelectedByPrice={setSelectedByPrice} />
       </Row>
 
       {loading && (
@@ -105,17 +118,10 @@ const AllProduct = ({ match }) => {
           ))}
         </Row>
       )}
-      <Pagination
-        total={products.total}
+      <PaginationOfProductPage
+        changePagination={changePagination}
         current={current}
-        pageSize={9}
-        responsive
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '2rem',
-        }}
-        onChange={changePagination}
+        total={products.total}
       />
     </div>
   );

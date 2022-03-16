@@ -8,6 +8,20 @@ import ProductCard from '../components/Card/ProductCard';
 import LoadingCard from '../components/Card/LoadingCard';
 import SelectByPrice from '../components/SelectByPrice';
 import CategoryOrSubButtonGroup from '../components/CategoryOrSubButtonGroup';
+import PaginationOfProductPage from '../components/PaginationOfProductPage';
+
+const locTheoGia = (productArr, byPrice) => {
+  let newProduct = productArr;
+
+  if (byPrice === 'lth') {
+    newProduct = newProduct.sort((a, b) => a.price - b.price);
+  }
+  if (byPrice === 'htl') {
+    newProduct = newProduct.sort((a, b) => b.price - a.price);
+  }
+  console.log(newProduct);
+  return newProduct;
+};
 
 const ProductByCategory = () => {
   const { Item } = Breadcrumb;
@@ -16,6 +30,7 @@ const ProductByCategory = () => {
   const [current, setCurrent] = useState(1);
   const [products, setProducts] = useState({ total: '', items: [] });
   const [loading, setLoading] = useState(true);
+  const [selectedByPrice, setSelectedByPrice] = useState('');
 
   const loadSub = async () => {
     try {
@@ -28,8 +43,10 @@ const ProductByCategory = () => {
     setLoading(true);
     try {
       const { data } = await productApi.getProductPerPage(current, pageSize);
-      const total = data.total.filter((p) => p.category.slug === params.slug);
-      const items = data.products.filter(
+      const total = locTheoGia(data.total, selectedByPrice).filter(
+        (p) => p.category.slug === params.slug
+      );
+      const items = locTheoGia(data.products, selectedByPrice).filter(
         (p) => p.category.slug === params.slug
       );
 
@@ -50,7 +67,7 @@ const ProductByCategory = () => {
   useEffect(() => {
     loadSub();
     loadProduct();
-  }, [params]);
+  }, [params, selectedByPrice]);
 
   return (
     <>
@@ -73,7 +90,7 @@ const ProductByCategory = () => {
             })}
         </Row>
         <Row className='mt-3 align-items-center justify-content-end'>
-          <SelectByPrice />
+          <SelectByPrice setSelectedByPrice={setSelectedByPrice} />
         </Row>
 
         {loading && (
@@ -93,17 +110,10 @@ const ProductByCategory = () => {
             ))}
           </Row>
         )}
-        <Pagination
-          total={products.total}
+        <PaginationOfProductPage
+          changePagination={changePagination}
           current={current}
-          pageSize={9}
-          responsive
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '2rem',
-          }}
-          onChange={changePagination}
+          total={products.total}
         />
       </div>
     </>
