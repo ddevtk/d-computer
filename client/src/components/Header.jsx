@@ -165,10 +165,7 @@ const Header = () => {
                     );
                   })}
               </Menu>
-              <div
-                className='d-flex align-items-center justify-content-end'
-                style={{ flexWrap: 'wrap' }}
-              >
+              <div className='d-flex align-items-center justify-content-end'>
                 <form
                   className='d-flex justify-content-end'
                   onClick={() => setSearch(true)}

@@ -38,7 +38,12 @@ const Category = () => {
 
   return (
     <Layout
-      style={{ padding: '24px 0', background: '#fff', flexDirection: 'row' }}
+      style={{
+        padding: '1.5rem 0',
+        background: '#fff',
+        flexDirection: 'row',
+        minHeight: '90vh',
+      }}
     >
       <AdminNav selectedKey='categories' />
       <Content style={{ padding: '0 24px', minHeight: 280 }}>

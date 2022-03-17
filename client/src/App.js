@@ -24,6 +24,7 @@ import AllProduct from './pages/AllProduct';
 import ProductByCategory from './pages/ProductByCategory';
 import { BackTop } from 'antd';
 import ProductBySub from './pages/ProductBySub';
+import Page404 from './pages/Page404';
 const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
 const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
 const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
@@ -92,6 +93,7 @@ const App = () => {
             <Route path='/admin/coupon' element={<AdminRoute />}>
               <Route path='/admin/coupon' element={<Coupon />} />
             </Route>
+            <Route path='*' element={<Page404 />} />
           </Routes>
         </div>
       </Suspense>

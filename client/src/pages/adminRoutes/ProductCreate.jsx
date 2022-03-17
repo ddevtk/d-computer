@@ -8,7 +8,12 @@ import ProductCreateForm from '../../components/ProductAdmin/ProductCreateForm';
 const ProductCreate = () => {
   return (
     <Layout
-      style={{ padding: '24px 0', background: '#fff', flexDirection: 'row' }}
+      style={{
+        padding: '1.5rem 0',
+        background: '#fff',
+        flexDirection: 'row',
+        minHeight: '90vh',
+      }}
     >
       <AdminNav selectedKey='products' />
       <Content style={{ padding: '0 24px', minHeight: 280 }}>
