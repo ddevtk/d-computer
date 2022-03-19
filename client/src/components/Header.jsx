@@ -25,6 +25,7 @@ import {
 } from 'mdb-react-ui-kit';
 import logo from '../images/logo.png';
 import { Affix, Form, Input, Menu } from 'antd';
+import avatar from '../images/avatar.png';
 import SubMenu from 'antd/lib/menu/SubMenu';
 
 const Header = () => {
@@ -202,7 +203,7 @@ const Header = () => {
                     <MDBDropdown>
                       <MDBDropdownToggle className='text-reset' tag='a'>
                         <img
-                          src={user.avatar}
+                          src={user.avatar || avatar}
                           className='rounded-circle'
                           height='25'
                           alt='Black and White Portrait of a Man'
@@ -220,7 +221,7 @@ const Header = () => {
                                 to='/user/history'
                                 className='d-flex align-items-center text-reset'
                               >
-                                <AppstoreOutlined /> History
+                                <AppstoreOutlined className='mx-2' /> History
                               </Link>
                             </MDBDropdownLink>
                           </MDBDropdownItem>

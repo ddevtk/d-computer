@@ -36,6 +36,7 @@ const Register = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 label='Email address'
+                required
               />
             </MDBCol>
             <div className='row mt-2'>

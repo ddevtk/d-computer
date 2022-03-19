@@ -21,6 +21,7 @@ export const unsubscribe = () => (dispatch) => {
         const { data } = await api.currentUser(idToken);
 
         const { name, email, _id, role, avatar } = data;
+        console.log(data);
 
         dispatch({
           type: userActionType.LOGGED_IN_SUCCESS,

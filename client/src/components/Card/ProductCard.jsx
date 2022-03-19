@@ -2,6 +2,7 @@ import { Card, Col, Tooltip, Typography } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import image from '../../images/laptop.jpg';
+import Rating from '../Rating';
 
 const ProductCard = ({ product }) => {
   const { Meta } = Card;
@@ -41,6 +42,7 @@ const ProductCard = ({ product }) => {
             currency: 'VND',
           })}
         </Typography.Paragraph>
+        <Rating product={product} small={true} />
       </Card>
     </Col>
   );

@@ -1,25 +1,13 @@
-import {
-  HeartOutlined,
-  ShoppingCartOutlined,
-  StarOutlined,
-} from '@ant-design/icons';
-import {
-  Breadcrumb,
-  Card,
-  Col,
-  List,
-  Row,
-  Tabs,
-  Tooltip,
-  Typography,
-} from 'antd';
+import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { Breadcrumb, Card, Col, List, Row, Tabs, Tooltip } from 'antd';
+import * as productApi from '../api/productApi';
 import Title from 'antd/lib/typography/Title';
 import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import { Link, useParams } from 'react-router-dom';
-import * as api from '../api/productApi';
 import Loader from '../components/Loader';
 import Page404 from './Page404';
+import Rating from '../components/Rating';
 
 const SingleProduct = () => {
   const { Item } = Breadcrumb;
@@ -27,10 +15,9 @@ const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(true);
-  // const [counter, setCounter] = useState(0);
   useEffect(() => {
     setLoading(true);
-    api
+    productApi
       .getOne(params.slug)
       .then((res) => {
         setProduct(res.data);
@@ -42,11 +29,9 @@ const SingleProduct = () => {
         setErr(true);
       });
   }, [params]);
-  console.log(product);
 
   return (
     <div className='container py-2'>
-      {/* <button onClick={() => setCounter(counter + 1)}>{counter}</button> */}
       {loading && <Loader />}
       {!loading && !err && (
         <>
@@ -74,7 +59,7 @@ const SingleProduct = () => {
           <div className='d-flex flex-wrap justify-content-between align-items-center'>
             <Title level={4}> {product.title}</Title>
             <div className='text-center mx-2'>
-              {product?.ratings?.length === 0 && 'Không có đánh giá'}
+              <Rating product={product} />
             </div>
           </div>
           <Row gutter={16}>
@@ -105,9 +90,6 @@ const SingleProduct = () => {
 
                   <Tooltip title='Thêm sản phẩm vào danh sách yêu thích'>
                     <HeartOutlined className='text-danger' />
-                  </Tooltip>,
-                  <Tooltip title='Đăng nhập để đánh giá'>
-                    <StarOutlined className='text-success' />
                   </Tooltip>,
                 ]}
               >
@@ -144,9 +126,9 @@ const SingleProduct = () => {
               <Tabs type='card' className='mt-2'>
                 <Tabs.TabPane tab='Mô tả' key='1'>
                   {product?.description?.split('. ').map((str) => (
-                    <Typography.Title level={5}>
+                    <p style={{ marginBottom: '0.4rem' }}>
                       {str.charAt(0).toUpperCase() + str.slice(1)}
-                    </Typography.Title>
+                    </p>
                   ))}
                 </Tabs.TabPane>
                 <Tabs.TabPane tab='Thông tin thêm' key='2'>

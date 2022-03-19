@@ -44,6 +44,7 @@ const RegisterComplete = () => {
         const idToken = await user.getIdToken();
 
         const { data } = await api.createOrUpdateUser(idToken);
+        console.log(data);
 
         dispatch({
           type: userActionType.LOGGED_IN_SUCCESS,

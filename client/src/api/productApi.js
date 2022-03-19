@@ -31,3 +31,14 @@ export const updateProduct = async (slug, product, token) => {
     },
   });
 };
+
+export const danhGiaSp = async (productId, star, token) =>
+  axios.put(
+    `${process.env.REACT_APP_API}/product/rating/${productId}`,
+    { star },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
