@@ -1,5 +1,6 @@
 const slugify = require('slugify');
 const { Product } = require('../model/productModel');
+const { User } = require('../model/userModel');
 
 exports.create = async (req, res) => {
   try {
@@ -13,6 +14,34 @@ exports.create = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(400).json({ message: 'Create product failed' });
+  }
+};
+
+exports.createOrUpdateRatings = async (req, res) => {
+  try {
+    const product = await Product.findById({ _id: req.params.productId });
+    const user = await User.findOne({ email: req.user.email });
+    let updatedProduct = {};
+
+    const existedRating = product.ratings.findIndex((rate) => {
+      return rate.postedBy.toString() === user._id.toString();
+    });
+    if (existedRating !== -1) {
+      product.ratings[existedRating].star = req.body.star;
+      updatedProduct = await product.save();
+      return res.json(updatedProduct);
+    } else {
+      updatedProduct = await Product.findByIdAndUpdate(
+        product._id,
+        {
+          $push: { ratings: { star: req.body.star, postedBy: user._id } },
+        },
+        { new: true }
+      );
+      return res.json(updatedProduct);
+    }
+  } catch (error) {
+    res.json({ message: error.message });
   }
 };
 

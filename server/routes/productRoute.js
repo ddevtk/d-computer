@@ -6,6 +6,7 @@ const {
   remove,
   getOne,
   update,
+  createOrUpdateRatings,
 } = require('../controllers/productController');
 const { authCheck } = require('../middlewares/auth');
 
@@ -16,5 +17,6 @@ router.get('/', getProductPerPage);
 router.delete('/:slug', authCheck, adminCheck, remove);
 router.get('/:slug', getOne);
 router.put('/:slug', authCheck, adminCheck, update);
+router.put('/rating/:productId', authCheck, createOrUpdateRatings);
 
 module.exports = router;
