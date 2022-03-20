@@ -8,13 +8,19 @@ import { Link, useParams } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Page404 from './Page404';
 import Rating from '../components/Rating';
+import { useSelector } from 'react-redux';
+import RelatedProducts from '../components/RelatedProducts';
+import ProductComment from '../components/ProductComment';
 
 const SingleProduct = () => {
   const { Item } = Breadcrumb;
   const params = useParams();
   const [product, setProduct] = useState({});
+  const [relatedProduct, setRelatedProduct] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(true);
+  const { user } = useSelector((state) => state.user);
+
   useEffect(() => {
     setLoading(true);
     productApi
@@ -28,6 +34,12 @@ const SingleProduct = () => {
         setLoading(false);
         setErr(true);
       });
+    productApi
+      .getSanPhamLienQuan(params.slug)
+      .then((res) => {
+        setRelatedProduct(res.data);
+      })
+      .catch((err) => console.error(err.message));
   }, [params]);
 
   return (
@@ -137,6 +149,8 @@ const SingleProduct = () => {
               </Tabs>
             </Col>
           </Row>
+          <RelatedProducts relatedProduct={relatedProduct} />
+          <ProductComment params={params} product={product} user={user} />
         </>
       )}
       {!loading && err && <Page404 />}

@@ -30,7 +30,7 @@ const ProductUpdate = () => {
     <Layout
       style={{
         padding: '1.5rem 0',
-        background: '#fff',
+        backgroundColor: 'rgb(245, 248, 253)',
         flexDirection: 'row',
         minHeight: '90vh',
       }}

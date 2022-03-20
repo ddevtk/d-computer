@@ -13,7 +13,7 @@ export const getProductPerPage = async (current, limit) =>
   );
 
 export const deleteProduct = async (slug, token) => {
-  return axios.delete(`${process.env.REACT_APP_API}/product/${slug}`, {
+  return await axios.delete(`${process.env.REACT_APP_API}/product/${slug}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -21,19 +21,23 @@ export const deleteProduct = async (slug, token) => {
 };
 
 export const getOne = async (slug) => {
-  return axios.get(`${process.env.REACT_APP_API}/product/${slug}`);
+  return await axios.get(`${process.env.REACT_APP_API}/product/${slug}`);
 };
 
 export const updateProduct = async (slug, product, token) => {
-  return axios.put(`${process.env.REACT_APP_API}/product/${slug}`, product, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return await axios.put(
+    `${process.env.REACT_APP_API}/product/${slug}`,
+    product,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
 export const danhGiaSp = async (productId, star, token) =>
-  axios.put(
+  await axios.put(
     `${process.env.REACT_APP_API}/product/rating/${productId}`,
     { star },
     {
@@ -42,3 +46,6 @@ export const danhGiaSp = async (productId, star, token) =>
       },
     }
   );
+
+export const getSanPhamLienQuan = async (slug) =>
+  await axios.get(`${process.env.REACT_APP_API}/product/related/${slug}`);

@@ -63,6 +63,21 @@ exports.getProductPerPage = async (req, res) => {
   res.json({ total: allProducts, products });
 };
 
+exports.getRelatedProduct = async (req, res) => {
+  const product = await Product.find({ slug: req.params.slug });
+  console.log(product);
+
+  const relatedProduct = await Product.find({
+    _id: { $ne: product[0]._id },
+    category: product[0].category,
+  })
+    .limit(3)
+    .populate('category')
+    .populate('sub');
+
+  res.json(relatedProduct);
+};
+
 exports.remove = async (req, res) => {
   const deleted = await Product.findOneAndDelete({ slug: req.params.slug });
   if (deleted) {
@@ -82,6 +97,7 @@ exports.getOne = async (req, res) => {
   }
   res.json(product);
 };
+
 exports.update = async (req, res) => {
   try {
     if (req.body.title) {

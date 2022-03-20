@@ -3,7 +3,13 @@ import React from 'react';
 const Loader = () => {
   return (
     <div className='wrap'>
-      <span className='loader'></span>
+      <div className='spinner'>
+        <div className='spinner-item'></div>
+        <div className='spinner-item'></div>
+        <div className='spinner-item'></div>
+        <div className='spinner-item'></div>
+        <div className='spinner-item'></div>
+      </div>
     </div>
   );
 };

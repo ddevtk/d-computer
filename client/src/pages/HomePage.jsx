@@ -27,7 +27,6 @@ const HomePage = () => {
         acc[key].push(obj);
         return acc;
       }, {});
-      console.log(productObj);
       // {'ipad': [], 'iphone': []}
       const subObj = subRes.data.reduce((acc, obj) => {
         let key = obj['parent']['slug'];

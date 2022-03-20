@@ -1,19 +1,5 @@
 const mongoose = require('mongoose');
 
-const commentSchema = new mongoose.Schema(
-  {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-
-    username: { type: String, required: true },
-    comment: { type: String, required: true },
-  },
-  { timestamps: true }
-);
-
 const productSchema = new mongoose.Schema(
   {
     title: {
@@ -61,7 +47,6 @@ const productSchema = new mongoose.Schema(
         postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       },
     ],
-    comments: [commentSchema],
   },
   { timestamps: true }
 );

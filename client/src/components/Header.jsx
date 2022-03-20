@@ -87,7 +87,10 @@ const Header = () => {
   return (
     <Affix>
       <header>
-        <MDBNavbar expand='lg' style={{ backgroundColor: '#f8f8f8' }}>
+        <MDBNavbar
+          expand='lg'
+          style={{ backgroundColor: 'rgb(245, 248, 253)' }}
+        >
           <MDBContainer fluid>
             <MDBNavbarToggler
               type='button'
