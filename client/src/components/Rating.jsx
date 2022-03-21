@@ -31,7 +31,6 @@ const Rating = ({ product, small }) => {
             'Cảm ơn đã đánh giá sản phẩm. Đánh giá của bạn sẽ xuất hiện sau chốc lát',
           duration: 2,
         });
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);

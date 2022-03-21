@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import Loader from './components/Loader';
-import Header from './components/Header';
+
 import ForgotPassword from './pages/auth/ForgotPassword';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -25,6 +25,7 @@ import ProductByCategory from './pages/ProductByCategory';
 import { BackTop } from 'antd';
 import ProductBySub from './pages/ProductBySub';
 import Page404 from './pages/Page404';
+import Header from './components/Header';
 const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
 const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
 const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));

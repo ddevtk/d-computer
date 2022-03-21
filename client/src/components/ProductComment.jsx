@@ -104,7 +104,7 @@ const ProductComment = ({ user, product, params }) => {
         }),
       });
     });
-  }, [comment, params]);
+  }, [params]);
 
   return (
     <>

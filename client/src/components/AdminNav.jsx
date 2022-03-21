@@ -1,4 +1,4 @@
-import { Button, Menu } from 'antd';
+import { Button, Col, Grid, Menu, Row } from 'antd';
 import React from 'react';
 import {
   MenuUnfoldOutlined,
@@ -14,32 +14,14 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 const AdminNav = ({ selectedKey }) => {
-  const [collapsed, setCollapsed] = useState(false);
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
+  const { useBreakpoint } = Grid;
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'start',
-        alignItems: 'center',
-      }}
-    >
-      <Button
-        type='primary'
-        style={{ marginBottom: 16 }}
-        onClick={toggleCollapsed}
-      >
-        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      </Button>
+    <Col md={{ span: 4 }}>
       <Menu
-        inlineCollapsed={collapsed}
         defaultSelectedKeys={selectedKey}
-        mode='inline'
+        mode={useBreakpoint().md ? 'inline' : 'horizontal'}
         theme='light'
-        style={{ maxWidth: '12rem' }}
       >
         <Menu.Item key='dashboard' icon={<AppstoreOutlined />}>
           <Link to='/admin/dashboard'>Dashboard</Link>
@@ -60,7 +42,7 @@ const AdminNav = ({ selectedKey }) => {
           <Link to='/admin/password'>Mật khẩu</Link>
         </Menu.Item>
       </Menu>
-    </div>
+    </Col>
   );
 };
 

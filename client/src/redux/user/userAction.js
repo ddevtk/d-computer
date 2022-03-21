@@ -28,7 +28,7 @@ export const unsubscribe = () => (dispatch) => {
           payload: { _id, name, email, token: idToken, role, avatar },
         });
       } catch (error) {
-        console.error(error.response.data.message);
+        console.error(error);
       }
     } else {
       console.log('User is not signed in');

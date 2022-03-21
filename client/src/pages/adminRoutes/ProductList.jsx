@@ -88,7 +88,7 @@ const ProductList = () => {
   };
 
   return (
-    <Layout
+    <Row
       style={{
         padding: '1.5rem 0',
         backgroundColor: 'rgb(245, 248, 253)',
@@ -97,7 +97,7 @@ const ProductList = () => {
       }}
     >
       <AdminNav selectedKey='products' />
-      <Content style={{ padding: '0 24px', minHeight: 280 }}>
+      <Col style={{ padding: '0 24px', minHeight: 280 }} md={{ span: 20 }}>
         <Row justify='space-between'>
           <Typography.Title level={2}>Tất cả sản phẩm</Typography.Title>
           <Link to='/admin/product/create'>
@@ -181,8 +181,8 @@ const ProductList = () => {
           }}
           onChange={changePagination}
         />
-      </Content>
-    </Layout>
+      </Col>
+    </Row>
   );
 };
 
