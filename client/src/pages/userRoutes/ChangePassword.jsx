@@ -1,4 +1,4 @@
-import { Alert, Layout, notification, Spin } from 'antd';
+import { Alert, Col, Layout, notification, Row, Spin } from 'antd';
 import { MDBInput } from 'mdb-react-ui-kit';
 
 import { Content } from 'antd/lib/layout/layout';
@@ -39,19 +39,20 @@ const ChangePassword = () => {
   };
 
   return (
-    <Layout
-      style={{ padding: '24px 0', background: '#fff', flexDirection: 'row' }}
+    <Row
+      style={{
+        padding: '1.5rem 0',
+        backgroundColor: 'rgb(245, 248, 253)',
+        minHeight: '90vh',
+      }}
     >
       <UserNav selectedKey='change-password' />
 
-      <Content
-        style={{
-          padding: '0 24px',
-          minHeight: 280,
-          maxWidth: '40rem',
-          justifyContent: 'center',
-          margin: 'auto',
-        }}
+      <Col
+        sm={24}
+        xs={24}
+        md={{ span: 14, offset: 3 }}
+        style={{ padding: '0 24px', minHeight: 280 }}
       >
         <form onSubmit={handleSubmit}>
           <div className='form-outline mb-4'>
@@ -93,8 +94,8 @@ const ChangePassword = () => {
             )}
           </button>
         </form>
-      </Content>
-    </Layout>
+      </Col>
+    </Row>
   );
 };
 

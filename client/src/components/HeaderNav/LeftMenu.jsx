@@ -9,6 +9,8 @@ const LeftMenu = ({ loading, menuItem, hidden }) => {
     dHeight: window.innerHeight,
   });
 
+  const [current, setCurrent] = useState('');
+
   const setDimension = () => {
     setScreenSize({
       dWidth: window.innerWidth,
@@ -23,12 +25,17 @@ const LeftMenu = ({ loading, menuItem, hidden }) => {
     };
   }, [screenSize]);
 
-  console.log(screenSize.dWidth);
+  const handleClick = (e) => {
+    setCurrent('');
+  };
+
   return (
     <Menu
-      mode={screenSize.dWidth < 975 ? 'vertical' : 'horizontal'}
+      mode={screenSize.dWidth < 1008 ? 'vertical' : 'horizontal'}
       style={{ width: '60%' }}
       className={`${!hidden ? 'leftMenu' : ''}`}
+      selectedKeys={[current]}
+      onClick={handleClick}
     >
       <Menu.Item key='sanpham' style={{ padding: '0 1rem 0 0' }}>
         <Link className='hover-link' to='/product'>
@@ -36,10 +43,11 @@ const LeftMenu = ({ loading, menuItem, hidden }) => {
         </Link>
       </Menu.Item>
       {!loading &&
-        menuItem.map((c, id) => {
+        menuItem.map((c, _id) => {
+          console.log(c);
           if (c[1].length === 0) {
             return (
-              <Menu.Item key={id} style={{ padding: '0 1rem 0 0' }}>
+              <Menu.Item key={c[0]} style={{ padding: '0 1rem 0 0' }}>
                 <Link to={`/category/${c[0]}`} className='hover-link'>
                   {c[0].toUpperCase()}
                 </Link>
@@ -49,7 +57,7 @@ const LeftMenu = ({ loading, menuItem, hidden }) => {
 
           return (
             <SubMenu
-              key={id}
+              key={c[0]}
               title={
                 <Link className='hover-link' to={`/category/${c[0]}`}>
                   {c[0].toUpperCase()}

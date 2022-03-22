@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Row } from 'antd';
+import { Col, Layout, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import AdminNav from '../../components/AdminNav';
 import * as api from '../../api/categoryApi';
@@ -45,7 +45,12 @@ const Category = () => {
       }}
     >
       <AdminNav selectedKey='categories' />
-      <Content style={{ padding: '0 24px', minHeight: 280 }}>
+      <Col
+        sm={24}
+        xs={24}
+        md={20}
+        style={{ padding: '0 24px', minHeight: 280 }}
+      >
         <div className='container'>
           <div className='row' style={{ justifyContent: 'center' }}>
             <div className='col-lg-8 col-md-10 col-sm-12'>
@@ -71,7 +76,7 @@ const Category = () => {
             </div>
           </div>
         </div>
-      </Content>
+      </Col>
     </Row>
   );
 };

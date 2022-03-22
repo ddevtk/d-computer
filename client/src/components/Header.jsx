@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../redux/user/userAction';
 import { useDispatch, useSelector } from 'react-redux';
 import * as categoryApi from '../api/categoryApi';
 import * as subApi from '../api/subCategoryApi';
 
 import logo from '../images/logo.png';
-import { Affix, Button, Drawer, Space } from 'antd';
+import { Affix, Button, Drawer } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 
 import LeftMenu from './HeaderNav/LeftMenu';
@@ -20,10 +20,9 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(false);
   const [title, setTitle] = useState('');
+  const [visible, setVisible] = useState(false);
 
   const { user } = useSelector((state) => state.user);
-
-  const [visible, setVisible] = useState(false);
 
   const toggleDrawer = () => {
     setVisible(!visible);
@@ -59,8 +58,6 @@ const Header = () => {
       });
 
       setMenuItem(Object.entries(subObj));
-      // setTimeout(() => {
-      // }, 100);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -80,13 +77,15 @@ const Header = () => {
   return (
     <Affix>
       <nav className='menuBar'>
-        <img
-          className='logo'
-          src={logo}
-          height='50'
-          alt='MDB Logo'
-          loading='lazy'
-        />
+        <Link to='/'>
+          <img
+            className='logo'
+            src={logo}
+            height='50'
+            alt='MDB Logo'
+            loading='lazy'
+          />
+        </Link>
         <div className='d-flex justify-content-between'>
           <LeftMenu loading={loading} menuItem={menuItem} hidden={false} />
           <div

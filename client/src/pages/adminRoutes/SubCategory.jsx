@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as categoryApi from '../../api/categoryApi';
 import * as subCategoryApi from '../../api/subCategoryApi';
-import { Layout } from 'antd';
+import { Col, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import AdminNav from '../../components/AdminNav';
 
@@ -43,16 +43,20 @@ const SubCategory = () => {
   }, []);
 
   return (
-    <Layout
+    <Row
       style={{
         padding: '1.5rem 0',
         backgroundColor: 'rgb(245, 248, 253)',
-        flexDirection: 'row',
         minHeight: '90vh',
       }}
     >
       <AdminNav selectedKey='sub' />
-      <Content style={{ padding: '0 24px', minHeight: 280 }}>
+      <Col
+        sm={24}
+        xs={24}
+        md={20}
+        style={{ padding: '0 24px', minHeight: 280 }}
+      >
         <div className='container'>
           <div className='row' style={{ justifyContent: 'center' }}>
             <div className='col-lg-8 col-md-10 col-sm-12'>
@@ -83,8 +87,8 @@ const SubCategory = () => {
             </div>
           </div>
         </div>
-      </Content>
-    </Layout>
+      </Col>
+    </Row>
   );
 };
 

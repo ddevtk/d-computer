@@ -11,16 +11,14 @@ import {
   UnlockOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 
 const AdminNav = ({ selectedKey }) => {
-  const { useBreakpoint } = Grid;
-
   return (
-    <Col md={{ span: 4 }}>
+    <Col xs={24} sm={24} md={4}>
       <Menu
         defaultSelectedKeys={selectedKey}
-        mode={useBreakpoint().md ? 'inline' : 'horizontal'}
+        // mode={useBreakpoint().md ? 'inline' : 'horizontal'}
+        mode='inline'
         theme='light'
       >
         <Menu.Item key='dashboard' icon={<AppstoreOutlined />}>

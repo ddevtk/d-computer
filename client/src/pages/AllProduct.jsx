@@ -102,7 +102,7 @@ const AllProduct = () => {
       </Row>
 
       {loading && (
-        <div className='container' style={{ marginBottom: '2rem' }}>
+        <div className='container mt-2' style={{ marginBottom: '2rem' }}>
           <Row justify='start' gutter={[16, 16]}>
             <LoadingCard count={6} />
           </Row>

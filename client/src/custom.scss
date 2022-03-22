@@ -88,7 +88,7 @@
   margin-right: 1rem;
 }
 
-@media (max-width: 975px) {
+@media (max-width: 1008px) {
   .leftMenu {
     display: none !important;
   }
@@ -124,8 +124,21 @@
     & form {
       margin-bottom: 1rem;
     }
-    & > div:last-child {
-      margin-left: 2.5rem;
+  }
+}
+
+.ant-popover {
+  &-inner {
+    width: 22rem;
+    &-content {
+      padding: 0.3rem 0.3rem !important;
     }
+  }
+  &-title {
+    border-bottom: none !important;
+    padding: 0.3rem 0.3rem !important;
+  }
+  .ant-card-body {
+    padding: 0.8rem !important;
   }
 }

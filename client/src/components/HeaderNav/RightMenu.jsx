@@ -1,17 +1,34 @@
 import React from 'react';
-import { Menu, Grid, Input, Dropdown, Button } from 'antd';
+import {
+  Menu,
+  Grid,
+  Input,
+  Dropdown,
+  Popover,
+  Tooltip,
+  Alert,
+  Divider,
+  Card,
+  Row,
+  Button,
+  Col,
+  Tag,
+  Badge,
+} from 'antd';
 
 import {
   AppstoreOutlined,
   SearchOutlined,
   UserDeleteOutlined,
   UserOutlined,
+  ShoppingCartOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
 import avatar from '../../images/avatar.png';
 
 import { Link } from 'react-router-dom';
 
-const { useBreakpoint } = Grid;
+const str = 'ÁO SƠ MI BRITISH CLASSICS STRIPES 1448';
 
 const RightMenu = ({
   search,
@@ -22,9 +39,6 @@ const RightMenu = ({
   user,
   logoutHandler,
 }) => {
-  console.log(user);
-  const { md } = useBreakpoint();
-
   const userMenu = (
     <Menu>
       <Menu.Item icon={<AppstoreOutlined />}>
@@ -64,15 +78,188 @@ const RightMenu = ({
           onChange={(e) => setTitle(e.target.value)}
           size='middle'
           placeholder='Nhập nội dung tìm kiếm...'
-          suffix={<SearchOutlined />}
+          prefix={<SearchOutlined />}
         />
       </form>
-      <div className='d-flex'>
-        <Link className='text-reset me-2' to=''>
-          <i className='fas fa-shopping-cart'></i>
-        </Link>
+      <div className='d-flex align-items-center'>
+        <Popover
+          trigger='click'
+          placement='bottomLeft'
+          title={
+            <div
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: '#f5f8fd',
+                textAlign: 'center',
+                border: '1px solid #e7ebec',
+                borderRadius: '4px',
+              }}
+            >
+              Giỏ hàng
+            </div>
+          }
+          content={
+            <Card>
+              {/* <div className='text-center'>
+                <ShoppingCartOutlined
+                  style={{ display: 'block', fontSize: '2rem' }}
+                />
+                Hiện chưa có sản phẩm
+              </div> */}
+              <div style={{ maxHeight: '220px', overflowY: 'scroll' }}>
+                <Row>
+                  <Col md={4}>
+                    <img
+                      src='https://res.cloudinary.com/dmdjl8w8l/image/upload/v1647175664/1647175662433.jpg'
+                      alt='test'
+                      style={{ width: '3.2rem' }}
+                    />
+                  </Col>
+                  <Col md={19} offset={1}>
+                    <Row justify='space-between' align='middle'>
+                      <Col>
+                        <span style={{ fontSize: '0.8rem' }}>
+                          {`${str.substring(0, 25)}...`}
+                        </span>
+                      </Col>
+                      <Col>
+                        <CloseOutlined />
+                      </Col>
+                    </Row>
+                    <Row
+                      justify='space-between'
+                      align='middle'
+                      className='mt-2'
+                    >
+                      <Col>
+                        <Tag>2</Tag>
+                      </Col>
+                      <Col>
+                        <span>296.000đ</span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className='mt-3'>
+                  <Col md={4}>
+                    <img
+                      src='https://res.cloudinary.com/dmdjl8w8l/image/upload/v1647175664/1647175662433.jpg'
+                      alt='test'
+                      style={{ width: '3.2rem' }}
+                    />
+                  </Col>
+                  <Col md={19} offset={1}>
+                    <Row justify='space-between' align='middle'>
+                      <Col>
+                        <span style={{ fontSize: '0.8rem' }}>
+                          {`${str.substring(0, 25)}...`}
+                        </span>
+                      </Col>
+                      <Col>
+                        <CloseOutlined />
+                      </Col>
+                    </Row>
+                    <Row
+                      justify='space-between'
+                      align='middle'
+                      className='mt-2'
+                    >
+                      <Col>
+                        <Tag>2</Tag>
+                      </Col>
+                      <Col>
+                        <span>296.000đ</span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className='mt-3'>
+                  <Col md={4}>
+                    <img
+                      src='https://res.cloudinary.com/dmdjl8w8l/image/upload/v1647175664/1647175662433.jpg'
+                      alt='test'
+                      style={{ width: '3.2rem' }}
+                    />
+                  </Col>
+                  <Col md={19} offset={1}>
+                    <Row justify='space-between' align='middle'>
+                      <Col>
+                        <span style={{ fontSize: '0.8rem' }}>
+                          {`${str.substring(0, 25)}...`}
+                        </span>
+                      </Col>
+                      <Col>
+                        <CloseOutlined />
+                      </Col>
+                    </Row>
+                    <Row
+                      justify='space-between'
+                      align='middle'
+                      className='mt-2'
+                    >
+                      <Col>
+                        <Tag>2</Tag>
+                      </Col>
+                      <Col>
+                        <span>296.000đ</span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className='mt-3'>
+                  <Col md={4}>
+                    <img
+                      src='https://res.cloudinary.com/dmdjl8w8l/image/upload/v1647175664/1647175662433.jpg'
+                      alt='test'
+                      style={{ width: '3.2rem' }}
+                    />
+                  </Col>
+                  <Col md={19} offset={1}>
+                    <Row justify='space-between' align='middle'>
+                      <Col>
+                        <span style={{ fontSize: '0.8rem' }}>
+                          {`${str.substring(0, 25)}...`}
+                        </span>
+                      </Col>
+                      <Col>
+                        <CloseOutlined />
+                      </Col>
+                    </Row>
+                    <Row
+                      justify='space-between'
+                      align='middle'
+                      className='mt-2'
+                    >
+                      <Col>
+                        <Tag>2</Tag>
+                      </Col>
+                      <Col>
+                        <span>296.000đ</span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </div>
+              <Divider />
+              <Row align='middle' justify='space-between'>
+                <span>Tổng tiền</span>
+                <span>12.000.000 đ</span>
+              </Row>
+              <Row className='mt-4' justify='space-between'>
+                <Button type='primary'>Xem giỏ hàng</Button>
+                <Button type='primary'>Thanh toán</Button>
+              </Row>
+            </Card>
+          }
+        >
+          <Badge size='small' count={5}>
+            <span className='text-reset me-2' style={{ cursor: 'pointer' }}>
+              <i className='fas fa-shopping-cart'></i>
+            </span>
+          </Badge>
+        </Popover>
         {!user && (
-          <div className='d-flex'>
+          <div className='d-flex' style={{ marginLeft: '0.5rem' }}>
             <Link
               className='text-reset d-flex align-items-center'
               to='/login'
@@ -85,7 +272,10 @@ const RightMenu = ({
 
         {user && user.role === 'subscriber' && (
           <Dropdown overlay={userMenu}>
-            <div className='d-flex align-items-center'>
+            <div
+              className='d-flex align-items-center'
+              style={{ marginLeft: '0.5rem' }}
+            >
               <img
                 src={user.avatar || avatar}
                 className='rounded-circle'
@@ -94,13 +284,16 @@ const RightMenu = ({
                 loading='lazy'
                 style={{ marginRight: '0.2rem' }}
               />
-              {user.name}
+              {`${user.email.split('@')[0].substring(0, 10)}...`}
             </div>
           </Dropdown>
         )}
         {user && user.role === 'admin' && (
           <Dropdown overlay={adminMenu}>
-            <div className='d-flex align-items-center'>
+            <div
+              className='d-flex align-items-center'
+              style={{ marginLeft: '0.5rem' }}
+            >
               <img
                 src={user.avatar || avatar}
                 className='rounded-circle'
@@ -109,6 +302,9 @@ const RightMenu = ({
                 loading='lazy'
                 style={{ marginRight: '0.2rem' }}
               />
+              <Tooltip title={user.email.split('@')[0]} placement='left'>
+                {`${user.email.split('@')[0].substring(0, 10)}...`}
+              </Tooltip>
             </div>
           </Dropdown>
         )}

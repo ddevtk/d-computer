@@ -1,4 +1,4 @@
-import { Layout, Row, Skeleton, Typography } from 'antd';
+import { Col, Layout, Row, Skeleton, Typography } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -27,16 +27,20 @@ const ProductUpdate = () => {
       });
   }, []);
   return (
-    <Layout
+    <Row
       style={{
         padding: '1.5rem 0',
         backgroundColor: 'rgb(245, 248, 253)',
-        flexDirection: 'row',
         minHeight: '90vh',
       }}
     >
       <AdminNav selectedKey='products' />
-      <Content style={{ padding: '0 24px', minHeight: 280 }}>
+      <Col
+        sm={24}
+        xs={24}
+        md={20}
+        style={{ padding: '0 24px', minHeight: 280 }}
+      >
         <Row justify='space-between' className='mb-2'>
           <Typography.Title level={2}>Cập nhật sản phẩm</Typography.Title>
         </Row>
@@ -55,8 +59,8 @@ const ProductUpdate = () => {
             <Typography.Title level={5}>Không có sản phẩn này</Typography.Title>
           </Row>
         )}
-      </Content>
-    </Layout>
+      </Col>
+    </Row>
   );
 };
 
