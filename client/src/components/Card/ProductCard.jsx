@@ -36,7 +36,10 @@ const ProductCard = ({ product }) => {
           }
           description={`${product.description.substring(0, 100)}...`}
         />
-        <Typography.Paragraph type='danger' style={{ marginTop: '1rem' }}>
+        <Typography.Paragraph
+          type='danger'
+          style={{ marginTop: '1rem', fontWeight: 'bold' }}
+        >
           {product.price.toLocaleString('it-IT', {
             style: 'currency',
             currency: 'VND',

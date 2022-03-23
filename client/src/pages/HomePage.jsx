@@ -4,8 +4,6 @@ import * as productApi from '../api/productApi.js';
 import * as subApi from '../api/subCategoryApi';
 import ProductCard from '../components/Card/ProductCard.jsx';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
-import { TransactionOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import LoadingCard from '../components/Card/LoadingCard.jsx';
 
@@ -46,8 +44,6 @@ const HomePage = () => {
       setLoading(false);
     }
   };
-
-  console.log(products);
 
   useEffect(() => {
     loadAllProducts();

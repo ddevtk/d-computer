@@ -8,9 +8,11 @@ import { Link, useParams } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Page404 from './Page404';
 import Rating from '../components/Rating';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import RelatedProducts from '../components/RelatedProducts';
 import ProductComment from '../components/ProductComment';
+import _ from 'lodash';
+import { addToCart } from '../redux/cart/cartAction';
 
 const SingleProduct = () => {
   const { Item } = Breadcrumb;
@@ -20,6 +22,11 @@ const SingleProduct = () => {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(true);
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const addToCartHandler = () => {
+    dispatch(addToCart(product));
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -95,7 +102,10 @@ const SingleProduct = () => {
                       <p style={{ cursor: 'not-allowed' }}>Hết hàng</p>
                     ) : (
                       <Tooltip title='Thêm vào giỏ hàng'>
-                        <ShoppingCartOutlined className='text-primary' />
+                        <ShoppingCartOutlined
+                          onClick={addToCartHandler}
+                          className='text-primary'
+                        />
                       </Tooltip>
                     )}
                   </>,
@@ -137,8 +147,8 @@ const SingleProduct = () => {
               </Card>
               <Tabs type='card' className='mt-2'>
                 <Tabs.TabPane tab='Mô tả' key='1'>
-                  {product?.description?.split('. ').map((str) => (
-                    <p style={{ marginBottom: '0.4rem' }}>
+                  {product?.description?.split('. ').map((str, id) => (
+                    <p key={id} style={{ marginBottom: '0.4rem' }}>
                       {str.charAt(0).toUpperCase() + str.slice(1)}
                     </p>
                   ))}

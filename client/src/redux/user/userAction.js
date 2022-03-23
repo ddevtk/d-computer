@@ -11,17 +11,14 @@ import { googleAuthProvider } from '../../firebase/firebase.utils';
 import { userActionType } from './userType';
 
 export const unsubscribe = () => (dispatch) => {
-  console.log('hello');
   const auth = getAuth();
   auth.onAuthStateChanged(async (user) => {
     if (user) {
-      console.log(user);
       try {
         const idToken = await user.getIdToken();
         const { data } = await api.currentUser(idToken);
 
         const { name, email, _id, role, avatar } = data;
-        console.log(data);
 
         dispatch({
           type: userActionType.LOGGED_IN_SUCCESS,

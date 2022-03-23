@@ -26,6 +26,7 @@ import { BackTop } from 'antd';
 import ProductBySub from './pages/ProductBySub';
 import Page404 from './pages/Page404';
 import Header from './components/Header';
+import { cartInit } from './redux/cart/cartAction';
 const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
 const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
 const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
@@ -35,6 +36,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(unsubscribe());
+    dispatch(cartInit());
     return () => unsubscribe();
   }, [dispatch]);
 

@@ -44,7 +44,6 @@ const LeftMenu = ({ loading, menuItem, hidden }) => {
       </Menu.Item>
       {!loading &&
         menuItem.map((c, _id) => {
-          console.log(c);
           if (c[1].length === 0) {
             return (
               <Menu.Item key={c[0]} style={{ padding: '0 1rem 0 0' }}>
