@@ -1,5 +1,5 @@
-import { Col, Layout, Row, Skeleton, Typography } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Col, Row, Skeleton, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import AdminNav from '../../components/AdminNav';

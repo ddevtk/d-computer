@@ -104,6 +104,7 @@ const ProductComment = ({ user, product, params }) => {
         }),
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
   return (

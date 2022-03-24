@@ -9,10 +9,11 @@ const defaultState = {
 };
 
 export const cartReducer = (state = defaultState, action) => {
+  let cart = [];
   switch (action.type) {
     case cartActionType.CART_INIT:
       if (localStorage.getItem('cart')) {
-        const cart = JSON.parse(localStorage.getItem('cart'));
+        cart = JSON.parse(localStorage.getItem('cart'));
         return {
           ...state,
           sl: _.sumBy(cart, (item) => item.count),
@@ -25,7 +26,7 @@ export const cartReducer = (state = defaultState, action) => {
       return defaultState;
 
     case cartActionType.ADD_TO_CART:
-      let cart = [];
+    case cartActionType.INCREASE_ITEM:
       if (localStorage.getItem('cart')) {
         cart = JSON.parse(localStorage.getItem('cart'));
       }
@@ -54,6 +55,35 @@ export const cartReducer = (state = defaultState, action) => {
         isInit: false,
         total: _.sumBy(cart, (item) => item.count * item.price),
       };
+
+    case cartActionType.REDUCE_ITEM:
+      cart = state.cart;
+      let selectedId = _.findIndex(
+        cart,
+        (item) => item._id === action.payload._id
+      );
+      if (cart[selectedId].count === 1) {
+        const cartAfterRemove = state.cart.filter(
+          (item) => item._id !== action.payload._id
+        );
+        localStorage.setItem('cart', JSON.stringify(cartAfterRemove));
+        return {
+          ...state,
+          cart: cartAfterRemove,
+          sl: _.sumBy(cartAfterRemove, (item) => item.count),
+          isInit: false,
+          total: _.sumBy(cartAfterRemove, (item) => item.count * item.price),
+        };
+      } else {
+        cart[selectedId].count = cart[selectedId].count - 1;
+        return {
+          ...state,
+          cart: cart,
+          sl: _.sumBy(cart, (item) => item.count),
+          isInit: false,
+          total: _.sumBy(cart, (item) => item.count * item.price),
+        };
+      }
 
     case cartActionType.REMOVE_ITEM_FROM_CART:
       const cartAfterRemove = state.cart.filter(

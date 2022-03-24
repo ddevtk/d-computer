@@ -1,5 +1,4 @@
-import { Col, Layout, Row } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
+import { Col, Row } from 'antd';
 import React from 'react';
 import UserNav from '../../components/UserNav';
 

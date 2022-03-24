@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import * as categoryApi from '../../api/categoryApi';
 import * as subCategoryApi from '../../api/subCategoryApi';
 import { Col, Row } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
 import AdminNav from '../../components/AdminNav';
 
 import { useSelector } from 'react-redux';

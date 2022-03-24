@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import image from '../../images/laptop.jpg';
 import Rating from '../Rating';
+import { formatPrice } from '../../utils/formatPrice';
 
 const ProductCard = ({ product }) => {
   const { Meta } = Card;
@@ -40,10 +41,7 @@ const ProductCard = ({ product }) => {
           type='danger'
           style={{ marginTop: '1rem', fontWeight: 'bold' }}
         >
-          {product.price.toLocaleString('it-IT', {
-            style: 'currency',
-            currency: 'VND',
-          })}
+          {formatPrice(product.price)}
         </Typography.Paragraph>
         <Rating product={product} small={true} />
       </Card>

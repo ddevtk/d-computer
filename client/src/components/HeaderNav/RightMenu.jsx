@@ -12,6 +12,7 @@ import {
   Col,
   Tag,
   Badge,
+  notification,
 } from 'antd';
 import { MDBIcon } from 'mdb-react-ui-kit';
 
@@ -21,15 +22,17 @@ import {
   UserDeleteOutlined,
   UserOutlined,
   ShoppingCartOutlined,
-  CloseOutlined,
 } from '@ant-design/icons';
 import avatar from '../../images/avatar.png';
 
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeItemFromCart } from '../../redux/cart/cartAction';
-
-const str = 'ÁO SƠ MI BRITISH CLASSICS STRIPES 1448';
+import {
+  increaseItem,
+  reduceItem,
+  removeItemFromCart,
+} from '../../redux/cart/cartAction';
+import { formatPrice } from '../../utils/formatPrice';
 
 const RightMenu = ({
   search,
@@ -39,6 +42,7 @@ const RightMenu = ({
   setTitle,
   user,
   logoutHandler,
+  inDrawer,
 }) => {
   const cartReducer = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -67,15 +71,35 @@ const RightMenu = ({
   );
 
   useEffect(() => {
-    if (isInit) {
+    if (isInit || inDrawer) {
       return;
     }
     setVisible(true);
+    let timer = setTimeout(() => {
+      setVisible(false);
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
 
   const removeItemHandler = (item) => {
     dispatch(removeItemFromCart(item));
+  };
+
+  const increaseItemHandler = (item) => {
+    if (item.count === item.quantity) {
+      return notification.error({
+        message: 'Quá số lượng trong cửa hàng',
+        duration: 2,
+        placement: 'bottomRight',
+      });
+    }
+    dispatch(increaseItem(item));
+  };
+  const reduceItemHandler = (item) => {
+    dispatch(reduceItem(item));
   };
 
   return (
@@ -141,7 +165,7 @@ const RightMenu = ({
                   cart.map((item) => {
                     return (
                       <Row className='cart-item' key={item._id}>
-                        <Col md={4}>
+                        <Col md={4} sm={4} xs={4}>
                           <Link to={`/${item.slug}`}>
                             <img
                               src={item.images[0].url}
@@ -150,7 +174,7 @@ const RightMenu = ({
                             />
                           </Link>
                         </Col>
-                        <Col md={19} offset={1}>
+                        <Col md={19} sm={19} xs={19} offset={1}>
                           <Row justify='space-between' align='middle'>
                             <Col>
                               <span style={{ fontSize: '0.8rem' }}>
@@ -181,15 +205,29 @@ const RightMenu = ({
                             className='mt-2'
                           >
                             <Col>
+                              <MDBIcon
+                                fas
+                                icon='minus'
+                                style={{
+                                  marginRight: '8px',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => {
+                                  reduceItemHandler(item);
+                                }}
+                              />
                               <Tag>{item.count}</Tag>
+                              <MDBIcon
+                                fas
+                                icon='plus'
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => {
+                                  increaseItemHandler(item);
+                                }}
+                              />
                             </Col>
                             <Col>
-                              <span>
-                                {item.price.toLocaleString('it-IT', {
-                                  style: 'currency',
-                                  currency: 'VND',
-                                })}
-                              </span>
+                              <span>{formatPrice(item.price)}</span>
                             </Col>
                           </Row>
                         </Col>
@@ -200,15 +238,12 @@ const RightMenu = ({
               <Divider />
               <Row align='middle' justify='space-between'>
                 <span>Tổng tiền</span>
-                <span style={{ fontWeight: 'bold' }}>
-                  {total.toLocaleString('it-IT', {
-                    style: 'currency',
-                    currency: 'VND',
-                  })}
-                </span>
+                <span style={{ fontWeight: 'bold' }}>{formatPrice(total)}</span>
               </Row>
               <Row justify='space-between'>
-                <Button type='primary'>Xem giỏ hàng</Button>
+                <Link to='/cart'>
+                  <Button type='primary'>Xem giỏ hàng</Button>
+                </Link>
                 <Button type='primary'>Thanh toán</Button>
               </Row>
             </Card>
@@ -267,7 +302,6 @@ const RightMenu = ({
                 className='rounded-circle'
                 height='25'
                 alt='Black and White Portrait of a Man'
-                loading='lazy'
                 style={{ marginRight: '0.2rem' }}
               />
               <Tooltip title={user.email.split('@')[0]} placement='left'>

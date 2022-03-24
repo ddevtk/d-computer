@@ -104,6 +104,7 @@ const Header = () => {
               title={title}
               user={user}
               logoutHandler={logoutHandler}
+              // inDrawer={true}
             />
           </div>
         </div>
@@ -135,6 +136,7 @@ const Header = () => {
             title={title}
             user={user}
             logoutHandler={logoutHandler}
+            inDrawer={true}
           />
         </Drawer>
       </nav>

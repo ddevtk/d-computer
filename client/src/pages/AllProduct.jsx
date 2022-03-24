@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Breadcrumb, Button, Col, Pagination } from 'antd';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Row, Breadcrumb } from 'antd';
+import { Link, useSearchParams } from 'react-router-dom';
 import * as categoryApi from '../api/categoryApi';
 import * as productApi from '../api/productApi';
 import CategoryOrSubButtonGroup from '../components/CategoryOrSubButtonGroup';
@@ -79,6 +79,7 @@ const AllProduct = () => {
   useEffect(() => {
     loadCategory();
     loadProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, selectedByPrice]);
 
   return (
@@ -93,8 +94,10 @@ const AllProduct = () => {
       </Row>
       <Row>
         {category.length !== 0 &&
-          category.map((c) => {
-            return <CategoryOrSubButtonGroup item={c} type='category' />;
+          category.map((c, id) => {
+            return (
+              <CategoryOrSubButtonGroup key={id} item={c} type='category' />
+            );
           })}
       </Row>
       <Row className='mt-3 align-items-center justify-content-end'>

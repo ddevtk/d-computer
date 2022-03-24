@@ -1,6 +1,5 @@
 import React from 'react';
-import { Col, Layout, Row } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
+import { Col, Row } from 'antd';
 import AdminNav from '../../components/AdminNav';
 import * as api from '../../api/categoryApi';
 import { useSelector } from 'react-redux';

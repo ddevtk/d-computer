@@ -1,5 +1,14 @@
 import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { Breadcrumb, Card, Col, List, Row, Tabs, Tooltip } from 'antd';
+import {
+  Breadcrumb,
+  Card,
+  Col,
+  List,
+  notification,
+  Row,
+  Tabs,
+  Tooltip,
+} from 'antd';
 import * as productApi from '../api/productApi';
 import Title from 'antd/lib/typography/Title';
 import React, { useEffect, useState } from 'react';
@@ -11,8 +20,8 @@ import Rating from '../components/Rating';
 import { useDispatch, useSelector } from 'react-redux';
 import RelatedProducts from '../components/RelatedProducts';
 import ProductComment from '../components/ProductComment';
-import _ from 'lodash';
 import { addToCart } from '../redux/cart/cartAction';
+import { formatPrice } from '../utils/formatPrice';
 
 const SingleProduct = () => {
   const { Item } = Breadcrumb;
@@ -22,9 +31,24 @@ const SingleProduct = () => {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(true);
   const { user } = useSelector((state) => state.user);
+  const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const addToCartHandler = () => {
+    if (cart.length > 0) {
+      const existedItem = cart.find((item) => item._id === product._id);
+      if (existedItem && existedItem.count === product.quantity) {
+        return notification.error({
+          message: 'Quá số lượng trong cửa hàng',
+          duration: 3,
+        });
+      }
+    }
+    notification.success({
+      message: 'Đã thêm vào giỏ hàng',
+      duration: 2,
+      placement: 'bottomRight',
+    });
     dispatch(addToCart(product));
   };
 
@@ -37,7 +61,7 @@ const SingleProduct = () => {
         setLoading(false);
         setErr(false);
       })
-      .catch((err) => {
+      .catch((_err) => {
         setLoading(false);
         setErr(true);
       });
@@ -118,11 +142,8 @@ const SingleProduct = () => {
                 <List>
                   <List.Item>
                     <List.Item.Meta title='Giá tiền: ' />
-                    <div>
-                      {product?.price?.toLocaleString('it-IT', {
-                        style: 'currency',
-                        currency: 'VND',
-                      })}
+                    <div style={{ fontWeight: 'bold' }}>
+                      {formatPrice(product.price)}
                     </div>
                   </List.Item>
                   <List.Item>

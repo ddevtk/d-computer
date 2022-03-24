@@ -1,7 +1,6 @@
-import { Alert, Col, Layout, notification, Row, Spin } from 'antd';
+import { Alert, Col, notification, Row, Spin } from 'antd';
 import { MDBInput } from 'mdb-react-ui-kit';
 
-import { Content } from 'antd/lib/layout/layout';
 import React, { useState } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
 import UserNav from '../../components/UserNav';

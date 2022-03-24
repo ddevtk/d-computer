@@ -2,7 +2,6 @@ import {
   Button,
   Card,
   Col,
-  Layout,
   Modal,
   notification,
   Pagination,
@@ -10,7 +9,6 @@ import {
   Typography,
   Tooltip,
 } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
 import {
   EditOutlined,
   DeleteOutlined,

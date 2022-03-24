@@ -1,4 +1,4 @@
-import { Breadcrumb, Pagination, Row } from 'antd';
+import { Breadcrumb, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import * as categoryApi from '../api/categoryApi';
@@ -66,6 +66,7 @@ const ProductByCategory = () => {
   useEffect(() => {
     loadSub();
     loadProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params, selectedByPrice]);
 
   return (

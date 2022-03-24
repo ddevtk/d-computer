@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Form, Input, notification, Select, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
