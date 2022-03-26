@@ -2,10 +2,9 @@ import { Alert } from 'antd';
 import { MDBInput } from 'mdb-react-ui-kit';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import {
   loginWithEmailAndPassword,
-  // loginWithFacebook,
   loginWithGoogle,
 } from '../../redux/user/userAction';
 import { userActionType } from '../../redux/user/userType';
@@ -17,6 +16,9 @@ const Login = () => {
   const { isSigningIn, error, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
+  const location = useLocation();
+  console.log(location);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginWithEmailAndPassword(email, password));
@@ -25,9 +27,6 @@ const Login = () => {
   const signInWithGoogleHandler = () => {
     dispatch(loginWithGoogle());
   };
-  // const signInWithFacebookHandler = () => {
-  //   dispatch(loginWithFacebook());
-  // };
 
   useEffect(() => {
     return () => {

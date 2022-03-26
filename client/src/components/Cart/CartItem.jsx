@@ -1,6 +1,6 @@
-import { Col, Divider, notification, Row, Tag, Tooltip } from 'antd';
+import { Col, Divider, notification, Row, Tag } from 'antd';
 import { MDBIcon } from 'mdb-react-ui-kit';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -38,21 +38,21 @@ const CartItem = ({ item, inPopup }) => {
         md={inPopup ? 4 : 5}
         sm={inPopup ? 4 : 5}
         xs={inPopup ? 4 : 7}
+        style={{ margin: 'auto' }}
       >
         <Link to={`/${item.slug}`}>
           <img
             src={item.images[0].url}
             alt={item.title}
-            style={{ width: `${inPopup ? '3.2rem' : '5.2rem'}` }}
+            style={{ width: '90%' }}
           />
         </Link>
       </Col>
       <Col
-        lg={inPopup ? 19 : 21}
-        md={inPopup ? 19 : 19}
-        sm={19}
-        xs={inPopup ? 19 : 17}
-        offset={inPopup ? 1 : ''}
+        lg={{ span: inPopup ? 19 : 21 }}
+        md={{ span: inPopup ? 19 : 19, offset: inPopup ? 1 : '' }}
+        sm={{ span: 19, offset: inPopup ? 1 : '' }}
+        xs={{ span: inPopup ? 19 : 17, offset: inPopup ? 1 : '' }}
       >
         <Row justify='space-between' align='middle'>
           <Col style={{ width: '80%' }}>

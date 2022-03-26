@@ -1,49 +1,15 @@
-import { ShoppingCartOutlined } from '@ant-design/icons';
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Col,
-  Divider,
-  List,
-  notification,
-  Row,
-  Tag,
-  Tooltip,
-} from 'antd';
+import { Breadcrumb, Button, Col, Divider, Row } from 'antd';
 import { MDBIcon } from 'mdb-react-ui-kit';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CartItem from '../components/Cart/CartItem';
-import {
-  increaseItem,
-  reduceItem,
-  removeItemFromCart,
-} from '../redux/cart/cartAction';
+
 import { formatPrice } from '../utils/formatPrice';
 
 const CartPage = () => {
-  const { cart, sl, isInit, total } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
-
-  const removeItemHandler = (item) => {
-    dispatch(removeItemFromCart(item));
-  };
-
-  const increaseItemHandler = (item) => {
-    if (item.count === item.quantity) {
-      return notification.error({
-        message: 'Quá số lượng trong cửa hàng',
-        duration: 2,
-        placement: 'bottomRight',
-      });
-    }
-    dispatch(increaseItem(item));
-  };
-  const reduceItemHandler = (item) => {
-    dispatch(reduceItem(item));
-  };
+  const { cart, sl, total } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.user);
 
   return (
     <div className='container py-2'>
@@ -102,9 +68,17 @@ const CartPage = () => {
             </div>
             <Divider />
             <div className='cart-order-total__item'>
-              <Button size='large' block type='primary' danger>
-                Thanh toán
-              </Button>
+              {user ? (
+                <Button size='large' block type='primary' danger>
+                  Thanh toán
+                </Button>
+              ) : (
+                <Button size='large' block type='primary' danger>
+                  <Link to='/login' state={{ from: 'cart' }}>
+                    Đăng nhập để thanh toán
+                  </Link>
+                </Button>
+              )}
               <Button size='large' block type='link' danger>
                 <Link to='/product'>
                   <MDBIcon fas icon='reply' />
