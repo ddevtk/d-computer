@@ -167,3 +167,24 @@
 .cart-item:not(:first-child) {
   margin-top: 1rem;
 }
+.header-page {
+  text-align: center;
+  padding: 0 0 2.5rem 0;
+  &::after {
+    content: '';
+    background: #252a2b;
+    width: 5rem;
+    height: 4px;
+    display: block;
+    margin: auto;
+  }
+}
+
+.cart-order-total {
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
+  &__item {
+    margin-bottom: 1rem;
+  }
+}

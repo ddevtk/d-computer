@@ -79,26 +79,22 @@ const SingleProduct = () => {
       {!loading && !err && (
         <>
           {' '}
-          <Row>
-            <Breadcrumb style={{ padding: '16px 0' }}>
-              <Link to='/'>
-                <Item>TRANG CHỦ</Item>
-              </Link>
-              <Link to='/product'>
-                <Item>SẢN PHẨM</Item>
-              </Link>
+          <Breadcrumb style={{ padding: '16px 0' }}>
+            <Link to='/'>
+              <Item>TRANG CHỦ</Item>
+            </Link>
+            <Link to='/product'>
+              <Item>SẢN PHẨM</Item>
+            </Link>
 
-              <Link to={`/category/${product.category?.slug}`}>
-                <Item>{product.category.name.toUpperCase()}</Item>
-              </Link>
-              <Link to={`/sub/${product.sub[0].slug}`}>
-                <Item>{product.sub[0].name.toUpperCase()}</Item>
-              </Link>
-              <Item>{`${product.title
-                .toUpperCase()
-                .substring(0, 40)}...`}</Item>
-            </Breadcrumb>
-          </Row>
+            <Link to={`/category/${product.category?.slug}`}>
+              <Item>{product.category.name.toUpperCase()}</Item>
+            </Link>
+            <Link to={`/sub/${product.sub[0].slug}`}>
+              <Item>{product.sub[0].name.toUpperCase()}</Item>
+            </Link>
+            <Item>{`${product.title.toUpperCase().substring(0, 40)}...`}</Item>
+          </Breadcrumb>
           <div className='d-flex flex-wrap justify-content-between align-items-center'>
             <Title level={4}> {product.title}</Title>
             <div className='text-center mx-2'>

@@ -76,6 +76,7 @@ export const cartReducer = (state = defaultState, action) => {
         };
       } else {
         cart[selectedId].count = cart[selectedId].count - 1;
+        localStorage.setItem('cart', JSON.stringify(cart));
         return {
           ...state,
           cart: cart,

@@ -9,12 +9,8 @@ import {
   Card,
   Row,
   Button,
-  Col,
-  Tag,
   Badge,
-  notification,
 } from 'antd';
-import { MDBIcon } from 'mdb-react-ui-kit';
 
 import {
   AppstoreOutlined,
@@ -26,13 +22,10 @@ import {
 import avatar from '../../images/avatar.png';
 
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  increaseItem,
-  reduceItem,
-  removeItemFromCart,
-} from '../../redux/cart/cartAction';
+import { useSelector } from 'react-redux';
+
 import { formatPrice } from '../../utils/formatPrice';
+import CartItem from '../Cart/CartItem';
 
 const RightMenu = ({
   search,
@@ -45,7 +38,7 @@ const RightMenu = ({
   inDrawer,
 }) => {
   const cartReducer = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+
   const [visible, setVisible] = useState(false);
   const { cart, sl, isInit, total } = cartReducer;
 
@@ -83,24 +76,6 @@ const RightMenu = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
-
-  const removeItemHandler = (item) => {
-    dispatch(removeItemFromCart(item));
-  };
-
-  const increaseItemHandler = (item) => {
-    if (item.count === item.quantity) {
-      return notification.error({
-        message: 'Quá số lượng trong cửa hàng',
-        duration: 2,
-        placement: 'bottomRight',
-      });
-    }
-    dispatch(increaseItem(item));
-  };
-  const reduceItemHandler = (item) => {
-    dispatch(reduceItem(item));
-  };
 
   return (
     <>
@@ -163,76 +138,7 @@ const RightMenu = ({
               >
                 {cart.length !== 0 &&
                   cart.map((item) => {
-                    return (
-                      <Row className='cart-item' key={item._id}>
-                        <Col md={4} sm={4} xs={4}>
-                          <Link to={`/${item.slug}`}>
-                            <img
-                              src={item.images[0].url}
-                              alt={item.title}
-                              style={{ width: '3.2rem' }}
-                            />
-                          </Link>
-                        </Col>
-                        <Col md={19} sm={19} xs={19} offset={1}>
-                          <Row justify='space-between' align='middle'>
-                            <Col>
-                              <span style={{ fontSize: '0.8rem' }}>
-                                <Link
-                                  className='custom-hover'
-                                  to={`/${item.slug}`}
-                                >
-                                  <Tooltip title={item.title}>
-                                    {`${item.title.substring(0, 25)}...`}
-                                  </Tooltip>
-                                </Link>
-                              </span>
-                            </Col>
-                            <Col>
-                              <MDBIcon
-                                style={{ cursor: 'pointer' }}
-                                fas
-                                icon='times'
-                                onClick={() => {
-                                  removeItemHandler(item);
-                                }}
-                              />
-                            </Col>
-                          </Row>
-                          <Row
-                            justify='space-between'
-                            align='middle'
-                            className='mt-2'
-                          >
-                            <Col>
-                              <MDBIcon
-                                fas
-                                icon='minus'
-                                style={{
-                                  marginRight: '8px',
-                                  cursor: 'pointer',
-                                }}
-                                onClick={() => {
-                                  reduceItemHandler(item);
-                                }}
-                              />
-                              <Tag>{item.count}</Tag>
-                              <MDBIcon
-                                fas
-                                icon='plus'
-                                style={{ cursor: 'pointer' }}
-                                onClick={() => {
-                                  increaseItemHandler(item);
-                                }}
-                              />
-                            </Col>
-                            <Col>
-                              <span>{formatPrice(item.price)}</span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    );
+                    return <CartItem inPopup={true} item={item} />;
                   })}
               </div>
               <Divider />
@@ -242,9 +148,13 @@ const RightMenu = ({
               </Row>
               <Row justify='space-between'>
                 <Link to='/cart'>
-                  <Button type='primary'>Xem giỏ hàng</Button>
+                  <Button type='primary' danger>
+                    Xem giỏ hàng
+                  </Button>
                 </Link>
-                <Button type='primary'>Thanh toán</Button>
+                <Button type='primary' danger>
+                  Thanh toán
+                </Button>
               </Row>
             </Card>
           }
