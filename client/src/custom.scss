@@ -103,6 +103,12 @@
   float: left;
   margin-right: 1rem;
 }
+.rightMenu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 2 1 0;
+}
 
 @media (max-width: 1008px) {
   .leftMenu {
@@ -186,5 +192,28 @@
   border-radius: 2px;
   &__item {
     margin-bottom: 1rem;
+  }
+}
+
+.row-title {
+  &__arrow {
+    display: none;
+    opacity: 0;
+
+    &.active {
+      margin-left: 0.3rem;
+      display: block;
+      opacity: 1;
+    }
+  }
+  &__all {
+    margin: auto;
+    display: none;
+    opacity: 0;
+    &.active {
+      margin-left: 0.3rem;
+      display: block;
+      opacity: 1;
+    }
   }
 }

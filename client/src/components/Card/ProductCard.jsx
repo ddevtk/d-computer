@@ -8,7 +8,15 @@ import { formatPrice } from '../../utils/formatPrice';
 const ProductCard = ({ product }) => {
   const { Meta } = Card;
   return (
-    <Col xs={24} sm={12} md={8} lg={8} className='gutter-row' key={product._id}>
+    <Col
+      xs={24}
+      sm={12}
+      md={8}
+      lg={8}
+      style={{ flexShrink: 1 }}
+      className='gutter-row'
+      key={product._id}
+    >
       <Card
         style={{ cursor: 'default' }}
         hoverable

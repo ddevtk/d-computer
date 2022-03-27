@@ -32,7 +32,7 @@ const CartItem = ({ item, inPopup }) => {
   };
 
   return (
-    <Row className='cart-item' key={item._id}>
+    <Row className='cart-item'>
       <Col
         lg={inPopup ? 4 : 3}
         md={inPopup ? 4 : 5}

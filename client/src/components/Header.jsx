@@ -88,14 +88,7 @@ const Header = () => {
         </Link>
         <div className='d-flex justify-content-between'>
           <LeftMenu loading={loading} menuItem={menuItem} hidden={false} />
-          <div
-            className='rightMenu'
-            style={{
-              display: 'flex',
-              justifyContent: 'end',
-              alignItems: 'center',
-            }}
-          >
+          <div className='rightMenu'>
             <RightMenu
               onFinish={onFinish}
               search={search}

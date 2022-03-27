@@ -21,11 +21,12 @@ import {
 } from '@ant-design/icons';
 import avatar from '../../images/avatar.png';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { formatPrice } from '../../utils/formatPrice';
 import CartItem from '../Cart/CartItem';
+import * as cartApi from '../../api/cartApi';
 
 const RightMenu = ({
   search,
@@ -40,7 +41,9 @@ const RightMenu = ({
   const cartReducer = useSelector((state) => state.cart);
 
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { cart, sl, isInit, total } = cartReducer;
+  const navigate = useNavigate();
 
   const userMenu = (
     <Menu>
@@ -76,6 +79,21 @@ const RightMenu = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
+
+  const saveCartToDb = () => {
+    setLoading(true);
+    cartApi
+      .saveCart(cart, sl, total, user.token)
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+        navigate('/checkout');
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        setLoading(false);
+      });
+  };
 
   return (
     <>
@@ -138,7 +156,9 @@ const RightMenu = ({
               >
                 {cart.length !== 0 &&
                   cart.map((item) => {
-                    return <CartItem inPopup={true} item={item} />;
+                    return (
+                      <CartItem inPopup={true} item={item} key={item._id} />
+                    );
                   })}
               </div>
               <Divider />
@@ -152,7 +172,12 @@ const RightMenu = ({
                     Xem giỏ hàng
                   </Button>
                 </Link>
-                <Button type='primary' danger>
+                <Button
+                  loading={loading}
+                  onClick={saveCartToDb}
+                  type='primary'
+                  danger
+                >
                   Thanh toán
                 </Button>
               </Row>

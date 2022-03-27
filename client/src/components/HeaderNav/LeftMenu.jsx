@@ -32,7 +32,7 @@ const LeftMenu = ({ loading, menuItem, hidden }) => {
   return (
     <Menu
       mode={screenSize.dWidth < 1008 ? 'vertical' : 'horizontal'}
-      style={{ width: '60%' }}
+      style={{ flex: '3 1 0' }}
       className={`${!hidden ? 'leftMenu' : ''}`}
       selectedKeys={[current]}
       onClick={handleClick}

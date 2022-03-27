@@ -1,15 +1,33 @@
 import { Breadcrumb, Button, Col, Divider, Row } from 'antd';
 import { MDBIcon } from 'mdb-react-ui-kit';
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CartItem from '../components/Cart/CartItem';
+import * as cartApi from '../api/cartApi';
 
 import { formatPrice } from '../utils/formatPrice';
 
 const CartPage = () => {
   const { cart, sl, total } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const saveCartToDb = () => {
+    setLoading(true);
+    cartApi
+      .saveCart(cart, sl, total, user.token)
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+        navigate('/checkout');
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        setLoading(false);
+      });
+  };
 
   return (
     <div className='container py-2'>
@@ -37,7 +55,7 @@ const CartPage = () => {
         <Col lg={16} md={16} sm={24} xs={24}>
           {cart.length !== 0 &&
             cart.map((item) => {
-              return <CartItem item={item} />;
+              return <CartItem key={item._id} item={item} />;
             })}
         </Col>
         <Col
@@ -69,7 +87,14 @@ const CartPage = () => {
             <Divider />
             <div className='cart-order-total__item'>
               {user ? (
-                <Button size='large' block type='primary' danger>
+                <Button
+                  onClick={saveCartToDb}
+                  size='large'
+                  block
+                  type='primary'
+                  danger
+                  loading={loading}
+                >
                   Thanh toán
                 </Button>
               ) : (
