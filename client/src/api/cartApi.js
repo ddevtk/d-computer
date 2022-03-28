@@ -10,3 +10,9 @@ export const saveCart = async (cart, sl, total, authToken) =>
       },
     }
   );
+export const getUserCart = async (authToken) =>
+  await axios.get(`${process.env.REACT_APP_API}/cart/get-user-cart`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../redux/user/userAction';
-import { useDispatch, useSelector } from 'react-redux';
 import * as categoryApi from '../api/categoryApi';
 import * as subApi from '../api/subCategoryApi';
 
@@ -14,7 +13,6 @@ import LeftMenu from './HeaderNav/LeftMenu';
 import RightMenu from './HeaderNav/RightMenu';
 
 const Header = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [menuItem, setMenuItem] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,19 +20,11 @@ const Header = () => {
   const [title, setTitle] = useState('');
   const [visible, setVisible] = useState(false);
 
-  const { user } = useSelector((state) => state.user);
-
   const toggleDrawer = () => {
     setVisible(!visible);
   };
   const onClose = () => {
     setVisible(false);
-  };
-
-  const logoutHandler = () => {
-    dispatch(logout()).then(() => {
-      navigate('/login');
-    });
   };
 
   const loadCategory = async () => {
@@ -95,8 +85,7 @@ const Header = () => {
               setSearch={setSearch}
               setTitle={setTitle}
               title={title}
-              user={user}
-              logoutHandler={logoutHandler}
+
               // inDrawer={true}
             />
           </div>
@@ -127,8 +116,6 @@ const Header = () => {
             setSearch={setSearch}
             setTitle={setTitle}
             title={title}
-            user={user}
-            logoutHandler={logoutHandler}
             inDrawer={true}
           />
         </Drawer>

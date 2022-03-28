@@ -1,6 +1,8 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+
 import Loader from './components/Loader';
 
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -35,12 +37,23 @@ const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
 
 const App = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const [cookies, setCookie] = useCookies(['user']);
+
+  console.log(user);
 
   useEffect(() => {
     dispatch(unsubscribe());
     dispatch(cartInit());
     return () => unsubscribe();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      setCookie('user', user, { path: '/' });
+    }
+  }, [setCookie, user]);
+  console.log(cookies);
 
   return (
     <>
@@ -54,7 +67,9 @@ const App = () => {
             <Route path='/sub/:slug' element={<ProductBySub />} />
             <Route path='/product' element={<AllProduct />} />
             <Route path='/cart' element={<CartPage />} />
-            <Route path='/checkout' element={<CheckoutPage />} />
+            <Route path='/checkout' element={<UserRoute />}>
+              <Route path='/checkout' element={<CheckoutPage />} />
+            </Route>
             <Route path='/login' element={<AuthRoute />}>
               <Route path='/login' element={<Login />} />
             </Route>

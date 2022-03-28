@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
+
 import { googleAuthProvider } from '../../firebase/firebase.utils';
 
 import { userActionType } from './userType';
@@ -25,6 +26,10 @@ export const unsubscribe = () => (dispatch) => {
           payload: { _id, name, email, token: idToken, role, avatar },
         });
       } catch (error) {
+        dispatch({
+          type: userActionType.LOGGED_IN_ERROR,
+          payload: error.message,
+        });
         console.error(error);
       }
     } else {

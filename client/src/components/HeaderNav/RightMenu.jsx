@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import {
   Menu,
@@ -20,13 +21,15 @@ import {
   ShoppingCartOutlined,
 } from '@ant-design/icons';
 import avatar from '../../images/avatar.png';
+import { useCookies } from 'react-cookie';
 
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { formatPrice } from '../../utils/formatPrice';
 import CartItem from '../Cart/CartItem';
 import * as cartApi from '../../api/cartApi';
+import { logout } from '../../redux/user/userAction';
 
 const RightMenu = ({
   search,
@@ -34,16 +37,30 @@ const RightMenu = ({
   setSearch,
   title,
   setTitle,
-  user,
-  logoutHandler,
+
   inDrawer,
 }) => {
   const cartReducer = useSelector((state) => state.cart);
-
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies();
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    dispatch(logout()).then(() => {
+      navigate('/login');
+      removeCookie('user');
+    });
+  };
+
+  const { user } = cookies;
+
+  console.log(user);
+
   const { cart, sl, isInit, total } = cartReducer;
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   const userMenu = (
     <Menu>
@@ -84,13 +101,14 @@ const RightMenu = ({
     setLoading(true);
     cartApi
       .saveCart(cart, sl, total, user.token)
-      .then((res) => {
-        console.log(res);
+      .then((_res) => {
         setLoading(false);
+        if (location.pathname === '/checkout') {
+          window.location.reload();
+        }
         navigate('/checkout');
       })
-      .catch((err) => {
-        console.log(err.response.data);
+      .catch(() => {
         setLoading(false);
       });
   };
@@ -172,14 +190,22 @@ const RightMenu = ({
                     Xem giỏ hàng
                   </Button>
                 </Link>
-                <Button
-                  loading={loading}
-                  onClick={saveCartToDb}
-                  type='primary'
-                  danger
-                >
-                  Thanh toán
-                </Button>
+                {user ? (
+                  <Button
+                    onClick={saveCartToDb}
+                    type='primary'
+                    danger
+                    loading={loading}
+                  >
+                    Thanh toán
+                  </Button>
+                ) : (
+                  <Button type='primary' danger>
+                    <Link to='/login' state={{ from: 'cart' }}>
+                      Đăng nhập để thanh toán
+                    </Link>
+                  </Button>
+                )}
               </Row>
             </Card>
           }

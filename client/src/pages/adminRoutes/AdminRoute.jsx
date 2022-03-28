@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import * as api from '../../api/authApi';
 import Page403 from '../Page403';
+import { useCookies } from 'react-cookie';
+
 import Loader from '../../components/Loader';
 
 const AdminRoute = () => {
-  const { user } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
+  const [cookies] = useCookies();
+  const { user } = cookies;
   useEffect(() => {
     if (user && user.token) {
       api
@@ -18,6 +20,8 @@ const AdminRoute = () => {
         .catch((_error) => {
           setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, [user]);
 

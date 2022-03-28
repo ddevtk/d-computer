@@ -1,10 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import Page403 from '../Page403';
+import { useCookies } from 'react-cookie';
 
 const UserRoute = () => {
-  const { user } = useSelector((state) => state.user);
+  const [cookies] = useCookies();
+  const { user } = cookies;
   return user && user.token ? <Outlet /> : <Page403 />;
 };
 

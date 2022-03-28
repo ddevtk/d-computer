@@ -10,14 +10,17 @@ import 'antd/dist/antd.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 
 import { Provider } from 'react-redux';
+import { CookiesProvider } from 'react-cookie';
 import store from './redux/store';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
+  <CookiesProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </CookiesProvider>,
   document.getElementById('root')
 );
 
