@@ -13,9 +13,9 @@ exports.saveCart = async (req, res) => {
 
     if (oldCart) {
       oldCart.remove();
-      if (cart.length === 0) {
-        return;
-      }
+      // if (cart.length === 0) {
+      //   return;
+      // }
     }
 
     for (let i = 0; i < cart.length; i++) {
@@ -35,6 +35,36 @@ exports.saveCart = async (req, res) => {
     }).save();
 
     res.json(newCart);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.getUserCart = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.user.email });
+    let cart = await Cart.findOne({ orderedBy: user._id }).populate(
+      'products.product'
+    );
+    if (!cart) {
+      throw new Error('No user cart');
+    } else {
+      return res.json(cart);
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.capNhatThongTinNguoiMuaHang = async (req, res) => {
+  try {
+    const { name, sdt, address } = req.body;
+    const newUser = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { name, sdt, address },
+      { new: true }
+    );
+    res.json(newUser);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

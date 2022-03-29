@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar: { type: String },
     address: String,
+    sdt: String,
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
   },
   { timestamps: true }

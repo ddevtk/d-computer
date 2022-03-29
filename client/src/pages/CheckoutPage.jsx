@@ -1,47 +1,130 @@
-import { Badge, Button, Col, Input, notification, Row } from 'antd';
+import {
+  Badge,
+  Button,
+  Col,
+  Form,
+  Input,
+  notification,
+  Row,
+  Skeleton,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import * as cartApi from '../api/cartApi';
 import { formatPrice } from '../utils/formatPrice';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useCookies } from 'react-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { unsubscribe } from '../redux/user/userAction';
 
 const CheckoutPage = () => {
   const [productCart, setProductCart] = useState([]);
-  const [total, setTotal] = useState('');
   const [loading, setLoading] = useState(true);
   const [maGiamGia, setMaGiamGia] = useState('');
+  const { cart, sl, total } = useSelector((state) => state.cart);
+  const userReducer = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const [cookies] = useCookies();
+  const [cookies, setCookie] = useCookies();
   const { user } = cookies;
 
-  useEffect(() => {
+  const saveCartToDb = async () => {
     setLoading(true);
-    cartApi
-      .getUserCart(user.token)
-      .then((res) => {
-        setTotal(res.data.total);
-        setProductCart(res.data.products);
-        setTimeout(() => {
-          setLoading(false);
-        }, 100);
-      })
-      .catch((error) => {
-        notification.error({
-          message: error.response.data.message,
-          duration: 10,
-        });
+
+    try {
+      await cartApi.saveCart(cart, sl, total, user.token);
+      const res = await cartApi.getUserCart(user.token);
+
+      setProductCart(res.data.products);
+      setTimeout(() => {
         setLoading(false);
+      }, 100);
+    } catch (error) {
+      notification.error({
+        message: error.response.data.message,
+        duration: 10,
       });
-  }, [user.token]);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    saveCartToDb();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.token, total]);
+
+  useEffect(() => {
+    setCookie(userReducer.user);
+  }, [userReducer]);
+
+  const onFinish = (values) => {
+    const { name, sdt, address } = values;
+    cartApi
+      .capNhatThongTinNguoiMuaHang(name, sdt, address, user.token)
+      .then((res) => {
+        console.log(res);
+        dispatch(unsubscribe());
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+    console.log(values);
+  };
 
   return (
     <Row style={{ padding: '2rem', minHeight: '90vh' }}>
-      <Col md={12} lg={12} sm={24} xs={24}>
+      <Col style={{ padding: '0 1.5rem 0 0' }} md={12} lg={12} sm={24} xs={24}>
         <h4>Thông tin giao hàng</h4>
+        <Form
+          className='mt-4'
+          onFinish={onFinish}
+          fields={[
+            { name: 'name', value: user.name },
+            { name: 'sdt', value: user.sdt },
+            { name: 'address', value: user.address },
+          ]}
+        >
+          <Form.Item
+            name='name'
+            rules={[{ required: true, message: 'Nhập tên của bạn' }]}
+          >
+            <Input placeholder='Họ và tên' />
+          </Form.Item>
+          <Form.Item
+            name='sdt'
+            rules={[{ required: true, message: 'Nhập số điện thoại của bạn' }]}
+          >
+            <Input placeholder='Số điện thoại' />
+          </Form.Item>
+          <Form.Item
+            name='address'
+            rules={[{ required: true, message: 'Nhập địa chỉ của bạn' }]}
+          >
+            <Input.TextArea rows={4} placeholder='Địa chỉ' />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              className='d-inline-flex align-items-center'
+              type='link'
+              danger
+            >
+              <ArrowLeftOutlined />
+              Giỏ hàng
+            </Button>
+            <Button
+              style={{ float: 'right' }}
+              htmlType='submit'
+              type='primary'
+              danger
+            >
+              Hoàn tất đơn hàng
+            </Button>
+          </Form.Item>
+        </Form>
       </Col>
       <Col md={12} lg={12} sm={24} xs={24}>
+        {loading && <Skeleton active></Skeleton>}
         {!loading &&
-          productCart.length !== 0 &&
-          productCart?.map((item, id) => {
+          productCart.map((item, id) => {
             return (
               <Row
                 key={id}

@@ -19,11 +19,20 @@ export const unsubscribe = () => (dispatch) => {
         const idToken = await user.getIdToken();
         const { data } = await api.currentUser(idToken);
 
-        const { name, email, _id, role, avatar } = data;
+        const { name, email, _id, role, avatar, sdt, address } = data;
 
         dispatch({
           type: userActionType.LOGGED_IN_SUCCESS,
-          payload: { _id, name, email, token: idToken, role, avatar },
+          payload: {
+            _id,
+            name,
+            email,
+            token: idToken,
+            role,
+            avatar,
+            sdt,
+            address,
+          },
         });
       } catch (error) {
         dispatch({
@@ -66,11 +75,20 @@ export const loginWithEmailAndPassword =
       const idToken = await user.getIdToken();
 
       const { data } = await api.createOrUpdateUser(idToken);
-      const { name, email, _id, role, avatar } = data;
+      const { email, _id, role, avatar, name, sdt, address } = data;
 
       dispatch({
         type: userActionType.LOGGED_IN_SUCCESS,
-        payload: { _id, name, email, token: idToken, role, avatar },
+        payload: {
+          _id,
+          email,
+          token: idToken,
+          role,
+          avatar,
+          name,
+          sdt,
+          address,
+        },
       });
     } catch (error) {
       dispatch({
@@ -91,11 +109,11 @@ export const loginWithGoogle = () => async (dispatch) => {
     const token = await result.user.getIdToken();
     // const credential = GoogleAuthProvider.credentialFromResult(result);
     const {
-      data: { _id, name, email, role, avatar },
+      data: { _id, email, role, avatar, name, sdt, address },
     } = await api.createOrUpdateUser(token);
     dispatch({
       type: userActionType.LOGGED_IN_SUCCESS,
-      payload: { _id, name, email, role, token, avatar },
+      payload: { _id, email, role, token, avatar, name, sdt, address },
     });
   } catch (error) {
     const credential = GoogleAuthProvider.credentialFromError(error);

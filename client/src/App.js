@@ -38,9 +38,8 @@ const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
 const App = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['user']);
-
-  console.log(user);
 
   useEffect(() => {
     dispatch(unsubscribe());
@@ -53,7 +52,6 @@ const App = () => {
       setCookie('user', user, { path: '/' });
     }
   }, [setCookie, user]);
-  console.log(cookies);
 
   return (
     <>

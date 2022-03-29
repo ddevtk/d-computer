@@ -42,7 +42,6 @@ const RightMenu = ({
 }) => {
   const cartReducer = useSelector((state) => state.cart);
   const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies();
   const dispatch = useDispatch();
 
@@ -55,12 +54,8 @@ const RightMenu = ({
 
   const { user } = cookies;
 
-  console.log(user);
-
   const { cart, sl, isInit, total } = cartReducer;
   const navigate = useNavigate();
-
-  const location = useLocation();
 
   const userMenu = (
     <Menu>
@@ -83,6 +78,23 @@ const RightMenu = ({
     </Menu>
   );
 
+  const accountMenu = (
+    <Menu>
+      <Menu.Item>
+        <Link to='/login'>
+          <i className='fas fa-sign-in-alt' style={{ marginRight: '7px' }}></i>
+          Đăng nhập
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/register'>
+          <i className='fas fa-user-plus' style={{ marginRight: '4px' }}></i>
+          Đăng ký
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
+
   useEffect(() => {
     if (isInit || inDrawer) {
       return;
@@ -96,22 +108,6 @@ const RightMenu = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
-
-  const saveCartToDb = () => {
-    setLoading(true);
-    cartApi
-      .saveCart(cart, sl, total, user.token)
-      .then((_res) => {
-        setLoading(false);
-        if (location.pathname === '/checkout') {
-          window.location.reload();
-        }
-        navigate('/checkout');
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  };
 
   return (
     <>
@@ -192,10 +188,12 @@ const RightMenu = ({
                 </Link>
                 {user ? (
                   <Button
-                    onClick={saveCartToDb}
+                    onClick={() => {
+                      navigate('/checkout');
+                    }}
                     type='primary'
                     danger
-                    loading={loading}
+                    // loading={loading}
                   >
                     Thanh toán
                   </Button>
@@ -223,15 +221,14 @@ const RightMenu = ({
           )}
         </Popover>
         {!user && (
-          <div className='d-flex' style={{ marginLeft: '0.5rem' }}>
-            <Link
+          <Dropdown overlay={accountMenu}>
+            <div
               className='text-reset d-flex align-items-center'
-              to='/login'
-              style={{ marginLeft: '0.2rem' }}
+              style={{ marginLeft: '0.5rem' }}
             >
-              <UserOutlined /> Đăng nhập
-            </Link>
-          </div>
+              <i class='fas fa-user-circle fa-lg'></i>
+            </div>
+          </Dropdown>
         )}
 
         {user && user.role === 'subscriber' && (
@@ -245,10 +242,8 @@ const RightMenu = ({
                 className='rounded-circle'
                 height='25'
                 alt='Black and White Portrait of a Man'
-                loading='lazy'
                 style={{ marginRight: '0.2rem' }}
               />
-              {`${user.email.split('@')[0].substring(0, 10)}...`}
             </div>
           </Dropdown>
         )}
@@ -265,9 +260,6 @@ const RightMenu = ({
                 alt='Black and White Portrait of a Man'
                 style={{ marginRight: '0.2rem' }}
               />
-              <Tooltip title={user.email.split('@')[0]} placement='left'>
-                {`${user.email.split('@')[0].substring(0, 10)}...`}
-              </Tooltip>
             </div>
           </Dropdown>
         )}

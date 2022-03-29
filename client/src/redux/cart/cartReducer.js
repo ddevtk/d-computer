@@ -3,8 +3,8 @@ import _ from 'lodash';
 
 const defaultState = {
   cart: [],
-  sl: '',
-  total: '',
+  sl: 0,
+  total: 0,
   isInit: true,
 };
 
