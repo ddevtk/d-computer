@@ -241,7 +241,7 @@ const RightMenu = ({
                 src={user.avatar || avatar}
                 className='rounded-circle'
                 height='25'
-                alt='Black and White Portrait of a Man'
+                alt='avatar'
                 style={{ marginRight: '0.2rem' }}
               />
             </div>
@@ -257,7 +257,7 @@ const RightMenu = ({
                 src={user.avatar || avatar}
                 className='rounded-circle'
                 height='25'
-                alt='Black and White Portrait of a Man'
+                alt='avatar'
                 style={{ marginRight: '0.2rem' }}
               />
             </div>

@@ -1,4 +1,3 @@
-const { json } = require('body-parser');
 const admin = require('../firebase/index');
 
 const authCheck = async (req, res, next) => {

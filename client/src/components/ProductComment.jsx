@@ -97,7 +97,7 @@ const ProductComment = ({ user, product, params }) => {
         cmtList: res.data.map((cmt) => {
           return {
             author: cmt.user.email,
-            avatar: cmt.user.avatar || avatar,
+            avatar: !cmt.user.avatar ? avatar : cmt.user.avatar,
             content: cmt.comment,
             datetime: moment(cmt.createdAt).format('MMMM Do YYYY, h:mm:ss a'),
           };
