@@ -15,21 +15,21 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import AdminNav from '../../components/AdminNav';
 import * as api from '../../api/productApi';
 import LoadingCard from '../../components/Card/LoadingCard';
 import { Link } from 'react-router-dom';
 import image from '../../../src/images/laptop.jpg';
+import { useCookies } from 'react-cookie';
 
 const ProductList = () => {
-  const { user } = useSelector((state) => state.user);
   const { Meta } = Card;
   const [products, setProducts] = useState({ total: '', items: [] });
   const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState(1);
   const [deleteVisible, setDeleteVisible] = useState(false);
+  const [cookie] = useCookies();
 
   useEffect(() => {
     loadProduct();
@@ -54,7 +54,7 @@ const ProductList = () => {
   const deleteHandler = (slug) => {
     console.log(slug);
     api
-      .deleteProduct(slug, user.token)
+      .deleteProduct(slug, cookie.user.token)
       .then((res) => {
         notification.success({
           message: 'Xóa sản phẩm thành công',
@@ -110,7 +110,7 @@ const ProductList = () => {
                 <Col
                   xs={24}
                   sm={12}
-                  md={8}
+                  md={12}
                   lg={8}
                   className='gutter-row'
                   key={product._id}

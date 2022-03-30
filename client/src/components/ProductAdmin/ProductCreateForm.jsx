@@ -1,6 +1,5 @@
 import { Button, Form, Input, notification, Select, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
 import { UploadOutlined } from '@ant-design/icons';
 import * as categoryApi from '../../api/categoryApi';
@@ -9,6 +8,7 @@ import * as cloudinaryApi from '../../api/cloudinaryApi';
 import * as subCategoryApi from '../../api/subCategoryApi';
 import LoadingButton from '../LoadingButton';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const initialState = {
   title: '',
@@ -47,7 +47,7 @@ const resizeImage = (file, allUriString, setUriString) => {
 const ProductCreateForm = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { user } = useSelector((state) => state.user);
+  const [cookie] = useCookies(['user']);
   const [categories, setCategories] = useState([]);
   const [createLoading, setCreateLoading] = useState(false);
   const [fields, setFields] = useState([{ name: 'sub', value: [] }]);
@@ -106,7 +106,10 @@ const ProductCreateForm = () => {
           : await Promise.all(
               uriString.map(async (uri) => {
                 try {
-                  const res = await cloudinaryApi.uploadImages(uri, user.token);
+                  const res = await cloudinaryApi.uploadImages(
+                    uri,
+                    cookie.user.token
+                  );
                   return res.data;
                 } catch (error) {
                   throw new Error(error.response.data.message);
@@ -116,7 +119,7 @@ const ProductCreateForm = () => {
       try {
         await productApi.createProduct(
           { ...values, images: imageArr },
-          user.token
+          cookie.user.token
         );
         notification.success({
           message: 'Tạo sản phẩm thành công',

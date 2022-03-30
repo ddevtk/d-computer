@@ -1,8 +1,12 @@
 import { Col, Row } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import AdminNav from '../../components/AdminNav';
+import CouponCreateForm from '../../components/Coupon/CouponCreateForm';
+import CouponList from '../../components/Coupon/CouponList';
 
 const Coupon = () => {
+  const [createLoading, setCreateLoading] = useState(false);
+
   return (
     <Row
       style={{
@@ -18,7 +22,11 @@ const Coupon = () => {
         md={20}
         style={{ padding: '0 24px', minHeight: 280 }}
       >
-        giảm giá
+        <CouponCreateForm
+          createLoading={createLoading}
+          setCreateLoading={setCreateLoading}
+        />
+        <CouponList createLoading={createLoading} />
       </Col>
     </Row>
   );

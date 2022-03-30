@@ -1,4 +1,4 @@
-import { Layout } from 'antd';
+import { Col, Layout, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 
 import React from 'react';
@@ -7,19 +7,23 @@ import ProductCreateForm from '../../components/ProductAdmin/ProductCreateForm';
 
 const ProductCreate = () => {
   return (
-    <Layout
+    <Row
       style={{
         padding: '1.5rem 0',
         backgroundColor: 'rgb(245, 248, 253)',
-        flexDirection: 'row',
         minHeight: '90vh',
       }}
     >
       <AdminNav selectedKey='products' />
-      <Content style={{ padding: '0 24px', minHeight: 280 }}>
+      <Col
+        sm={24}
+        xs={24}
+        md={20}
+        style={{ padding: '0 24px', minHeight: 280 }}
+      >
         <ProductCreateForm />
-      </Content>
-    </Layout>
+      </Col>
+    </Row>
   );
 };
 

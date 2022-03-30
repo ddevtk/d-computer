@@ -2,7 +2,7 @@ import React from 'react';
 import { notification, Rate } from 'antd';
 import { FrownOutlined, MehOutlined, SmileOutlined } from '@ant-design/icons';
 import * as productApi from '../api/productApi';
-import { useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
 
 const customIcons = [
   <FrownOutlined />,
@@ -13,10 +13,10 @@ const customIcons = [
 ];
 
 const Rating = ({ product, small }) => {
-  const { user } = useSelector((state) => state.user);
+  const [cookie] = useCookies(['user']);
 
   const danhGiaSp = (value) => {
-    if (!user) {
+    if (!cookie.user) {
       notification.warning({
         message: 'Vui lòng đăng nhập trước khi đánh giá',
         duration: 2,
@@ -24,7 +24,7 @@ const Rating = ({ product, small }) => {
       return;
     }
     productApi
-      .danhGiaSp(product._id, value, user.token)
+      .danhGiaSp(product._id, value, cookie.user.token)
       .then((res) => {
         notification.success({
           message:
@@ -46,7 +46,7 @@ const Rating = ({ product, small }) => {
               product.ratings.length
             : 0
         }
-        tooltips={user && ['rất kém', 'kém', 'tạm được', 'ổn', 'tốt']}
+        tooltips={cookie.user && ['rất kém', 'kém', 'tạm được', 'ổn', 'tốt']}
         allowHalf
         character={({ index }) => customIcons[index]}
         onChange={danhGiaSp}

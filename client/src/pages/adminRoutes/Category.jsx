@@ -2,15 +2,15 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import AdminNav from '../../components/AdminNav';
 import * as api from '../../api/categoryApi';
-import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import CategoryCreateForm from '../../components/CategoryAdmin/CategoryCreateForm';
 import CategorySearch from '../../components/CategoryAdmin/CategorySearch';
 import CategoryList from '../../components/CategoryAdmin/CategoryList';
+import { useCookies } from 'react-cookie';
 
 const Category = () => {
-  const { user } = useSelector((state) => state.user);
+  const [cookies] = useCookies(['user']);
   const [loading, setLoading] = useState(false);
   const [loadingCat, setLoadingCat] = useState(null);
 
@@ -55,7 +55,7 @@ const Category = () => {
             <div className='col-lg-8 col-md-10 col-sm-12'>
               <CategoryCreateForm
                 setKeyword={setKeyword}
-                userToken={user.token}
+                userToken={cookies.user.token}
                 setLoading={setLoading}
                 loading={loading}
               />
@@ -67,7 +67,7 @@ const Category = () => {
                 keyword={keyword}
                 setUpdateName={setUpdateName}
                 setUpdateSlug={setUpdateSlug}
-                userToken={user.token}
+                userToken={cookies.user.token}
                 setCategories={setCategories}
                 updateName={updateName}
                 updateSlug={updateSlug}

@@ -22,6 +22,7 @@ import RelatedProducts from '../components/RelatedProducts';
 import ProductComment from '../components/ProductComment';
 import { addToCart } from '../redux/cart/cartAction';
 import { formatPrice } from '../utils/formatPrice';
+import { useCookies } from 'react-cookie';
 
 const SingleProduct = () => {
   const { Item } = Breadcrumb;
@@ -30,8 +31,8 @@ const SingleProduct = () => {
   const [relatedProduct, setRelatedProduct] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(true);
-  const { user } = useSelector((state) => state.user);
   const { cart } = useSelector((state) => state.cart);
+  const [cookie] = useCookies(['user']);
   const dispatch = useDispatch();
 
   const addToCartHandler = () => {
@@ -177,7 +178,11 @@ const SingleProduct = () => {
             </Col>
           </Row>
           <RelatedProducts relatedProduct={relatedProduct} />
-          <ProductComment params={params} product={product} user={user} />
+          <ProductComment
+            params={params}
+            product={product}
+            user={cookie.user}
+          />
         </>
       )}
       {!loading && err && <Page404 />}

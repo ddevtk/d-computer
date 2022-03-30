@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Form, Input, notification, Select, Upload } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
 import { UploadOutlined } from '@ant-design/icons';
 import * as categoryApi from '../../api/categoryApi';
@@ -10,6 +9,7 @@ import * as cloudinaryApi from '../../api/cloudinaryApi';
 import * as subCategoryApi from '../../api/subCategoryApi';
 import LoadingButton from '../LoadingButton';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const initialState = {
   title: '',
@@ -48,7 +48,6 @@ const resizeImage = (file, allUriString, setUriString) => {
 const ProductUpdateForm = ({ product, slug }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { user } = useSelector((state) => state.user);
   const [categories, setCategories] = useState([]);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [fields, setFields] = useState([
@@ -65,6 +64,8 @@ const ProductUpdateForm = ({ product, slug }) => {
   ]);
   const [sub, setSub] = useState([]);
   const [uriString, setUriString] = useState([]);
+
+  const [cookie] = useCookies(['user']);
 
   let allUriString = [];
 
@@ -122,7 +123,10 @@ const ProductUpdateForm = ({ product, slug }) => {
           : await Promise.all(
               uriString.map(async (uri) => {
                 try {
-                  const res = await cloudinaryApi.uploadImages(uri, user.token);
+                  const res = await cloudinaryApi.uploadImages(
+                    uri,
+                    cookie.user.token
+                  );
                   return res.data;
                 } catch (error) {
                   throw new Error(error.response.data.message);
@@ -136,7 +140,11 @@ const ProductUpdateForm = ({ product, slug }) => {
       }
 
       try {
-        const res = await productApi.updateProduct(slug, values, user.token);
+        const res = await productApi.updateProduct(
+          slug,
+          values,
+          cookie.user.token
+        );
         console.log(res);
         notification.success({ message: 'Cập nhật thành công', duration: 2 });
         setTimeout(() => {

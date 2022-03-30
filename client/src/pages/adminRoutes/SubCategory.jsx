@@ -4,13 +4,12 @@ import * as subCategoryApi from '../../api/subCategoryApi';
 import { Col, Row } from 'antd';
 import AdminNav from '../../components/AdminNav';
 
-import { useSelector } from 'react-redux';
 import SubCreateForm from '../../components/SubAdmin/SubCreateForm';
 import SubSearch from '../../components/SubAdmin/SubSearch';
 import SubList from '../../components/SubAdmin/SubList';
+import { useCookies } from 'react-cookie';
 
 const SubCategory = () => {
-  const { user } = useSelector((state) => state.user);
   const [sub, setSub] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,6 +18,8 @@ const SubCategory = () => {
   const [selectedSub, setSelectedSub] = useState('');
   const [selectedSlug, setSelectedSlug] = useState('');
   const [loadingSub, setLoadingSub] = useState(null);
+
+  const [cookie] = useCookies(['user']);
 
   useEffect(() => {
     if (loadingSub !== null && loading === false)
@@ -64,7 +65,7 @@ const SubCategory = () => {
                 categories={categories}
                 setLoading={setLoading}
                 subCategoryApi={subCategoryApi}
-                userToken={user.token}
+                userToken={cookie.user.token}
               />
               <SubSearch setKeyword={setKeyword} />
               <hr />
@@ -77,7 +78,7 @@ const SubCategory = () => {
                 setSelectedCategory={setSelectedCategory}
                 setSelectedSlug={setSelectedSlug}
                 setSub={setSub}
-                userToken={user.token}
+                userToken={cookie.user.token}
                 setSelectedSub={setSelectedSub}
                 sub={sub}
                 selectedSlug={selectedSlug}

@@ -1,6 +1,7 @@
 import { Breadcrumb, Button, Col, Divider, Row } from 'antd';
 import { MDBIcon } from 'mdb-react-ui-kit';
 import React from 'react';
+import { useCookies } from 'react-cookie';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import CartItem from '../components/Cart/CartItem';
@@ -9,7 +10,7 @@ import { formatPrice } from '../utils/formatPrice';
 
 const CartPage = () => {
   const { cart, sl, total } = useSelector((state) => state.cart);
-  const { user } = useSelector((state) => state.user);
+  const [cookie] = useCookies();
   const navigate = useNavigate();
 
   return (
@@ -69,7 +70,7 @@ const CartPage = () => {
             </div>
             <Divider />
             <div className='cart-order-total__item'>
-              {user ? (
+              {cookie.user ? (
                 <Button
                   onClick={() => {
                     navigate('/checkout');
