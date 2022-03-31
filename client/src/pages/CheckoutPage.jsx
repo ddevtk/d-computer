@@ -19,6 +19,10 @@ import { unsubscribe } from '../redux/user/userAction';
 const CheckoutPage = () => {
   const [productCart, setProductCart] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cartTotal, setCartTotal] = useState(0);
+  const [discount, setDiscount] = useState(null);
+  const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
+  const [applyLoading, setApplyLoading] = useState(false);
   const [maGiamGia, setMaGiamGia] = useState('');
   const { cart, sl, total } = useSelector((state) => state.cart);
   const userReducer = useSelector((state) => state.user);
@@ -27,6 +31,8 @@ const CheckoutPage = () => {
   const [cookies, setCookie] = useCookies();
   const { user } = cookies;
 
+  console.log(productCart);
+
   const saveCartToDb = async () => {
     setLoading(true);
 
@@ -34,6 +40,10 @@ const CheckoutPage = () => {
       await cartApi.saveCart(cart, sl, total, user.token);
       const res = await cartApi.getUserCart(user.token);
 
+      console.log(res.data);
+
+      setCartTotal(res.data.total);
+      setTotalAfterDiscount(res.data.totalAfterDiscount);
       setProductCart(res.data.products);
       setTimeout(() => {
         setLoading(false);
@@ -67,7 +77,22 @@ const CheckoutPage = () => {
       .catch((err) => {
         console.log(err.response);
       });
-    console.log(values);
+  };
+
+  const applyCoupon = () => {
+    setApplyLoading(true);
+    cartApi
+      .applyCoupon(maGiamGia.toUpperCase(), user.token)
+      .then((res) => {
+        setApplyLoading(false);
+        console.log(res);
+        setDiscount(res.data.discount);
+        setTotalAfterDiscount(res.data.totalAfterDiscount);
+      })
+      .catch((err) => {
+        setApplyLoading(false);
+        notification.error({ message: err.response.data.message, duration: 3 });
+      });
   };
 
   return (
@@ -175,18 +200,45 @@ const CheckoutPage = () => {
         >
           <Input
             value={maGiamGia}
-            onChange={(e) => setMaGiamGia(e.target.value)}
+            onChange={(e) => setMaGiamGia(e.target.value.toUpperCase())}
             placeholder='Nhập mã giảm giá (nếu có)'
             style={{ width: '70%' }}
           />
-          <Button style={{ width: '20%' }} type='primary' danger>
+          <Button
+            style={{ width: '20%' }}
+            type='primary'
+            loading={applyLoading}
+            danger
+            onClick={() => {
+              applyCoupon();
+            }}
+          >
             Sử dụng
           </Button>
         </Row>
         <Row align='middle' justify='space-between' className='mt-4'>
+          <span>Tạm tính</span>
+          <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+            {formatPrice(cartTotal)}
+          </span>
+        </Row>
+        <Row
+          align='middle'
+          justify='space-between'
+          style={{
+            borderBottom: '1px solid rgba(0, 0, 0, 0.09)',
+          }}
+          className='py-4'
+        >
+          <span>Giảm giá</span>
+          <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+            {!discount ? '--' : `-${discount}%`}
+          </span>
+        </Row>
+        <Row align='middle' justify='space-between' className='mt-4'>
           <span>Tổng cộng</span>
           <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
-            {formatPrice(total)}
+            {formatPrice(totalAfterDiscount * 1)}
           </span>
         </Row>
       </Col>

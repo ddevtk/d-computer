@@ -25,6 +25,16 @@ export const capNhatThongTinNguoiMuaHang = async (
       },
     }
   );
+export const applyCoupon = async (coupon, authToken) =>
+  await axios.put(
+    `${process.env.REACT_APP_API}/cart/apply-coupon`,
+    { coupon },
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
 export const getUserCart = async (authToken) =>
   await axios.get(`${process.env.REACT_APP_API}/cart/get-user-cart`, {
     headers: {

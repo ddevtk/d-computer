@@ -1,4 +1,5 @@
 const { Cart } = require('../model/cartModel');
+const { Coupon } = require('../model/couponModel');
 const { User } = require('../model/userModel');
 
 exports.saveCart = async (req, res) => {
@@ -65,6 +66,33 @@ exports.capNhatThongTinNguoiMuaHang = async (req, res) => {
       { new: true }
     );
     res.json(newUser);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.applyCoupon = async (req, res) => {
+  try {
+    const { coupon } = req.body;
+    const validCoupon = await Coupon.findOne({ name: coupon });
+    if (!validCoupon) {
+      return res
+        .status(404)
+        .json({ message: 'Không tìm thấy mã giảm giá này' });
+    }
+    const user = await User.findOne({ email: req.user.email });
+    let { total } = await Cart.findOne({ orderedBy: user._id });
+    let totalAfterDiscount = (
+      total -
+      (total * validCoupon.discount) / 100
+    ).toFixed(2);
+
+    await Cart.findOneAndUpdate(
+      { orderedBy: user._id },
+      { totalAfterDiscount },
+      { new: true }
+    );
+    res.json({ totalAfterDiscount, discount: validCoupon.discount });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
