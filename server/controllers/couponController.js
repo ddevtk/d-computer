@@ -29,3 +29,22 @@ exports.list = async (req, res) => {
     console.log(error.message);
   }
 };
+
+exports.update = async (req, res) => {
+  try {
+    const { name, expireIn, discount } = req.body;
+    console.log(req.body);
+    const updatedCoupon = await Coupon.findByIdAndUpdate(
+      req.params.couponId,
+      {
+        name,
+        expireIn,
+        discount,
+      },
+      { new: true }
+    );
+    res.json(updatedCoupon);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

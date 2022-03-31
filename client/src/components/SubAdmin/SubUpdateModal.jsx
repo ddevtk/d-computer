@@ -10,6 +10,7 @@ import {
 } from 'antd';
 import * as subCategoryApi from '../../api/subCategoryApi';
 import React, { useState } from 'react';
+import LoadingButton from '../LoadingButton';
 
 const SubUpdateModal = ({
   updateVisible,
@@ -49,7 +50,6 @@ const SubUpdateModal = ({
           duration: 3,
         });
       });
-    console.log(values);
   };
   return (
     <Modal
@@ -94,9 +94,7 @@ const SubUpdateModal = ({
         <Row style={{ justifyContent: 'center', margin: '40px 0px 0px 0px' }}>
           <Space size='small'>
             <Button onClick={() => setUpdateVisible(false)}>Không</Button>
-            <Button type='primary' htmlType='submit'>
-              {updateLoading ? 'Chờ chút...' : 'Cập nhật'}
-            </Button>
+            <LoadingButton loading={updateLoading} type='update' />
           </Space>
         </Row>
       </Form>

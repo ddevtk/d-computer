@@ -28,12 +28,7 @@ const CouponCreateForm = ({ setCreateLoading, createLoading }) => {
       wrapperCol={{ md: { span: 12 } }}
       onFinish={onFinish}
     >
-      <Form.Item
-        label='Mã giảm giá'
-        name='name'
-        rules={[{ required: true }]}
-        required
-      >
+      <Form.Item label='Mã giảm giá' name='name' rules={[{ required: true }]}>
         <Input />
       </Form.Item>
       <Form.Item
@@ -48,7 +43,7 @@ const CouponCreateForm = ({ setCreateLoading, createLoading }) => {
         name='expire'
         rules={[{ required: true }]}
       >
-        <DatePicker />
+        <DatePicker format='DD/MM/YYYY' />
       </Form.Item>
       <Form.Item>
         <LoadingButton loading={createLoading} type='create' />

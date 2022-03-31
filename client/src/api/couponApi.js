@@ -13,6 +13,23 @@ export const removeCoupon = async (couponId, token) => {
     }
   );
 };
+export const updateCoupon = async (
+  name,
+  expireIn,
+  discount,
+  couponId,
+  token
+) => {
+  return await axios.put(
+    `${process.env.REACT_APP_API}/coupon/update/${couponId}`,
+    { name, expireIn, discount },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
 
 export const createCoupon = async (name, expireIn, discount, token) =>
   await axios.post(

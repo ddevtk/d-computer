@@ -54,6 +54,7 @@ const SubList = ({
       },
     });
   };
+
   return (
     <div>
       {loadingSub && (
@@ -78,7 +79,7 @@ const SubList = ({
                     <EditOutlined
                       className='mx-2'
                       onClick={() => {
-                        setSelectedCategory(s.parent);
+                        setSelectedCategory(s.parent._id);
                         setSelectedSub(s.name);
                         setSelectedSlug(s.slug);
                         setUpdateVisible(true);
