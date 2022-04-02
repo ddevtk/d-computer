@@ -99,6 +99,10 @@ export const cartReducer = (state = defaultState, action) => {
         total: _.sumBy(cartAfterRemove, (item) => item.count * item.price),
       };
 
+    case cartActionType.EMPTY_CART:
+      localStorage.removeItem('cart');
+      return defaultState;
+
     default:
       return state;
   }

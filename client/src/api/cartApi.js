@@ -10,6 +10,16 @@ export const saveCart = async (cart, sl, total, authToken) =>
       },
     }
   );
+export const createOrder = async (paymentIntent, authToken) =>
+  await axios.post(
+    `${process.env.REACT_APP_API}/cart/order`,
+    { paymentIntent },
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
 export const capNhatThongTinNguoiMuaHang = async (
   name,
   sdt,

@@ -12,6 +12,7 @@ const commentRoute = require('./routes/commentRoute');
 const cloudinaryRoute = require('./routes/cloudinaryRoute');
 const cartRoute = require('./routes/cartRoute');
 const couponRoute = require('./routes/couponRoute');
+const stripeRoute = require('./routes/stripeRoute');
 
 dotenv.config({ path: __dirname + '../../server/.env' });
 
@@ -39,6 +40,7 @@ app.use('/api/comment', commentRoute);
 app.use('/api/cloudinary', cloudinaryRoute);
 app.use('/api/cart', cartRoute);
 app.use('/api/coupon', couponRoute);
+app.use('/api/payment', stripeRoute);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`App is listening on port ${port}!`));

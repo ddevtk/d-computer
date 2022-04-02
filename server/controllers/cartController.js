@@ -1,6 +1,8 @@
 const { Cart } = require('../model/cartModel');
 const { Coupon } = require('../model/couponModel');
 const { User } = require('../model/userModel');
+const { Order } = require('../model/orderModel');
+const { Product } = require('../model/productModel');
 
 exports.saveCart = async (req, res) => {
   try {
@@ -93,6 +95,36 @@ exports.applyCoupon = async (req, res) => {
       { new: true }
     );
     res.json({ totalAfterDiscount, discount: validCoupon.discount });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+module.exports.createOrder = async (req, res) => {
+  try {
+    const { paymentIntent } = req.body;
+    const user = await User.findOne({ email: req.user.email });
+    let { products } = await Cart.findOne({ orderedBy: user._id });
+    let newOrder = await new Order({
+      products,
+      paymentIntent,
+      orderedBy: user._id,
+    }).save();
+
+    // update left quantity , sold quantity for product
+    let bulkOptions = products.map((p) => {
+      return {
+        updateOne: {
+          filter: { _id: p.product._id },
+          update: { $inc: { sold: +p.count } },
+        },
+      };
+    });
+
+    let updated = await Product.bulkWrite(bulkOptions);
+    console.log(updated);
+
+    res.json(newOrder);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

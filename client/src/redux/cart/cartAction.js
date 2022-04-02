@@ -18,3 +18,7 @@ export const reduceItem = (product) => (dispatch) => {
 export const removeItemFromCart = (item) => (dispatch) => {
   dispatch({ type: cartActionType.REMOVE_ITEM_FROM_CART, payload: item });
 };
+
+export const emptyCart = () => (dispatch) => {
+  dispatch({ type: cartActionType.EMPTY_CART });
+};

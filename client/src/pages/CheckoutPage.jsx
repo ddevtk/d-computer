@@ -10,11 +10,14 @@ import {
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import * as cartApi from '../api/cartApi';
+import * as productApi from '../api/productApi';
 import { formatPrice } from '../utils/formatPrice';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { unsubscribe } from '../redux/user/userAction';
+import { removeItemFromCart } from '../redux/cart/cartAction';
+import { useNavigate } from 'react-router-dom';
 
 const CheckoutPage = () => {
   const [productCart, setProductCart] = useState([]);
@@ -25,13 +28,11 @@ const CheckoutPage = () => {
   const [applyLoading, setApplyLoading] = useState(false);
   const [maGiamGia, setMaGiamGia] = useState('');
   const { cart, sl, total } = useSelector((state) => state.cart);
-  const userReducer = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [cookies, setCookie] = useCookies();
+  const [cookies] = useCookies();
   const { user } = cookies;
-
-  console.log(productCart);
 
   const saveCartToDb = async () => {
     setLoading(true);
@@ -39,8 +40,6 @@ const CheckoutPage = () => {
     try {
       await cartApi.saveCart(cart, sl, total, user.token);
       const res = await cartApi.getUserCart(user.token);
-
-      console.log(res.data);
 
       setCartTotal(res.data.total);
       setTotalAfterDiscount(res.data.totalAfterDiscount);
@@ -62,21 +61,45 @@ const CheckoutPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.token, total]);
 
-  useEffect(() => {
-    setCookie(userReducer.user);
-  }, [userReducer]);
-
-  const onFinish = (values) => {
-    const { name, sdt, address } = values;
-    cartApi
-      .capNhatThongTinNguoiMuaHang(name, sdt, address, user.token)
-      .then((res) => {
-        console.log(res);
-        dispatch(unsubscribe());
-      })
-      .catch((err) => {
-        console.log(err.response);
+  const checkQuantity = async () => {
+    let productCart = [];
+    try {
+      await Promise.all(
+        cart.map(async (item) => {
+          const res = await productApi.getOne(item.slug);
+          productCart.push(res.data);
+        })
+      );
+      productCart.forEach((item) => {
+        cart.forEach((ele) => {
+          if (item.quantity < ele.count) {
+            setTimeout(() => {
+              dispatch(removeItemFromCart(item));
+            }, 3000);
+            throw new Error(
+              `Xin lỗi, sản phẩm ${item.title} đã quá số lượng trong cửa hàng, vui lòng kiểm tra lại`
+            );
+          }
+        });
       });
+    } catch (error) {
+      throw new Error(error.response?.data.message || error.message);
+    }
+  };
+
+  const onFinish = async (values) => {
+    try {
+      const { name, sdt, address } = values;
+      await checkQuantity();
+      await cartApi.capNhatThongTinNguoiMuaHang(name, sdt, address, user.token);
+      dispatch(unsubscribe());
+      navigate('/payment');
+    } catch (error) {
+      notification.error({
+        message: error.response?.data.message || error.message,
+        duration: 3,
+      });
+    }
   };
 
   const applyCoupon = () => {
@@ -85,7 +108,6 @@ const CheckoutPage = () => {
       .applyCoupon(maGiamGia.toUpperCase(), user.token)
       .then((res) => {
         setApplyLoading(false);
-        console.log(res);
         setDiscount(res.data.discount);
         setTotalAfterDiscount(res.data.totalAfterDiscount);
       })
