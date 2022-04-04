@@ -37,22 +37,20 @@ const RightMenu = ({
   setSearch,
   title,
   setTitle,
-
   inDrawer,
 }) => {
   const cartReducer = useSelector((state) => state.cart);
   const [visible, setVisible] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookie, setCookies, removeCookie] = useCookies(['user']);
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
     dispatch(logout()).then(() => {
-      navigate('/login');
-      removeCookie('user');
+      removeCookie('user', { path: '/' });
     });
+    navigate('/login');
   };
-
-  const { user } = cookies;
+  console.log(cookie.user);
 
   const { cart, sl, isInit, total } = cartReducer;
   const navigate = useNavigate();
@@ -71,6 +69,9 @@ const RightMenu = ({
     <Menu>
       <Menu.Item icon={<AppstoreOutlined />}>
         <Link to='/admin/dashboard'>Dashboard</Link>
+      </Menu.Item>
+      <Menu.Item icon={<AppstoreOutlined />}>
+        <Link to='/user/history'>History</Link>
       </Menu.Item>
       <Menu.Item icon={<UserDeleteOutlined />} onClick={logoutHandler}>
         Đăng xuất
@@ -186,7 +187,7 @@ const RightMenu = ({
                     Xem giỏ hàng
                   </Button>
                 </Link>
-                {user ? (
+                {cookie.user ? (
                   <Button
                     onClick={() => {
                       navigate('/checkout');
@@ -220,7 +221,7 @@ const RightMenu = ({
             </span>
           )}
         </Popover>
-        {!user && (
+        {!cookie.user && (
           <Dropdown overlay={accountMenu}>
             <div
               className='text-reset d-flex align-items-center'
@@ -231,14 +232,14 @@ const RightMenu = ({
           </Dropdown>
         )}
 
-        {user && user.role === 'subscriber' && (
+        {cookie.user && cookie.user.role === 'subscriber' && (
           <Dropdown overlay={userMenu}>
             <div
               className='d-flex align-items-center'
               style={{ marginLeft: '0.5rem' }}
             >
               <img
-                src={user.avatar || avatar}
+                src={cookie.user.avatar || avatar}
                 className='rounded-circle'
                 height='25'
                 alt='avatar'
@@ -247,14 +248,14 @@ const RightMenu = ({
             </div>
           </Dropdown>
         )}
-        {user && user.role === 'admin' && (
+        {cookie.user && cookie.user.role === 'admin' && (
           <Dropdown overlay={adminMenu}>
             <div
               className='d-flex align-items-center'
               style={{ marginLeft: '0.5rem' }}
             >
               <img
-                src={user.avatar || avatar}
+                src={cookie.user.avatar || avatar}
                 className='rounded-circle'
                 height='25'
                 alt='avatar'

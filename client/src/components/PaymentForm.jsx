@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   PaymentElement,
   useStripe,
@@ -9,6 +9,7 @@ import { notification, Row } from 'antd';
 import { formatPrice } from '../utils/formatPrice';
 import { useDispatch } from 'react-redux';
 import * as cartApi from '../api/cartApi';
+import * as userApi from '../api/userApi';
 import { useCookies } from 'react-cookie';
 import { emptyCart } from '../redux/cart/cartAction';
 
@@ -39,7 +40,7 @@ export default function PaymentForm({ finalTotal }) {
         setMessage(result.error.message);
       } else {
         if (result.paymentIntent.status === 'succeeded') {
-          const res1 = await cartApi.createOrder(
+          const res1 = await userApi.createOrder(
             result.paymentIntent,
             cookie.user.token
           );

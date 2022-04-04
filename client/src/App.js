@@ -32,6 +32,7 @@ import { cartInit } from './redux/cart/cartAction';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import Payment from './pages/Payment';
+import UserOrder from './pages/userRoutes/UserOrder';
 const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
 const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
 const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
@@ -86,6 +87,9 @@ const App = () => {
             </Route>
             <Route path='/user/history' element={<UserRoute />}>
               <Route path='/user/history' element={<UserHistory />} />
+            </Route>
+            <Route path='/user/order/:id' element={<UserRoute />}>
+              <Route path='/user/order/:id' element={<UserOrder />} />
             </Route>
             <Route path='/user/change-password' element={<UserRoute />}>
               <Route

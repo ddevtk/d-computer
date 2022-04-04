@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailLink, updatePassword } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { userActionType } from '../../redux/user/userType';
-import * as api from '../../api/authApi';
+import * as api from '../../api/userApi';
 
 const RegisterComplete = () => {
   const [email, setEmail] = useState('');

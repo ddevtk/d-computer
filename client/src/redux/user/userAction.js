@@ -1,4 +1,5 @@
-import * as api from '../../api/authApi';
+import * as authApi from '../../api/authApi';
+import * as userApi from '../../api/userApi';
 import {
   getAuth,
   GoogleAuthProvider,
@@ -17,7 +18,7 @@ export const unsubscribe = () => (dispatch) => {
     if (user) {
       try {
         const idToken = await user.getIdToken();
-        const { data } = await api.currentUser(idToken);
+        const { data } = await authApi.currentUser(idToken);
 
         const { name, email, _id, role, avatar, sdt, address } = data;
 
@@ -74,7 +75,7 @@ export const loginWithEmailAndPassword =
       );
       const idToken = await user.getIdToken();
 
-      const { data } = await api.createOrUpdateUser(idToken);
+      const { data } = await userApi.createOrUpdateUser(idToken);
       const { email, _id, role, avatar, name, sdt, address } = data;
 
       dispatch({
@@ -110,7 +111,7 @@ export const loginWithGoogle = () => async (dispatch) => {
     // const credential = GoogleAuthProvider.credentialFromResult(result);
     const {
       data: { _id, email, role, avatar, name, sdt, address },
-    } = await api.createOrUpdateUser(token);
+    } = await userApi.createOrUpdateUser(token);
     dispatch({
       type: userActionType.LOGGED_IN_SUCCESS,
       payload: { _id, email, role, token, avatar, name, sdt, address },

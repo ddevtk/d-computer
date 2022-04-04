@@ -13,6 +13,7 @@ const cloudinaryRoute = require('./routes/cloudinaryRoute');
 const cartRoute = require('./routes/cartRoute');
 const couponRoute = require('./routes/couponRoute');
 const stripeRoute = require('./routes/stripeRoute');
+const userRoute = require('./routes/userRoute.js');
 
 dotenv.config({ path: __dirname + '../../server/.env' });
 
@@ -33,6 +34,7 @@ app.use(cors());
 
 // Routes
 app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
 app.use('/api/categories', categoryRoute);
 app.use('/api/subCategory', subCategoryRoute);
 app.use('/api/product', productRoute);
