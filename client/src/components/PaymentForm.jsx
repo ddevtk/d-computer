@@ -40,15 +40,12 @@ export default function PaymentForm({ finalTotal }) {
         setMessage(result.error.message);
       } else {
         if (result.paymentIntent.status === 'succeeded') {
-          const res1 = await userApi.createOrder(
+          await userApi.createOrderWithPayment(
             result.paymentIntent,
             cookie.user.token
           );
+          await cartApi.saveCart([], 0, 0, cookie.user.token);
 
-          console.log(res1);
-          const res = await cartApi.saveCart([], 0, 0, cookie.user.token);
-
-          console.log(res);
           dispatch(emptyCart());
           setSucceeded(true);
           notification.success({
@@ -56,7 +53,7 @@ export default function PaymentForm({ finalTotal }) {
             duration: 3,
           });
           setTimeout(() => {
-            navigate('/');
+            navigate('/user/history');
           }, 2000);
         }
       }

@@ -44,7 +44,11 @@ const UserOrder = () => {
       title: 'Tên sản phẩm',
       dataIndex: 'title',
       key: 'title',
-      render: (text, record) => <Link to={`/${record.slug}`}>{text}</Link>,
+      render: (text, record) => (
+        <Link className='hover-link' to={`/${record.slug}`}>
+          {text}
+        </Link>
+      ),
     },
     {
       title: 'Giá tiền',
@@ -86,11 +90,11 @@ const UserOrder = () => {
           </Link>
         </Button>
         <Table
-          size='middle'
           columns={columns}
           dataSource={products}
           scroll={{ x: 450 }}
           loading={loading}
+          pagination={{ pageSize: 10, position: ['bottomCenter'] }}
         />
       </Col>
     </Row>

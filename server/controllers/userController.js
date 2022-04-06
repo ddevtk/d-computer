@@ -2,6 +2,7 @@ const { Cart } = require('../model/cartModel');
 const { Order } = require('../model/orderModel');
 const { Product } = require('../model/productModel');
 const { User } = require('../model/userModel');
+const { v4: uuidv4 } = require('uuid');
 
 exports.createOrUpdateUser = async (req, res) => {
   const { name, picture, email } = req.user;
@@ -18,7 +19,7 @@ exports.createOrUpdateUser = async (req, res) => {
   }
 };
 
-module.exports.createOrder = async (req, res) => {
+module.exports.createOrderWithPayment = async (req, res) => {
   try {
     const { paymentIntent } = req.body;
     const user = await User.findOne({ email: req.user.email });
@@ -34,14 +35,48 @@ module.exports.createOrder = async (req, res) => {
       return {
         updateOne: {
           filter: { _id: p.product._id },
-          update: { $inc: { sold: +p.count } },
+          update: { $inc: { quantity: -p.count, sold: +p.count } },
         },
       };
     });
 
-    let updated = await Product.bulkWrite(bulkOptions);
-    console.log(updated);
+    await Product.bulkWrite(bulkOptions);
 
+    res.json(newOrder);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+module.exports.createCodOrder = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.user.email });
+    console.log(user);
+    let { products, total } = await Cart.findOne({ orderedBy: user._id });
+    console.log(products);
+    let newOrder = await new Order({
+      products,
+      paymentIntent: {
+        id: uuidv4(),
+        amount: total,
+        currency: 'vnd',
+        created: Math.floor(Date.now() / 1000),
+        payment_method_types: ['cash'],
+        status: 'Ship COD',
+      },
+      orderedBy: user._id,
+    }).save();
+    // update left quantity , sold quantity for product
+    let bulkOptions = products.map((p) => {
+      return {
+        updateOne: {
+          filter: { _id: p.product._id },
+          update: { $inc: { quantity: -p.count, sold: +p.count } },
+        },
+      };
+    });
+
+    await Product.bulkWrite(bulkOptions);
     res.json(newOrder);
   } catch (error) {
     res.status(400).json({ message: error.message });

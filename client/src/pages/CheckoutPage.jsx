@@ -10,34 +10,39 @@ import {
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import * as cartApi from '../api/cartApi';
+import * as userApi from '../api/userApi';
 import * as productApi from '../api/productApi';
 import { formatPrice } from '../utils/formatPrice';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-import { unsubscribe } from '../redux/user/userAction';
-import { removeItemFromCart } from '../redux/cart/cartAction';
-import { useNavigate } from 'react-router-dom';
+import { emptyCart, removeItemFromCart } from '../redux/cart/cartAction';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 
 const CheckoutPage = () => {
   const [productCart, setProductCart] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [orderLoading, setOrderLoading] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
   const [discount, setDiscount] = useState(null);
   const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
   const [applyLoading, setApplyLoading] = useState(false);
   const [maGiamGia, setMaGiamGia] = useState('');
+
   const { cart, sl, total } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(cart);
 
   const [cookies] = useCookies();
   const { user } = cookies;
 
   const saveCartToDb = async () => {
     setLoading(true);
-
     try {
+      console.log(cart, sl, total);
       await cartApi.saveCart(cart, sl, total, user.token);
       const res = await cartApi.getUserCart(user.token);
 
@@ -46,7 +51,7 @@ const CheckoutPage = () => {
       setProductCart(res.data.products);
       setTimeout(() => {
         setLoading(false);
-      }, 100);
+      }, 200);
     } catch (error) {
       notification.error({
         message: error.response.data.message,
@@ -72,7 +77,7 @@ const CheckoutPage = () => {
       );
       productCart.forEach((item) => {
         cart.forEach((ele) => {
-          if (item.quantity < ele.count) {
+          if (ele._id === item._id && item.quantity < ele.count) {
             setTimeout(() => {
               dispatch(removeItemFromCart(item));
             }, 3000);
@@ -88,13 +93,30 @@ const CheckoutPage = () => {
   };
 
   const onFinish = async (values) => {
+    setOrderLoading(true);
     try {
       const { name, sdt, address } = values;
       await checkQuantity();
       await cartApi.capNhatThongTinNguoiMuaHang(name, sdt, address, user.token);
-      dispatch(unsubscribe());
-      navigate('/payment');
+      if (location.state.paymentMethod === 'COD') {
+        const { data } = await userApi.createOrderCOD(user.token);
+        console.log(data);
+        await cartApi.saveCart([], 0, 0, user.token);
+
+        dispatch(emptyCart());
+        notification.success({
+          message: 'Đặt hàng thành công',
+          duration: 3,
+        });
+        setTimeout(() => {
+          navigate('/user/history');
+        }, 3000);
+      } else {
+        navigate('/payment');
+      }
+      setOrderLoading(false);
     } catch (error) {
+      setOrderLoading(false);
       notification.error({
         message: error.response?.data.message || error.message,
         duration: 3,
@@ -117,7 +139,9 @@ const CheckoutPage = () => {
       });
   };
 
-  return (
+  return !location.state ? (
+    <Navigate to='/cart' />
+  ) : (
     <Row style={{ padding: '2rem', minHeight: '90vh' }}>
       <Col style={{ padding: '0 1.5rem 0 0' }} md={12} lg={12} sm={24} xs={24}>
         <h4>Thông tin giao hàng</h4>
@@ -162,8 +186,11 @@ const CheckoutPage = () => {
               htmlType='submit'
               type='primary'
               danger
+              loading={orderLoading}
             >
-              Hoàn tất đơn hàng
+              {location.state.paymentMethod === 'COD'
+                ? 'Đặt hàng'
+                : 'Đến trang thanh toán'}
             </Button>
           </Form.Item>
         </Form>

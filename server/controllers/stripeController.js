@@ -8,8 +8,9 @@ exports.createPaymentIntent = async (req, res) => {
     const { totalAfterDiscount } = await Cart.findOne({
       orderedBy: user._id,
     });
+
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: (totalAfterDiscount / 22839).toFixed(2) * 100,
+      amount: Math.ceil(((totalAfterDiscount / 22839) * 100).toFixed(2)),
       currency: 'usd',
       automatic_payment_methods: {
         enabled: true,
@@ -20,6 +21,7 @@ exports.createPaymentIntent = async (req, res) => {
       totalAfterDiscount,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).json({ message: error.message });
   }
 };

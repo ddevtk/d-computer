@@ -1,4 +1,4 @@
-import { Col, Row, Table } from 'antd';
+import { Badge, Col, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import UserNav from '../../components/UserNav';
 import * as userApi from '../../api/userApi';
@@ -45,7 +45,11 @@ const UserHistory = () => {
       dataIndex: 'orderId',
       key: 'orderId',
       render: (text, record) => {
-        return <Link to={`/user/order/${record.orderId}`}>{text}</Link>;
+        return (
+          <Link className='hover-link' to={`/user/order/${record.orderId}`}>
+            {text}
+          </Link>
+        );
       },
     },
     {
@@ -56,8 +60,15 @@ const UserHistory = () => {
     },
     { title: 'Payment method', dataIndex: 'method', key: 'method' },
     { title: 'Payment status', dataIndex: 'status', key: 'status' },
-    { title: 'Ngay thanh toan', dataIndex: 'createdAt', key: 'createdAt' },
-    { title: 'Order status', dataIndex: 'orderStatus', key: 'orderStatus' },
+    { title: 'Ngày tạo', dataIndex: 'createdAt', key: 'createdAt' },
+    {
+      title: 'Order status',
+      dataIndex: 'orderStatus',
+      key: 'orderStatus',
+      render: (text) => {
+        return <Badge count={text} />;
+      },
+    },
   ];
 
   useEffect(() => {
@@ -80,15 +91,14 @@ const UserHistory = () => {
         style={{ padding: '0 24px', minHeight: 280 }}
       >
         <Table
-          size='middle'
           columns={orderColumns}
           dataSource={orders}
           scroll={{ x: 450 }}
           loading={loading}
-          // pagination={{
-          //   position: ['bottomCenter'],
-          //   pageSize: 5,
-          // }}
+          pagination={{
+            position: ['bottomCenter'],
+            pageSize: 10,
+          }}
         />
       </Col>
     </Row>

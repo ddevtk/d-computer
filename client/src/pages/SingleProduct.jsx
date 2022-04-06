@@ -119,7 +119,7 @@ const SingleProduct = () => {
               <Card
                 actions={[
                   <>
-                    {product.quantity - product.sold === 0 ? (
+                    {product.quantity === 0 ? (
                       <p style={{ cursor: 'not-allowed' }}>Hết hàng</p>
                     ) : (
                       <Tooltip title='Thêm vào giỏ hàng'>
@@ -155,10 +155,10 @@ const SingleProduct = () => {
                     <List.Item.Meta title='Thương hiệu: ' />
                     <div>{product.brand}</div>
                   </List.Item>
-                  {product.quantity - product.sold !== 0 && (
+                  {product.quantity !== 0 && (
                     <List.Item>
                       <List.Item.Meta title='Số lượng: ' />
-                      <div>{product.quantity - product.sold}</div>
+                      <div>{product.quantity}</div>
                     </List.Item>
                   )}
                 </List>

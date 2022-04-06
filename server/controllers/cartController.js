@@ -12,10 +12,11 @@ exports.saveCart = async (req, res) => {
 
     let products = [];
 
-    const oldCart = await Cart.findOne({ orderedBy: user._id });
+    const oldCart = await Cart.find({ orderedBy: user._id });
+    console.log(oldCart);
 
-    if (oldCart) {
-      oldCart.remove();
+    if (oldCart.length !== 0) {
+      oldCart.map((c) => c.remove());
       // if (cart.length === 0) {
       //   return;
       // }

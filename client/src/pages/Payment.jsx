@@ -44,7 +44,6 @@ const Payment = () => {
   useEffect(() => {
     createPaymentIntent(cookie.user.token);
   }, []);
-  console.log(clientSecret);
   return (
     <div>
       {clientSecret && (

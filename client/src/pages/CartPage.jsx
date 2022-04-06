@@ -3,7 +3,7 @@ import { MDBIcon } from 'mdb-react-ui-kit';
 import React from 'react';
 import { useCookies } from 'react-cookie';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CartItem from '../components/Cart/CartItem';
 
 import { formatPrice } from '../utils/formatPrice';
@@ -11,7 +11,6 @@ import { formatPrice } from '../utils/formatPrice';
 const CartPage = () => {
   const { cart, sl, total } = useSelector((state) => state.cart);
   const [cookie] = useCookies();
-  const navigate = useNavigate();
 
   return (
     <div className='container py-2'>
@@ -71,17 +70,25 @@ const CartPage = () => {
             <Divider />
             <div className='cart-order-total__item'>
               {cookie.user ? (
-                <Button
-                  onClick={() => {
-                    navigate('/checkout');
-                  }}
-                  size='large'
-                  block
-                  type='primary'
-                  danger
-                >
-                  Thanh toán
-                </Button>
+                <>
+                  <Button size='large' block type='primary' danger>
+                    <Link to='/checkout' state={{ paymentMethod: 'online' }}>
+                      {' '}
+                      Thanh toán trưc tuyến
+                    </Link>
+                  </Button>
+                  <Button
+                    className='mt-2'
+                    size='large'
+                    block
+                    type='primary'
+                    danger
+                  >
+                    <Link to='/checkout' state={{ paymentMethod: 'COD' }}>
+                      Thanh toán khi nhận hàng
+                    </Link>
+                  </Button>
+                </>
               ) : (
                 <Button size='large' block type='primary' danger>
                   <Link to='/login' state={{ from: 'cart' }}>

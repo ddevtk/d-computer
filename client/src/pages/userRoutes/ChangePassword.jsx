@@ -27,11 +27,18 @@ const ChangePassword = () => {
       try {
         setLoading(true);
         await updatePassword(user, newPw);
-        notification.success({ message: 'Cập nhật mật khẩu thành công' });
+        notification.success({
+          message: 'Cập nhật mật khẩu thành công',
+          duration: 5,
+        });
         setNewPw('');
         setConfirmPw('');
         setLoading(false);
       } catch (error) {
+        notification.error({
+          message: error.message,
+          duration: 5,
+        });
         setLoading(false);
       }
     }

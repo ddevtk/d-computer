@@ -50,7 +50,6 @@ const RightMenu = ({
     });
     navigate('/login');
   };
-  console.log(cookie.user);
 
   const { cart, sl, isInit, total } = cartReducer;
   const navigate = useNavigate();

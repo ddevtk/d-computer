@@ -11,9 +11,9 @@ export const createOrUpdateUser = async (authToken) =>
     }
   );
 
-export const createOrder = async (paymentIntent, authToken) =>
+export const createOrderWithPayment = async (paymentIntent, authToken) =>
   await axios.post(
-    `${process.env.REACT_APP_API}/user/create-order`,
+    `${process.env.REACT_APP_API}/user/create-order-with-payment`,
     { paymentIntent },
     {
       headers: {
@@ -21,6 +21,18 @@ export const createOrder = async (paymentIntent, authToken) =>
       },
     }
   );
+
+export const createOrderCOD = async (authToken) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/user/create-cod-order`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+};
 
 export const getUserOrders = async (authToken) =>
   await axios.get(`${process.env.REACT_APP_API}/user/orders`, {
