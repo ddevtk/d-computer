@@ -1,4 +1,4 @@
-import { Alert, Modal, notification, Skeleton } from 'antd';
+import { Alert, Modal, notification, Skeleton, Space, Table } from 'antd';
 import React, { useState } from 'react';
 import {
   EditOutlined,
@@ -60,40 +60,46 @@ const CategoryList = ({
     });
   };
 
+  const columns = [
+    { title: 'Danh mục', dataIndex: 'name', key: 'name' },
+    { title: 'Slug', dataIndex: 'slug', key: 'slug' },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_text, record) => {
+        return (
+          <Space>
+            <EditOutlined
+              onClick={() => {
+                setUpdateName(record.name);
+                setUpdateSlug(record.slug);
+                setUpdateVisible(true);
+              }}
+            />
+            <DeleteOutlined
+              onClick={() => {
+                setDeleteVisible(true);
+                showDeleteModal(record.name, record.slug);
+              }}
+            />
+          </Space>
+        );
+      },
+    },
+  ];
+
   return (
     <>
-      {loadingCat && <Skeleton active></Skeleton>}
-      {!loadingCat &&
-        categories
-          .filter((c) => c.name.toLowerCase().includes(keyword))
-          .map((category) => {
-            return (
-              <Alert
-                className='mb-2'
-                message={category.name}
-                key={category._id}
-                type='info'
-                action={
-                  <>
-                    <EditOutlined
-                      className='mx-2'
-                      onClick={() => {
-                        setUpdateName(category.name);
-                        setUpdateSlug(category.slug);
-                        setUpdateVisible(true);
-                      }}
-                    />{' '}
-                    <DeleteOutlined
-                      onClick={() => {
-                        setDeleteVisible(true);
-                        showDeleteModal(category.name, category.slug);
-                      }}
-                    />
-                  </>
-                }
-              />
-            );
-          })}
+      <Table
+        size='middle'
+        columns={columns}
+        dataSource={categories.filter((c) =>
+          c.name.toLowerCase().includes(keyword)
+        )}
+        scroll={{ x: 450 }}
+        loading={loadingCat}
+        pagination={{ position: ['bottomCenter'], pageSize: 5 }}
+      />
       <CategoryUpdateModal
         updateVisible={updateVisible}
         setUpdateVisible={setUpdateVisible}

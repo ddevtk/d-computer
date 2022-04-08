@@ -1,5 +1,6 @@
 const slugify = require('slugify');
 const { SubCategory } = require('../model/subCategoryModel');
+const { Category } = require('../model/categoryModel');
 const { Product } = require('../model/productModel');
 
 const checkDuplicateError = (data, res) => {
@@ -48,19 +49,23 @@ exports.getOne = async (req, res) => {
 };
 exports.update = async (req, res) => {
   console.log(req.body);
+  const newCategory = await Category.findOne({
+    slug: req.body.newCategorySlug,
+  });
+  const oldCategory = await Category.findOne({ slug: req.body.oldParent });
   try {
     const updateSub = await SubCategory.findOneAndUpdate(
       { slug: req.params.slug },
       {
         name: req.body.name,
         slug: slugify(req.body.name),
-        parent: req.body.parent,
+        parent: newCategory._id,
       },
       { new: true }
     );
     await Product.updateMany(
-      { category: req.body.oldParent },
-      { category: req.body.parent }
+      { category: oldCategory._id },
+      { category: newCategory._id }
     );
 
     res.json(updateSub);

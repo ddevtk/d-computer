@@ -79,7 +79,7 @@ const ProductComment = ({ user, product, params }) => {
               author: cmt.user.email,
               avatar: cmt.user.avatar || avatar,
               content: cmt.comment,
-              datetime: moment(cmt.createdAt).format('MMMM Do YYYY, h:mm:ss a'),
+              datetime: moment(cmt.createdAt).format('DD-MM-YYYY, HH:mm:ss'),
             };
           }),
         });
@@ -99,7 +99,7 @@ const ProductComment = ({ user, product, params }) => {
             author: cmt.user.email,
             avatar: !cmt.user.avatar ? avatar : cmt.user.avatar,
             content: cmt.comment,
-            datetime: moment(cmt.createdAt).format('MMMM Do YYYY, h:mm:ss a'),
+            datetime: moment(cmt.createdAt).format('DD-MM-YYYY, HH:mm:ss'),
           };
         }),
       });

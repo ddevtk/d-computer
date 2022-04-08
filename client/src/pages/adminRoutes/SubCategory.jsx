@@ -26,7 +26,17 @@ const SubCategory = () => {
       categoryApi.getAllCategories().then((res) => {
         setCategories(res.data);
         subCategoryApi.getAllSubCategories().then((res) => {
-          setSub(res.data);
+          setSub(
+            res.data.map((sub) => {
+              return {
+                ...sub,
+                key: sub._id,
+                categorySlug: sub.parent.slug,
+                categoryName: sub.parent.name,
+                categoryId: sub.parent._id,
+              };
+            })
+          );
         });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,7 +47,17 @@ const SubCategory = () => {
       setCategories(res.data);
       subCategoryApi.getAllSubCategories().then((res) => {
         setLoadingSub(false);
-        setSub(res.data);
+        setSub(
+          res.data.map((sub) => {
+            return {
+              ...sub,
+              key: sub._id,
+              categorySlug: sub.parent.slug,
+              categoryName: sub.parent.name,
+              categoryId: sub.parent._id,
+            };
+          })
+        );
       });
     });
   }, []);
@@ -82,7 +102,6 @@ const SubCategory = () => {
                 setSelectedSub={setSelectedSub}
                 sub={sub}
                 selectedSlug={selectedSlug}
-                subCategoryApi={subCategoryApi}
               />
             </div>
           </div>

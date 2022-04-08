@@ -22,7 +22,11 @@ const Category = () => {
   useEffect(() => {
     if (loading === false && loadingCat !== null) {
       api.getAllCategories().then((res) => {
-        setCategories(res.data);
+        setCategories(
+          res.data.map((category) => {
+            return { ...category, key: category._id };
+          })
+        );
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,7 +35,11 @@ const Category = () => {
     setLoadingCat(true);
     api.getAllCategories().then((res) => {
       setLoadingCat(false);
-      setCategories(res.data);
+      setCategories(
+        res.data.map((category) => {
+          return { ...category, key: category._id };
+        })
+      );
     });
   }, []);
 

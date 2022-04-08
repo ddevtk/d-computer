@@ -19,7 +19,11 @@ const CategoryUpdateModal = ({
       .then(() => {
         setUpdateLoading(false);
         api.getAllCategories().then((res) => {
-          setCategories(res.data);
+          setCategories(
+            res.data.map((category) => {
+              return { ...category, key: category._id };
+            })
+          );
           notification.success({
             message: 'Cập nhật danh mục thành công',
             duration: 3,

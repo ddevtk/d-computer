@@ -93,6 +93,13 @@ const CheckoutPage = () => {
   };
 
   const onFinish = async (values) => {
+    if (total === 0) {
+      notification.warning({
+        message: 'Giỏ hàng của bạn đang trống ',
+        duration: 3,
+      });
+      return;
+    }
     setOrderLoading(true);
     try {
       const { name, sdt, address } = values;
@@ -256,6 +263,7 @@ const CheckoutPage = () => {
           <Button
             style={{ width: '20%' }}
             type='primary'
+            disabled={total === 0}
             loading={applyLoading}
             danger
             onClick={() => {

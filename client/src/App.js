@@ -33,9 +33,12 @@ import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import Payment from './pages/Payment';
 import UserOrder from './pages/userRoutes/UserOrder';
-const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
-const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
-const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
+import AuthRoute from './pages/auth/AuthRoute';
+import AdminRoute from './pages/adminRoutes/AdminRoute';
+import ProductList from './pages/adminRoutes/ProductList';
+// const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
+// const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
+// const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
 
 const App = () => {
   const dispatch = useDispatch();

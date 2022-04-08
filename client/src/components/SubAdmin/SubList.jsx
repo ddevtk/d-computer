@@ -1,10 +1,11 @@
-import { Alert, Modal, notification, Skeleton } from 'antd';
+import { Alert, Modal, notification, Skeleton, Space, Table } from 'antd';
 import React, { useState } from 'react';
 import {
   EditOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
+import * as subCategoryApi from '../../api/subCategoryApi';
 import SubUpdateModal from './SubUpdateModal';
 
 const SubList = ({
@@ -16,7 +17,6 @@ const SubList = ({
   setSelectedCategory,
   setSelectedSub,
   setSelectedSlug,
-  subCategoryApi,
   userToken,
   setSub,
   selectedSub,
@@ -55,46 +55,47 @@ const SubList = ({
     });
   };
 
+  const columns = [
+    { title: 'Danh mục con', dataIndex: 'name', key: 'name' },
+    { title: 'Danh mục', dataIndex: 'categoryName', key: 'categoryName' },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_text, record) => {
+        return (
+          <Space>
+            <EditOutlined
+              onClick={() => {
+                setSelectedCategory(record.categorySlug);
+                setSelectedSub(record.name);
+                setSelectedSlug(record.slug);
+                setUpdateVisible(true);
+              }}
+            />
+            <DeleteOutlined
+              onClick={() => {
+                showDeleteModal(record.name, record.slug);
+              }}
+            />
+          </Space>
+        );
+      },
+    },
+  ];
+
   return (
-    <div>
-      {loadingSub && (
-        <Skeleton active>
-          <Alert className='mb-2'></Alert>
-        </Skeleton>
-      )}
-      {!loadingSub &&
-        sub
-          .filter((sub) => sub.name.toLowerCase().includes(keyword))
-          .map((s) => {
-            return (
-              <Alert
-                className='mb-2'
-                message={`${s.name} ( ${
-                  categories.find((c) => c._id === s.parent._id)?.name
-                } )`}
-                key={s._id}
-                type='info'
-                action={
-                  <>
-                    <EditOutlined
-                      className='mx-2'
-                      onClick={() => {
-                        setSelectedCategory(s.parent._id);
-                        setSelectedSub(s.name);
-                        setSelectedSlug(s.slug);
-                        setUpdateVisible(true);
-                      }}
-                    />{' '}
-                    <DeleteOutlined
-                      onClick={() => {
-                        showDeleteModal(s.name, s.slug);
-                      }}
-                    />
-                  </>
-                }
-              />
-            );
-          })}
+    <>
+      <Table
+        size='middle'
+        columns={columns}
+        dataSource={sub.filter((s) => s.name.toLowerCase().includes(keyword))}
+        scroll={{ x: 450 }}
+        loading={loadingSub}
+        pagination={{
+          position: ['bottomCenter'],
+          pageSize: 10,
+        }}
+      />
       <SubUpdateModal
         categories={categories}
         selectedCategory={selectedCategory}
@@ -105,7 +106,7 @@ const SubList = ({
         setSub={setSub}
         updateVisible={updateVisible}
       />
-    </div>
+    </>
   );
 };
 

@@ -41,7 +41,19 @@ const SubUpdateModal = ({
         });
         setUpdateLoading(false);
         setUpdateVisible(false);
-        subCategoryApi.getAllSubCategories().then((res) => setSub(res.data));
+        subCategoryApi.getAllSubCategories().then((res) =>
+          setSub(
+            res.data.map((sub) => {
+              return {
+                ...sub,
+                key: sub._id,
+                categorySlug: sub.parent.slug,
+                categoryName: sub.parent.name,
+                categoryId: sub.parent._id,
+              };
+            })
+          )
+        );
       })
       .catch((err) => {
         setUpdateLoading(false);
@@ -50,6 +62,7 @@ const SubUpdateModal = ({
           duration: 3,
         });
       });
+    setUpdateVisible(false);
   };
   return (
     <Modal
@@ -71,7 +84,7 @@ const SubUpdateModal = ({
           <Select placeholder='Chọn danh mục'>
             {categories.map((c, id) => {
               return (
-                <Select.Option key={id} value={c._id}>
+                <Select.Option key={id} value={c.slug}>
                   {c.name}
                 </Select.Option>
               );
