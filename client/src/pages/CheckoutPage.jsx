@@ -34,7 +34,6 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(cart);
 
   const [cookies] = useCookies();
   const { user } = cookies;

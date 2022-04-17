@@ -46,7 +46,11 @@ const UserHistory = () => {
       key: 'orderId',
       render: (text, record) => {
         return (
-          <Link className='hover-link' to={`/user/order/${record.orderId}`}>
+          <Link
+            className='hover-link'
+            to={`/user/order/${record.orderId}`}
+            state={{ from: 'customer' }}
+          >
             {text}
           </Link>
         );

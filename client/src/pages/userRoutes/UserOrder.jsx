@@ -2,21 +2,30 @@ import { Button, Col, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import UserNav from '../../components/UserNav';
 import * as userApi from '../../api/userApi';
+import * as orderApi from '../../api/orderApi';
 import { useCookies } from 'react-cookie';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { formatPrice } from '../../utils/formatPrice';
+import AdminNav from '../../components/AdminNav';
 
 const UserOrder = () => {
   const [cookie] = useCookies(['user']);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const params = useParams();
+  const location = useLocation();
 
-  const loadUserOrders = async () => {
+  const loadOrders = async () => {
     try {
       setLoading(true);
-      const { data } = await userApi.getUserOrders(cookie.user.token);
+      const { data } =
+        location.state.from === 'customer'
+          ? await userApi.getUserOrders(cookie.user.token)
+          : await orderApi.getOrder(cookie.user.token, params.id);
+
+      console.log(data);
+
       setProducts(
         data
           .filter((el) => el._id === params.id)[0]
@@ -62,7 +71,7 @@ const UserOrder = () => {
   ];
 
   useEffect(() => {
-    loadUserOrders();
+    loadOrders();
   }, [params]);
 
   return (
@@ -73,7 +82,7 @@ const UserOrder = () => {
         minHeight: '90vh',
       }}
     >
-      <UserNav />
+      {location.state.from === 'admin' ? <AdminNav /> : <UserNav />}
       <Col
         sm={24}
         xs={24}
@@ -83,10 +92,18 @@ const UserOrder = () => {
         <Button className='mb-4' type='primary'>
           <Link
             style={{ display: 'flex', alignItems: 'center' }}
-            to='/user/history'
+            to={`${
+              location.state.from === 'customer'
+                ? '/user/history'
+                : '/admin/dashboard'
+            }`}
           >
             <ArrowLeftOutlined />
-            Quay laị đơn hàng
+            {`${
+              location.state.from === 'customer'
+                ? 'Quay lại đơn hàng'
+                : 'Quay lại'
+            }`}
           </Link>
         </Button>
         <Table
