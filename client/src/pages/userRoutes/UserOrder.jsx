@@ -24,8 +24,6 @@ const UserOrder = () => {
           ? await userApi.getUserOrders(cookie.user.token)
           : await orderApi.getOrder(cookie.user.token, params.id);
 
-      console.log(data);
-
       setProducts(
         data
           .filter((el) => el._id === params.id)[0]
@@ -72,7 +70,8 @@ const UserOrder = () => {
 
   useEffect(() => {
     loadOrders();
-  }, [params]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Row

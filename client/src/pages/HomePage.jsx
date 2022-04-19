@@ -52,26 +52,6 @@ const HomePage = () => {
 
   return (
     <div className='py-2'>
-      {/* <div>
-        <Carousel
-          autoPlay={true}
-          infiniteLoop={true}
-          showThumbs={false}
-          showStatus={false}
-          showArrows={false}
-        >
-          {products.items.map((p, id) => {
-            return (
-              <img
-                key={id}
-                alt=''
-                src={p.images.length !== 0 ? p.images[0].url : laptop}
-                style={{ height: '85vh', objectFit: 'contain' }}
-              />
-            );
-          })}
-        </Carousel>
-      </div> */}
       {loading && (
         <div className='container' style={{ marginBottom: '2rem' }}>
           <Row justify='start' gutter={[16, 16]}>
@@ -83,7 +63,11 @@ const HomePage = () => {
       {!loading &&
         products.map((product) => {
           return (
-            <div className='container' style={{ marginBottom: '2rem' }}>
+            <div
+              key={product[0]}
+              className='container'
+              style={{ marginBottom: '2rem' }}
+            >
               <div
                 className='d-flex justify-content-between align-items-center'
                 style={{ flexWrap: 'wrap' }}

@@ -94,3 +94,38 @@ module.exports.getUserOrders = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+module.exports.listWishlist = async (req, res) => {
+  const wishlist = await User.findOne({ email: req.user.email })
+    .select('wishlist')
+    .populate('wishlist');
+
+  res.json(wishlist);
+};
+module.exports.addToWishlist = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const user = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { $addToSet: { wishlist: productId } },
+      { new: true }
+    );
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+module.exports.removeFromWishlist = async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: req.user.email },
+      {
+        $pull: { wishlist: req.params.productId },
+      },
+      { new: true }
+    );
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

@@ -1,4 +1,4 @@
-import { Badge, Col, Row, Table } from 'antd';
+import { Badge, Col, notification, Row, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import UserNav from '../../components/UserNav';
 import * as userApi from '../../api/userApi';
@@ -36,7 +36,7 @@ const UserHistory = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error.response);
+      notification.error({ message: error.response.data.message, duration: 4 });
     }
   };
   const orderColumns = [
@@ -77,6 +77,7 @@ const UserHistory = () => {
 
   useEffect(() => {
     loadUserOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

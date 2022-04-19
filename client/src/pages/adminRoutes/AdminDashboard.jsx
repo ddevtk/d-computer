@@ -68,6 +68,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     loadUserOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFinishUpdate = async (values) => {

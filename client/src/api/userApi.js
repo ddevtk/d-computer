@@ -40,3 +40,29 @@ export const getUserOrders = async (authToken) =>
       Authorization: `Bearer ${authToken}`,
     },
   });
+export const wishlist = async (authToken) =>
+  await axios.get(`${process.env.REACT_APP_API}/user/wishlist`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+export const addToWishlist = async (authToken, productId) =>
+  await axios.post(
+    `${process.env.REACT_APP_API}/user/wishlist`,
+    { productId },
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+export const removeFromWishlist = async (authToken, productId) =>
+  await axios.put(
+    `${process.env.REACT_APP_API}/user/wishlist/${productId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );

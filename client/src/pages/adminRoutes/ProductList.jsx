@@ -52,7 +52,6 @@ const ProductList = () => {
   };
 
   const deleteHandler = (slug) => {
-    console.log(slug);
     api
       .deleteProduct(slug, cookie.user.token)
       .then((res) => {

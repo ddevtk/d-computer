@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from 'antd';
 import * as productApi from '../api/productApi';
+import * as userApi from '../api/userApi';
 import Title from 'antd/lib/typography/Title';
 import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
@@ -51,6 +52,15 @@ const SingleProduct = () => {
       placement: 'bottomRight',
     });
     dispatch(addToCart(product));
+  };
+
+  const addToWishlist = async () => {
+    try {
+      await userApi.addToWishlist(cookie.user.token, product._id);
+      notification.success({ message: 'Thêm thành công', duration: 4 });
+    } catch (error) {
+      notification({ message: error.response.data.message, duration: 4 });
+    }
   };
 
   useEffect(() => {
@@ -132,7 +142,10 @@ const SingleProduct = () => {
                   </>,
 
                   <Tooltip title='Thêm sản phẩm vào danh sách yêu thích'>
-                    <HeartOutlined className='text-danger' />
+                    <HeartOutlined
+                      className='text-danger'
+                      onClick={addToWishlist}
+                    />
                   </Tooltip>,
                 ]}
               >

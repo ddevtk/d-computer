@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../redux/user/userAction';
 import * as categoryApi from '../api/categoryApi';
 import * as subApi from '../api/subCategoryApi';
 
