@@ -7,10 +7,12 @@ import { Link } from 'react-router-dom';
 const Register = () => {
   const [email, setEmail] = useState('');
 
+  console.log(process.env);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const config = {
-      url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
+      url: `${window.location.origin}/register/complete`,
       handleCodeInApp: true,
     };
     const auth = getAuth();

@@ -12,7 +12,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     setLoading(true);
     const config = {
-      url: process.env.REACT_APP_FORGOT_PASSWORD_REDIRECT_URL,
+      url: `${window.location.origin}/login`,
       handleCodeInApp: true,
     };
     const auth = getAuth();
