@@ -13,8 +13,10 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
   const [showSeeAll, setShowSeeAll] = useState(false);
+  console.log(process.env.REACT_APP_API);
   const loadAllProducts = async () => {
     setLoading(true);
+
     try {
       const productRes = await productApi.getProductPerPage();
       const subRes = await subApi.getAllSubCategories();
