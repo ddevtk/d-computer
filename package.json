@@ -10,7 +10,7 @@
     "server": "nodemon server.js --prefix server",
     "project:install": "concurrently \"npm run client:install\" \"npm run server:install\"",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client && node server.js --prefix server"
+    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client && npm run server"
   },
   "repository": {
     "type": "git",
