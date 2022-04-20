@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const cmtSp = async (productId, comment, token) =>
   await axios.post(
-    `${process.env.REACT_APP_API}/comment/${productId}`,
+    `/api/comment/${productId}`,
     { comment },
     {
       headers: {
@@ -11,4 +11,4 @@ export const cmtSp = async (productId, comment, token) =>
     }
   );
 export const listCmtByProductId = async (slugProduct) =>
-  await axios.get(`${process.env.REACT_APP_API}/comment/${slugProduct}`);
+  await axios.get(`/api/comment/${slugProduct}`);

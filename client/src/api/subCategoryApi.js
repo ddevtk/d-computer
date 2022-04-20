@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 export const getAllSubCategories = async () =>
-  await axios.get(`${process.env.REACT_APP_API}/subCategory`);
+  await axios.get(`/api/subCategory`);
 
 export const getSubCategory = async (slug) =>
-  await axios.get(`${process.env.REACT_APP_API}/subCategory/${slug}`);
+  await axios.get(`/api/subCategory/${slug}`);
 
 export const createSubCategory = async (name, parent, token) =>
   await axios.post(
-    `${process.env.REACT_APP_API}/subCategory`,
+    `/api/subCategory`,
     { name, parent },
     {
       headers: {
@@ -25,7 +25,7 @@ export const updateSubCategory = async (
   token
 ) => {
   return await axios.put(
-    `${process.env.REACT_APP_API}/subCategory/${slug}`,
+    `/api/subCategory/${slug}`,
     { name, newCategorySlug, oldParent },
     {
       headers: {
@@ -36,13 +36,11 @@ export const updateSubCategory = async (
 };
 
 export const deleteSubCategory = async (slug, token) =>
-  await axios.delete(`${process.env.REACT_APP_API}/subCategory/${slug}`, {
+  await axios.delete(`/api/subCategory/${slug}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
 export const getSubsByCategoryId = async (parentId) =>
-  await axios.get(
-    `${process.env.REACT_APP_API}/subCategory/category/${parentId}`
-  );
+  await axios.get(`/api/subCategory/category/${parentId}`);

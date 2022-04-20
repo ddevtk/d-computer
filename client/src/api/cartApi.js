@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const saveCart = async (cart, sl, total, authToken) =>
   await axios.post(
-    `${process.env.REACT_APP_API}/cart/save`,
+    `/api/cart/save`,
     { cart, sl, total },
     {
       headers: {
@@ -18,7 +18,7 @@ export const capNhatThongTinNguoiMuaHang = async (
   authToken
 ) =>
   await axios.put(
-    `${process.env.REACT_APP_API}/cart/update-user-info`,
+    `/api/cart/update-user-info`,
     { sdt, address, name },
     {
       headers: {
@@ -28,7 +28,7 @@ export const capNhatThongTinNguoiMuaHang = async (
   );
 export const applyCoupon = async (coupon, authToken) =>
   await axios.put(
-    `${process.env.REACT_APP_API}/cart/apply-coupon`,
+    `/api/cart/apply-coupon`,
     { coupon },
     {
       headers: {
@@ -37,7 +37,7 @@ export const applyCoupon = async (coupon, authToken) =>
     }
   );
 export const getUserCart = async (authToken) =>
-  await axios.get(`${process.env.REACT_APP_API}/cart/get-user-cart`, {
+  await axios.get(`/api/cart/get-user-cart`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },

@@ -1,19 +1,17 @@
 import axios from 'axios';
 
 export const createProduct = async (product, token) =>
-  await axios.post(`${process.env.REACT_APP_API}/product`, product, {
+  await axios.post(`/api/product`, product, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
 export const getProductPerPage = async (current, limit) =>
-  await axios.get(
-    `${process.env.REACT_APP_API}/product?limit=${limit}&page=${current}`
-  );
+  await axios.get(`/api/product?limit=${limit}&page=${current}`);
 
 export const deleteProduct = async (slug, token) => {
-  return await axios.delete(`${process.env.REACT_APP_API}/product/${slug}`, {
+  return await axios.delete(`/api/product/${slug}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -21,24 +19,20 @@ export const deleteProduct = async (slug, token) => {
 };
 
 export const getOne = async (slug) => {
-  return await axios.get(`${process.env.REACT_APP_API}/product/${slug}`);
+  return await axios.get(`/api/product/${slug}`);
 };
 
 export const updateProduct = async (slug, product, token) => {
-  return await axios.put(
-    `${process.env.REACT_APP_API}/product/${slug}`,
-    product,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return await axios.put(`/api/product/${slug}`, product, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const danhGiaSp = async (productId, star, token) =>
   await axios.put(
-    `${process.env.REACT_APP_API}/product/rating/${productId}`,
+    `/api/product/rating/${productId}`,
     { star },
     {
       headers: {
@@ -48,4 +42,4 @@ export const danhGiaSp = async (productId, star, token) =>
   );
 
 export const getSanPhamLienQuan = async (slug) =>
-  await axios.get(`${process.env.REACT_APP_API}/product/related/${slug}`);
+  await axios.get(`/api/product/related/${slug}`);

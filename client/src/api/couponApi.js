@@ -1,17 +1,13 @@
 import axios from 'axios';
 
-export const getCoupons = async () =>
-  await axios.get(`${process.env.REACT_APP_API}/coupon/list`);
+export const getCoupons = async () => await axios.get(`/api/coupon/list`);
 
 export const removeCoupon = async (couponId, token) => {
-  return await axios.delete(
-    `${process.env.REACT_APP_API}/coupon/delete/${couponId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return await axios.delete(`/api/coupon/delete/${couponId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 export const updateCoupon = async (
   name,
@@ -21,7 +17,7 @@ export const updateCoupon = async (
   token
 ) => {
   return await axios.put(
-    `${process.env.REACT_APP_API}/coupon/update/${couponId}`,
+    `/api/coupon/update/${couponId}`,
     { name, expireIn, discount },
     {
       headers: {
@@ -33,7 +29,7 @@ export const updateCoupon = async (
 
 export const createCoupon = async (name, expireIn, discount, token) =>
   await axios.post(
-    `${process.env.REACT_APP_API}/coupon/create`,
+    `/api/coupon/create`,
     {
       name,
       expireIn,

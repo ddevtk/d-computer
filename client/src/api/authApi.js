@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const currentUser = async (authToken) =>
   await axios.post(
-    `${process.env.REACT_APP_API}/auth/current-user`,
+    `/api/auth/current-user`,
     {},
     {
       headers: {
@@ -13,7 +13,7 @@ export const currentUser = async (authToken) =>
 
 export const currentAdmin = async (authToken) =>
   await axios.post(
-    `${process.env.REACT_APP_API}/auth/current-admin`,
+    `/api/auth/current-admin`,
     {},
     {
       headers: {

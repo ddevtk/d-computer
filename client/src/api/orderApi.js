@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 export const listOrder = async (authToken) =>
-  await axios.get(`${process.env.REACT_APP_API}/order/list`, {
+  await axios.get(`/api/order/list`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
   });
 export const getOrder = async (authToken, orderId) =>
-  await axios.get(`${process.env.REACT_APP_API}/order/${orderId}`, {
+  await axios.get(`/api/order/${orderId}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -15,7 +15,7 @@ export const getOrder = async (authToken, orderId) =>
 
 export const updateOrderStatus = async (authToken, orderId, orderStatus) =>
   await axios.put(
-    `${process.env.REACT_APP_API}/order/update-status`,
+    `/api/order/update-status`,
     { orderId, orderStatus },
     {
       headers: {
