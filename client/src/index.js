@@ -7,7 +7,7 @@ import '../src/firebase/firebase.utils';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import 'antd/dist/antd.css';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+// import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 
 import { Provider } from 'react-redux';
 import { CookiesProvider } from 'react-cookie';

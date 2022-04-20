@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
+const path = require('path');
 const bodyParser = require('body-parser');
 const authRoute = require('./routes/authRoute');
 const categoryRoute = require('./routes/categoryRoute');
@@ -45,6 +46,14 @@ app.use('/api/cart', cartRoute);
 app.use('/api/coupon', couponRoute);
 app.use('/api/payment', stripeRoute);
 app.use('/api/order', orderRoute);
+
+if (process.env.NODE_ENV) {
+  app.use('/', express.static('../client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build/index.html'));
+  });
+}
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`App is listening on port ${port}!`));
