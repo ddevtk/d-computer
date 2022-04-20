@@ -39,7 +39,7 @@ const SubList = ({
       .catch((err) => {
         notification.error({
           message: err.response.data.message,
-          duration: 3,
+          duration: 4,
         });
       });
   };

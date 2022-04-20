@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input } from 'antd';
+import { DatePicker, Form, Input, notification } from 'antd';
 import React from 'react';
 import LoadingButton from '../LoadingButton';
 import * as couponApi from '../../api/couponApi';
@@ -19,7 +19,10 @@ const CouponCreateForm = ({ setCreateLoading, createLoading }) => {
       })
       .catch((err) => {
         setCreateLoading(false);
-        console.log(err.response);
+        notification.error({
+          message: err.response.data.message,
+          duration: 4,
+        });
       });
   };
   return (

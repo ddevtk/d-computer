@@ -43,7 +43,6 @@ const UserOrder = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error.response);
     }
   };
   const columns = [

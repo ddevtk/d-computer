@@ -160,7 +160,7 @@ const ProductUpdateForm = ({ product, slug }) => {
       setUpdateLoading(false);
       notification.error({
         message: error.message,
-        duration: 3,
+        duration: 4,
       });
     }
   };

@@ -61,7 +61,7 @@ const CouponList = ({ createLoading }) => {
       })
       .catch((err) => {
         setDeleteLoading(false);
-        notification.error({ message: err.response.data.message, duration: 3 });
+        notification.error({ message: err.response.data.message, duration: 4 });
       });
   };
 

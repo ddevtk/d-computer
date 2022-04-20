@@ -31,7 +31,7 @@ const SubCreateForm = ({
         setLoading(false);
         notification.error({
           message: err.response.data.message,
-          duration: 3,
+          duration: 4,
         });
       });
   };

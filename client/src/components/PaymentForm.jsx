@@ -59,8 +59,8 @@ export default function PaymentForm({ finalTotal }) {
       }
       setIsLoading(false);
     } catch (error) {
+      notification.error({ message: error.response.data.message, duration: 4 });
       setIsLoading(false);
-      console.log(error.response.data.message);
     }
   };
 

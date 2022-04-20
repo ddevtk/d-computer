@@ -36,10 +36,9 @@ const CategoryList = ({
         });
       })
       .catch((err) => {
-        console.error(err.response.data.message);
         notification.error({
           message: err.response.data.message,
-          duration: 2,
+          duration: 4,
         });
         setDeleteVisible(false);
       });

@@ -24,7 +24,7 @@ const Wishlist = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      notification.error({ message: error.response.data.message });
+      notification.error({ message: error.response.data.message, duration: 4 });
     }
   };
 
@@ -38,7 +38,7 @@ const Wishlist = () => {
       setDeleteVisible(false);
       loadWishlist();
     } catch (error) {
-      notification.error({ message: error.response.data.message });
+      notification.error({ message: error.response.data.message, duration: 4 });
     }
   };
 

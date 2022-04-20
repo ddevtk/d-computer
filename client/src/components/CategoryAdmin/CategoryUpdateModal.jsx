@@ -35,7 +35,7 @@ const CategoryUpdateModal = ({
         setUpdateLoading(false);
         notification.error({
           message: err.response.data.message,
-          duration: 3,
+          duration: 4,
         });
       });
   };

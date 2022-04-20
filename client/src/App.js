@@ -1,9 +1,7 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-
-import Loader from './components/Loader';
 
 import ForgotPassword from './pages/auth/ForgotPassword';
 import Login from './pages/auth/Login';
@@ -36,9 +34,6 @@ import UserOrder from './pages/userRoutes/UserOrder';
 import AuthRoute from './pages/auth/AuthRoute';
 import AdminRoute from './pages/adminRoutes/AdminRoute';
 import ProductList from './pages/adminRoutes/ProductList';
-// const AuthRoute = lazy(() => import('./pages/auth/AuthRoute'));
-// const AdminRoute = lazy(() => import('./pages/adminRoutes/AdminRoute'));
-// const ProductList = lazy(() => import('./pages/adminRoutes/ProductList'));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -61,73 +56,68 @@ const App = () => {
   return (
     <>
       <Header />
-      <Suspense fallback={<Loader />}>
-        <div style={{ backgroundColor: '#f5f8fd' }}>
-          <Routes>
-            <Route path='/' element={<HomePage />} />
-            <Route path='/:slug' element={<SingleProduct />} />
-            <Route path='/category/:slug' element={<ProductByCategory />} />
-            <Route path='/sub/:slug' element={<ProductBySub />} />
-            <Route path='/product' element={<AllProduct />} />
-            <Route path='/cart' element={<CartPage />} />
-            <Route path='/checkout' element={<UserRoute />}>
-              <Route path='/checkout' element={<CheckoutPage />} />
-            </Route>
-            <Route path='/payment' element={<UserRoute />}>
-              <Route path='/payment' element={<Payment />} />
-            </Route>
-            <Route path='/login' element={<AuthRoute />}>
-              <Route path='/login' element={<Login />} />
-            </Route>
-            <Route path='/register' element={<AuthRoute />}>
-              <Route path='/register' element={<Register />} />
-            </Route>
-            <Route path='/register/complete' element={<AuthRoute />}>
-              <Route path='/register/complete' element={<RegisterComplete />} />
-            </Route>
-            <Route path='/forgot-password' element={<AuthRoute />}>
-              <Route path='/forgot-password' element={<ForgotPassword />} />
-            </Route>
-            <Route path='/user/history' element={<UserRoute />}>
-              <Route path='/user/history' element={<UserHistory />} />
-            </Route>
-            <Route path='/user/order/:id' element={<UserRoute />}>
-              <Route path='/user/order/:id' element={<UserOrder />} />
-            </Route>
-            <Route path='/user/change-password' element={<UserRoute />}>
-              <Route
-                path='/user/change-password'
-                element={<ChangePassword />}
-              />
-            </Route>
-            <Route path='/user/wishlist' element={<UserRoute />}>
-              <Route path='/user/wishlist' element={<Wishlist />} />
-            </Route>
-            <Route path='/admin/dashboard' element={<AdminRoute />}>
-              <Route path='/admin/dashboard' element={<AdminDashboard />} />
-            </Route>
-            <Route path='/admin/categories' element={<AdminRoute />}>
-              <Route path='/admin/categories' element={<Category />} />
-            </Route>
-            <Route path='/admin/sub' element={<AdminRoute />}>
-              <Route path='/admin/sub' element={<SubCategory />} />
-            </Route>
-            <Route path='/admin/product/create' element={<AdminRoute />}>
-              <Route path='/admin/product/create' element={<ProductCreate />} />
-            </Route>
-            <Route path='/admin/product' element={<AdminRoute />}>
-              <Route path='/admin/product' element={<ProductList />} />
-            </Route>
-            <Route path='/admin/product/:slug' element={<AdminRoute />}>
-              <Route path='/admin/product/:slug' element={<ProductUpdate />} />
-            </Route>
-            <Route path='/admin/coupon' element={<AdminRoute />}>
-              <Route path='/admin/coupon' element={<Coupon />} />
-            </Route>
-            <Route path='*' element={<Page404 />} />
-          </Routes>
-        </div>
-      </Suspense>
+      <div style={{ backgroundColor: '#f5f8fd' }}>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/:slug' element={<SingleProduct />} />
+          <Route path='/category/:slug' element={<ProductByCategory />} />
+          <Route path='/sub/:slug' element={<ProductBySub />} />
+          <Route path='/product' element={<AllProduct />} />
+          <Route path='/cart' element={<CartPage />} />
+          <Route path='/checkout' element={<UserRoute />}>
+            <Route path='/checkout' element={<CheckoutPage />} />
+          </Route>
+          <Route path='/payment' element={<UserRoute />}>
+            <Route path='/payment' element={<Payment />} />
+          </Route>
+          <Route path='/login' element={<AuthRoute />}>
+            <Route path='/login' element={<Login />} />
+          </Route>
+          <Route path='/register' element={<AuthRoute />}>
+            <Route path='/register' element={<Register />} />
+          </Route>
+          <Route path='/register/complete' element={<AuthRoute />}>
+            <Route path='/register/complete' element={<RegisterComplete />} />
+          </Route>
+          <Route path='/forgot-password' element={<AuthRoute />}>
+            <Route path='/forgot-password' element={<ForgotPassword />} />
+          </Route>
+          <Route path='/user/history' element={<UserRoute />}>
+            <Route path='/user/history' element={<UserHistory />} />
+          </Route>
+          <Route path='/user/order/:id' element={<UserRoute />}>
+            <Route path='/user/order/:id' element={<UserOrder />} />
+          </Route>
+          <Route path='/user/change-password' element={<UserRoute />}>
+            <Route path='/user/change-password' element={<ChangePassword />} />
+          </Route>
+          <Route path='/user/wishlist' element={<UserRoute />}>
+            <Route path='/user/wishlist' element={<Wishlist />} />
+          </Route>
+          <Route path='/admin/dashboard' element={<AdminRoute />}>
+            <Route path='/admin/dashboard' element={<AdminDashboard />} />
+          </Route>
+          <Route path='/admin/categories' element={<AdminRoute />}>
+            <Route path='/admin/categories' element={<Category />} />
+          </Route>
+          <Route path='/admin/sub' element={<AdminRoute />}>
+            <Route path='/admin/sub' element={<SubCategory />} />
+          </Route>
+          <Route path='/admin/product/create' element={<AdminRoute />}>
+            <Route path='/admin/product/create' element={<ProductCreate />} />
+          </Route>
+          <Route path='/admin/product' element={<AdminRoute />}>
+            <Route path='/admin/product' element={<ProductList />} />
+          </Route>
+          <Route path='/admin/product/:slug' element={<AdminRoute />}>
+            <Route path='/admin/product/:slug' element={<ProductUpdate />} />
+          </Route>
+          <Route path='/admin/coupon' element={<AdminRoute />}>
+            <Route path='/admin/coupon' element={<Coupon />} />
+          </Route>
+          <Route path='*' element={<Page404 />} />
+        </Routes>
+      </div>
       <BackTop />
     </>
   );

@@ -89,7 +89,6 @@ const SingleProduct = () => {
       {loading && <Loader />}
       {!loading && !err && (
         <>
-          {' '}
           <Breadcrumb style={{ padding: '16px 0' }}>
             <Link to='/'>
               <Item>TRANG CHỦ</Item>

@@ -33,7 +33,7 @@ const CouponUpdateModal = ({
       notification.success({ message: 'Cập nhật thành công', duration: 3 });
     } catch (error) {
       setUpdateLoading(false);
-      notification.error({ message: error.response.data.message, duration: 3 });
+      notification.error({ message: error.response.data.message, duration: 4 });
     }
   };
   return (

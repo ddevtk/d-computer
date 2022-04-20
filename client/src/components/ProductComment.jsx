@@ -85,7 +85,7 @@ const ProductComment = ({ user, product, params }) => {
         });
       })
       .catch((err) => {
-        notification.error({ message: err.response.data.message, duration: 2 });
+        notification.error({ message: err.response.data.message, duration: 4 });
         setComment({ ...comment, submitting: false });
       });
   };

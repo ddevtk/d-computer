@@ -33,7 +33,6 @@ const Rating = ({ product, small }) => {
         });
       })
       .catch((err) => {
-        console.log(err);
         notification.error({ message: err.response.date.message, duration: 2 });
       });
   };
