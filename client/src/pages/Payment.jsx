@@ -16,7 +16,7 @@ const Payment = () => {
   const createPaymentIntent = async (token) => {
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API}/payment/create-payment-intent`,
+        '/api/payment/create-payment-intent',
         {},
         {
           headers: {
